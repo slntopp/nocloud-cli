@@ -25,7 +25,7 @@ import (
 
 // getCmd represents the get command
 var GetCmd = &cobra.Command{
-	Use:   "get",
+	Use:   "get [UUID]",
 	Short: "Get NoCloud Account Data",
 	Args: cobra.MinimumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
