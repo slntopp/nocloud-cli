@@ -42,15 +42,8 @@ func Execute() {
 func init() {
 	cobra.OnInitialize(initConfig)
 
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
-
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.default.nocloud.yaml)")
-
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	rootCmd.PersistentFlags().Bool("json", false, "Print output as json")
 }
 
 // initConfig reads in config file and ENV variables if set.
@@ -74,16 +67,18 @@ func initConfig() {
 	viper.AutomaticEnv() // read in environment variables that match
 
 	_, err := os.Stat(cfgFile)
-	if !os.IsExist(err) {
+	if _, err := os.Stat(cfgFile); os.IsNotExist(err) {
 		if _, err := os.Create(cfgFile); err != nil { // perm 0666
 			fmt.Fprintln(os.Stderr, "Can't create default config file")
 			panic(err)
 		}
 	}
 
+	printJson, _ := rootCmd.Flags().GetBool("json")
+
 	// If a config file is found, read it in.
 	err = viper.ReadInConfig();
-	if err == nil {
+	if err == nil && !printJson {
 		fmt.Fprintln(os.Stderr, "Using config file:", viper.ConfigFileUsed())
 	}
 }
