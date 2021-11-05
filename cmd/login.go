@@ -28,7 +28,7 @@ import (
 
 // loginCmd represents the login command
 var loginCmd = &cobra.Command{
-	Use:   "login",
+	Use:   "login [host:port] [username] [password]",
 	Short: "Authorize in NoCloud Platform API",
 	Long: `Generate Auth Token in NoCloud API and store it in CLI config.`,
 	Args: cobra.MinimumNArgs(3),
