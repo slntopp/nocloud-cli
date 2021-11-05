@@ -33,7 +33,6 @@ var GetCmd = &cobra.Command{
 		res, err := client.Get(ctx, &accountspb.GetRequest{
 			Id: args[0],
 		})
-
 		if err != nil {
 			return err
 		}
