@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package cmd
+package account
 
 import (
 	"encoding/json"
@@ -21,20 +21,19 @@ import (
 
 	"github.com/slntopp/nocloud/pkg/accounting/accountspb"
 	"github.com/spf13/cobra"
-
-	"github.com/slntopp/nocloud-cli/cmd/account"
 )
 
-// accountCmd represents the account command
-var accountCmd = &cobra.Command{
-	Use:   "account",
-	Short: "Manage accounts, prints info about current by default",
+// getCmd represents the get command
+var GetCmd = &cobra.Command{
+	Use:   "get",
+	Short: "Get NoCloud Account Data",
+	Args: cobra.MinimumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		ctx, client := account.MakeAccountsServiceClientOrFail()
-
+		ctx, client := MakeAccountsServiceClientOrFail()
 		res, err := client.Get(ctx, &accountspb.GetRequest{
-			Id: "me",
+			Id: args[0],
 		})
+
 		if err != nil {
 			return err
 		}
@@ -46,17 +45,9 @@ var accountCmd = &cobra.Command{
 			}
 			fmt.Println(string(data))
 		} else {
-			account.PrintAccount(res)
+			PrintAccount(res)
 		}
 
 		return nil
 	},
 }
-
-func init() {
-	accountCmd.AddCommand(account.GetCmd)
-	accountCmd.AddCommand(account.ListCmd)
-
-	rootCmd.AddCommand(accountCmd)
-}
-

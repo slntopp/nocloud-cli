@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package cmd
+package account
 
 import (
 	"encoding/json"
@@ -21,20 +21,25 @@ import (
 
 	"github.com/slntopp/nocloud/pkg/accounting/accountspb"
 	"github.com/spf13/cobra"
-
-	"github.com/slntopp/nocloud-cli/cmd/account"
 )
 
-// accountCmd represents the account command
-var accountCmd = &cobra.Command{
-	Use:   "account",
-	Short: "Manage accounts, prints info about current by default",
+// getCmd represents the get command
+var ListCmd = &cobra.Command{
+	Use:   "list [NAMESPACE]",
+	Short: "List NoCloud Accounts",
+	Long: `Add namespace UUID after list command, to filter accounts by namespace`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		ctx, client := account.MakeAccountsServiceClientOrFail()
+		ctx, client := MakeAccountsServiceClientOrFail()
+		request := accountspb.ListRequest{}
+		if len(args) > 0 {
+			request.Namespace = &args[0]
+		}
 
-		res, err := client.Get(ctx, &accountspb.GetRequest{
-			Id: "me",
-		})
+		d, _ := cmd.Flags().GetInt32("depth")
+		request.Depth = &d
+
+		res, err := client.List(ctx, &request)
+
 		if err != nil {
 			return err
 		}
@@ -46,7 +51,7 @@ var accountCmd = &cobra.Command{
 			}
 			fmt.Println(string(data))
 		} else {
-			account.PrintAccount(res)
+			PrintAccountsPool(res.Pool)
 		}
 
 		return nil
@@ -54,9 +59,5 @@ var accountCmd = &cobra.Command{
 }
 
 func init() {
-	accountCmd.AddCommand(account.GetCmd)
-	accountCmd.AddCommand(account.ListCmd)
-
-	rootCmd.AddCommand(accountCmd)
+	ListCmd.Flags().Int32P("depth", "d", 4, "Accounts Search(Traversal) depth")
 }
-
