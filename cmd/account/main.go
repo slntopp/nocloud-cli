@@ -71,6 +71,10 @@ func PrintAccountsPool(pool []*accountspb.Account) {
 	}
 	t.AppendRows(rows)
 
+	t.SortBy([]table.SortBy{
+		{Name: "ID", Mode: table.Asc},
+	})
+
 	t.AppendFooter(table.Row{"Total Found", len(pool)})
     t.Render()
 }
