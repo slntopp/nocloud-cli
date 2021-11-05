@@ -1,7 +1,9 @@
 # nocloud-cli
+
 Official CLI for NoCloud Platform
 
 ## Table of Contents
+
 * [Usage](#usage)
 * [Installation](#installation)
 * [Notes](#notes)
