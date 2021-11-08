@@ -19,9 +19,7 @@ You must authorize first, to use other commands, see `nocloud help login`.
 NoCloud CLI currently doesn't offer any official way to install CLI(published binaries or installers).
 You can clone this repo, run `go build -o nocloud` and put `nocloud` binary to `/usr/bin`. You're all set!
 
-> macOS users would need to allow it in Privacy Settings
-
-## Notes
+> macOS users might'd need to allow it in Privacy Settings
 
 ### Login
 
