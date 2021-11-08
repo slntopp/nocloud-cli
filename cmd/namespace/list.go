@@ -25,7 +25,7 @@ import (
 
 // ListCmd represents the list command
 var ListCmd = &cobra.Command{
-	Use:   "list",
+	Use:   "list [[flags]]",
 	Short: "List NoCloud Namespaces",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, client := MakeNamespacesServiceClientOrFail()
