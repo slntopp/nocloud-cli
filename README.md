@@ -16,8 +16,25 @@ You must authorize first, to use other commands, see `nocloud help login`.
 
 ## Installation
 
-NoCloud CLI currently doesn't offer any official way to install CLI(published binaries or installers).
-You can clone this repo, run `go build -o nocloud` and put `nocloud` binary to `/usr/bin`. You're all set!
+### Download Pre-Built
+
+1. Navigate to Releases pages
+2. Pick CLI Release Tag matching NoCloud version you running
+3. Download archived binary and checksum for you platform
+4. Unpack archive: `tar -xvzf nocloud-<version>-<os>-<arch>.tar.gz`
+5. Move `nocloud` binary file to `/usr/local/bin`
+6. You're all set!
+
+> macOS users might'd need to allow it in Privacy Settings
+
+### Building from Source
+
+> You must have golang (version `1.17`) environment set
+
+1. Clone this repo
+2. Run `go build -o nocloud`
+3. Put freshly built `nocloud` binary file to `/usr/local/bin`
+4. You're all set!
 
 > macOS users might'd need to allow it in Privacy Settings
 
