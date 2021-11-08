@@ -44,7 +44,7 @@ var DeleteCmd = &cobra.Command{
 			}
 			fmt.Println(string(data))
 		} else {
-			fmt.Printf("Result: %t\n", res.Result)
+			fmt.Printf("Result: %t\n", res.GetResult())
 		}
 
 		return nil
