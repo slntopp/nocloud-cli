@@ -25,7 +25,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// CreateCmd represents the get command
+// CreateCmd represents the create command
 var CreateCmd = &cobra.Command{
 	Use: "create [title] [namespace UUID]",
 	Short: "Create NoCloud Account",

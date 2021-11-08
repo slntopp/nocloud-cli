@@ -23,7 +23,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// getCmd represents the get command
+// ListCmd represents the list command
 var ListCmd = &cobra.Command{
 	Use:   "list [NAMESPACE]",
 	Short: "List NoCloud Accounts",

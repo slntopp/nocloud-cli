@@ -23,7 +23,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// DeleteCmd represents the get command
+// DeleteCmd represents the delete command
 var DeleteCmd = &cobra.Command{
 	Use:   "delete [UUID]",
 	Short: "Delete NoCloud Account",

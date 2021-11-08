@@ -23,7 +23,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// getCmd represents the get command
+// GetCmd represents the get command
 var GetCmd = &cobra.Command{
 	Use:   "get [UUID]",
 	Short: "Get NoCloud Account Data",

@@ -24,7 +24,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// CreateCmd represents the get command
+// UpdateCmd represents the update command
 var UpdateCmd = &cobra.Command{
 	Use: "update [account UUID] [flags]",
 	Short: "Create NoCloud Account",
