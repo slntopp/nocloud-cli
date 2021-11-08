@@ -26,7 +26,7 @@ import (
 // CreateCmd represents the create command
 var CreateCmd = &cobra.Command{
 	Use: "create [title]",
-	Short: "Create NoCloud Account",
+	Short: "Create NoCloud Namespace",
 	Args: cobra.MinimumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, client := MakeNamespacesServiceClientOrFail()

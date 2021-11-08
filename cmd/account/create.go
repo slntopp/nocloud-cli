@@ -27,8 +27,9 @@ import (
 
 // CreateCmd represents the create command
 var CreateCmd = &cobra.Command{
-	Use: "create [title] [namespace UUID]",
+	Use: "create [title] [namespace UUID] [flags]",
 	Short: "Create NoCloud Account",
+	Long: "Authorization data flags must be given('auth-type', 'auth-data')",
 	Args: cobra.MinimumNArgs(2),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, client := MakeAccountsServiceClientOrFail()
