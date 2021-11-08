@@ -32,5 +32,7 @@ var namespaceCmd = &cobra.Command{
 
 func init() {
 	namespaceCmd.AddCommand(namespace.ListCmd)
+	namespaceCmd.AddCommand(namespace.CreateCmd)
+
 	rootCmd.AddCommand(namespaceCmd)
 }
