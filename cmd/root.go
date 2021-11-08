@@ -44,6 +44,7 @@ func init() {
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.default.nocloud.yaml)")
 	rootCmd.PersistentFlags().Bool("json", false, "Print output as json")
+	rootCmd.PersistentFlags().Bool("verbose", false, "Print additional info related to the CLI itself")
 }
 
 // initConfig reads in config file and ENV variables if set.
@@ -74,11 +75,10 @@ func initConfig() {
 		}
 	}
 
-	printJson, _ := rootCmd.Flags().GetBool("json")
-
+	verbose, _ := rootCmd.Flags().GetBool("verbose")
 	// If a config file is found, read it in.
 	err = viper.ReadInConfig();
-	if err == nil && !printJson {
-		fmt.Fprintln(os.Stderr, "Using config file:", viper.ConfigFileUsed())
+	if err == nil && verbose {
+		fmt.Println("Using config file:", viper.ConfigFileUsed())
 	}
 }
