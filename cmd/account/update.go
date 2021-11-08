@@ -13,32 +13,44 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package cmd
+package account
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 
 	"github.com/slntopp/nocloud/pkg/accounting/accountspb"
 	"github.com/spf13/cobra"
-
-	"github.com/slntopp/nocloud-cli/cmd/account"
 )
 
-// accountCmd represents the account command
-var accountCmd = &cobra.Command{
-	Use:   "account",
-	Short: "Manage accounts, prints info about current by default",
+// CreateCmd represents the get command
+var UpdateCmd = &cobra.Command{
+	Use: "update [account UUID] [flags]",
+	Short: "Create NoCloud Account",
+	Long: "In order to execute request you must change at least one field.",
+	Args: cobra.MinimumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		ctx, client := account.MakeAccountsServiceClientOrFail()
+		ctx, client := MakeAccountsServiceClientOrFail()
 
-		res, err := client.Get(ctx, &accountspb.GetRequest{
-			Id: "me",
-		})
+		updated := false
+		req := accountspb.Account{
+			Id: args[0],
+		}
+		title, _ := cmd.Flags().GetString("title")
+		if title != "" {
+			req.Title = title
+			updated = true
+		}
+
+		if !updated {
+			return errors.New("No fields updated, exiting")
+		}
+
+		res, err := client.Update(ctx, &req)
 		if err != nil {
 			return err
 		}
-
 		if printJson, _ := cmd.Flags().GetBool("json"); printJson {
 			data, err := json.Marshal(res)
 			if err != nil {
@@ -46,7 +58,7 @@ var accountCmd = &cobra.Command{
 			}
 			fmt.Println(string(data))
 		} else {
-			account.PrintAccount(res)
+			fmt.Printf("Result: %t\n", res.GetResult())
 		}
 
 		return nil
@@ -54,12 +66,5 @@ var accountCmd = &cobra.Command{
 }
 
 func init() {
-	accountCmd.AddCommand(account.GetCmd)
-	accountCmd.AddCommand(account.ListCmd)
-	accountCmd.AddCommand(account.CreateCmd)
-	accountCmd.AddCommand(account.UpdateCmd)
-	accountCmd.AddCommand(account.DeleteCmd)
-
-	rootCmd.AddCommand(accountCmd)
+	UpdateCmd.Flags().String("title", "", "Change account title to given")
 }
-
