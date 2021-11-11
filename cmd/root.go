@@ -67,7 +67,6 @@ func initConfig() {
 
 	viper.AutomaticEnv() // read in environment variables that match
 
-	_, err := os.Stat(cfgFile)
 	if _, err := os.Stat(cfgFile); os.IsNotExist(err) {
 		if _, err := os.Create(cfgFile); err != nil { // perm 0666
 			fmt.Fprintln(os.Stderr, "Can't create default config file")
