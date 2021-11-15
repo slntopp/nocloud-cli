@@ -76,7 +76,7 @@ func initConfig() {
 
 	verbose, _ := rootCmd.Flags().GetBool("verbose")
 	// If a config file is found, read it in.
-	err = viper.ReadInConfig();
+	err := viper.ReadInConfig();
 	if err == nil && verbose {
 		fmt.Println("Using config file:", viper.ConfigFileUsed())
 	}
