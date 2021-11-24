@@ -49,7 +49,6 @@ var TestCmd = &cobra.Command{
 		switch format {
 		case "json":
 		case "yml", "yaml":
-			fmt.Println("yml")
 			template, err = convert.ConvertBytes(template)
 		default:
 			return errors.New("Unsupported template format " + format)
