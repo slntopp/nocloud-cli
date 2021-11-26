@@ -75,8 +75,8 @@ var CreateCmd = &cobra.Command{
 		}
 
 		ctx, client := MakeServicesServiceClientOrFail()
-		request := pb.CreateServiceRequest{Service: &service, Namespace: namespace}
-		res, err := client.CreateService(ctx, &request)
+		request := pb.CreateRequest{Service: &service, Namespace: namespace}
+		res, err := client.Create(ctx, &request)
 		if err != nil {
 			return err
 		}
