@@ -26,7 +26,7 @@ import (
 // GetCmd represents the list command
 var GetCmd = &cobra.Command{
 	Use:   "get [uuid] [[flags]]",
-	Short: "Get NoCloud Service",
+	Short: "Get NoCloud Services Providers",
 	Args: cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, client := MakeServicesProviderServiceClientOrFail()
