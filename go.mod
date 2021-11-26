@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	github.com/jedib0t/go-pretty/v6 v6.2.4
-	github.com/slntopp/nocloud v0.0.0-20211126135839-13f587819c09
+	github.com/slntopp/nocloud v0.0.0-20211126150907-3dca7b450293
 	github.com/spf13/cobra v1.2.1
 	github.com/spf13/viper v1.9.0
 	google.golang.org/grpc v1.42.0

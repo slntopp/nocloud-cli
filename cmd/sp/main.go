@@ -20,10 +20,13 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/jedib0t/go-pretty/v6/table"
 	pb "github.com/slntopp/nocloud/pkg/api/apipb"
+	spb "github.com/slntopp/nocloud/pkg/services_providers/proto"
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
+	"gopkg.in/yaml.v2"
 )
 
 func MakeServicesProviderServiceClientOrFail() (context.Context, pb.ServicesProvidersServiceClient){
@@ -49,4 +52,28 @@ func MakeServicesProviderServiceClientOrFail() (context.Context, pb.ServicesProv
 	ctx := context.Background()
 	ctx = metadata.AppendToOutgoingContext(ctx, "authorization", "bearer " + token.(string))
 	return ctx, client
+}
+
+func PrintServicesProvider(s *spb.ServicesProvider) error {
+	out, err := yaml.Marshal(s)
+	if err != nil {
+		return err
+	}
+	fmt.Println(string(out))
+	return nil
+}
+
+func PrintServicesProvidersPool(pool []*spb.ServicesProvider) {
+	t := table.NewWriter()
+	t.SetOutputMirror(os.Stdout)
+	t.AppendHeader(table.Row{"UUID", "Title", "Type"})
+
+	rows := make([]table.Row, len(pool))
+	for i, s := range pool {
+		rows[i] = table.Row{s.GetUuid(), s.GetTitle(), s.GetType()}
+	}
+	t.AppendRows(rows)
+
+	t.AppendFooter(table.Row{"", "Total Found", len(pool)})
+    t.Render()
 }
