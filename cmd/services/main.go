@@ -23,6 +23,7 @@ import (
 	"github.com/jedib0t/go-pretty/v6/table"
 	pb "github.com/slntopp/nocloud/pkg/api/apipb"
 	spb "github.com/slntopp/nocloud/pkg/services/proto"
+	"gopkg.in/yaml.v2"
 
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"
@@ -54,7 +55,7 @@ func MakeServicesServiceClientOrFail() (context.Context, pb.ServicesServiceClien
 	return ctx, client
 }
 
-func PrintTestErrors(pool []*spb.TestServiceConfigError) {
+func PrintTestErrors(pool []*spb.TestConfigError) {
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
 	t.AppendHeader(table.Row{"Group", "Instance", "Error"})
@@ -65,6 +66,30 @@ func PrintTestErrors(pool []*spb.TestServiceConfigError) {
 	}
 	t.AppendRows(rows)
 
-	t.AppendFooter(table.Row{"Total Found", len(pool)})
+	t.AppendFooter(table.Row{"", "Total Found", len(pool)})
+    t.Render()
+}
+
+func PrintService(s *spb.Service) error {
+	out, err := yaml.Marshal(s)
+	if err != nil {
+		return err
+	}
+	fmt.Println(string(out))
+	return nil
+}
+
+func PrintServicesPool(pool []*spb.Service) {
+	t := table.NewWriter()
+	t.SetOutputMirror(os.Stdout)
+	t.AppendHeader(table.Row{"UUID", "Title", "State"})
+
+	rows := make([]table.Row, len(pool))
+	for i, s := range pool {
+		rows[i] = table.Row{s.GetUuid(), s.GetTitle(), s.GetState()}
+	}
+	t.AppendRows(rows)
+
+	t.AppendFooter(table.Row{"", "Total Found", len(pool)})
     t.Render()
 }
