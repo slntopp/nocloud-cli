@@ -5,6 +5,7 @@ Official CLI for [NoCloud Platform](https://github.com/slntopp/nocloud)
 
 * [Usage](#usage)
 * [Installation](#installation)
+* [Update](#update)
 * [Notes](#notes)
 
 ## Usage
@@ -37,6 +38,24 @@ You must authorize first, to use other commands, see `nocloud help login`.
 4. You're all set!
 
 > macOS users might'd need to allow it in Privacy Settings
+
+## Update
+
+### Automatic update
+
+If you have CLI version `^0.1.1` installed, you can update using following command:
+
+```shell
+nocloud install cli # This will install CLI from latest tag on GitHub
+# or
+nocloud install cli v0.1.2 # This will install CLI from precisely v0.1.2 tag on GitHub
+```
+
+### Manual update
+
+Simple repeat steps from [Installation](#installation)
+
+## Notes
 
 ### Login
 
