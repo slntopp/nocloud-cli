@@ -2,7 +2,7 @@ name: Go
 
 on: 
   release:
-    types: [published, created, edited, released]
+    types: [released]
 
 jobs:
   releases-matrix:
