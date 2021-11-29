@@ -80,9 +80,6 @@ var CliCmd = &cobra.Command{
 		var r Release
 		json.Unmarshal(body, &r)
 
-		out, err := json.Marshal(r)
-		fmt.Println(string(out))
-
 		fmt.Println("Found tag: ", r.Tag)
 		asset_base := fmt.Sprintf("nocloud-%s-%s-%s", r.Tag, runtime.GOOS, runtime.GOARCH)
 		asset_name := asset_base + ".tar.gz"
