@@ -82,11 +82,11 @@ func PrintService(s *spb.Service) error {
 func PrintServicesPool(pool []*spb.Service) {
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
-	t.AppendHeader(table.Row{"UUID", "Title", "State"})
+	t.AppendHeader(table.Row{"UUID", "Title", "Status"})
 
 	rows := make([]table.Row, len(pool))
 	for i, s := range pool {
-		rows[i] = table.Row{s.GetUuid(), s.GetTitle(), s.GetState()}
+		rows[i] = table.Row{s.GetUuid(), s.GetTitle(), s.GetStatus()}
 	}
 	t.AppendRows(rows)
 

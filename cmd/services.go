@@ -29,6 +29,7 @@ var servicesCmd = &cobra.Command{
 func init() {
 	servicesCmd.AddCommand(services.TestCmd)
 	servicesCmd.AddCommand(services.CreateCmd)
+	servicesCmd.AddCommand(services.UpCmd)
 
 	servicesCmd.AddCommand(services.GetCmd)
 	servicesCmd.AddCommand(services.ListCmd)
