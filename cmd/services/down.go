@@ -13,28 +13,22 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package cmd
+package services
 
 import (
-	"github.com/slntopp/nocloud-cli/cmd/services"
+	pb "github.com/slntopp/nocloud/pkg/services/proto"
 	"github.com/spf13/cobra"
 )
 
-// servicesCmd represents the services command
-var servicesCmd = &cobra.Command{
-	Use:   "services",
-	Short: "Manage NoCloud Services",
-}
-
-func init() {
-	servicesCmd.AddCommand(services.TestCmd)
-	servicesCmd.AddCommand(services.CreateCmd)
-	
-	servicesCmd.AddCommand(services.UpCmd)
-	servicesCmd.AddCommand(services.DownCmd)
-
-	servicesCmd.AddCommand(services.GetCmd)
-	servicesCmd.AddCommand(services.ListCmd)
-	
-	rootCmd.AddCommand(servicesCmd)
+// GetCmd represents the list command
+var DownCmd = &cobra.Command{
+	Use:   "down [uuid] [[flags]]",
+	Short: "NoCloud Service Down",
+	Args: cobra.ExactArgs(1),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		ctx, client := MakeServicesServiceClientOrFail()
+		request := pb.DownRequest{Id: args[0]}
+		_, err := client.Down(ctx, &request)
+		return err
+	},
 }

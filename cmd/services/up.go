@@ -69,7 +69,7 @@ func SelectDeployPoliciesInteractive(ctx context.Context, client apipb.ServicesS
 // createCmd represents the create command
 var UpCmd = &cobra.Command{
 	Use:   "up [service_id] [flags]",
-	Short: "Service Up",
+	Short: "NoCloud Service Up",
 	Args: cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) (err error) {
 		ctx, client := MakeServicesServiceClientOrFail()

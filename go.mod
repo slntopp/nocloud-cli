@@ -5,7 +5,7 @@ go 1.17
 require (
 	github.com/jedib0t/go-pretty/v6 v6.2.4
 	github.com/manifoldco/promptui v0.9.0
-	github.com/slntopp/nocloud v0.0.0-20211129125823-3f250175a46e
+	github.com/slntopp/nocloud v0.0.0-20211129172942-1863c983ae3a
 	github.com/spf13/cobra v1.2.1
 	github.com/spf13/viper v1.9.0
 	google.golang.org/grpc v1.42.0
