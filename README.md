@@ -1,4 +1,5 @@
-# nocloud-cli
+# NoCloud CLI
+
 Official CLI for [NoCloud Platform](https://github.com/slntopp/nocloud)
 
 ## Table of Contents
