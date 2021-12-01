@@ -17,23 +17,31 @@ package health
 
 import (
 	"context"
+	"crypto/tls"
 	"fmt"
 	"os"
 
 	pb "github.com/slntopp/nocloud/pkg/api/apipb"
+	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/metadata"
 )
 
-func MakeHealthServiceClientOrFail() (context.Context, pb.HealthServiceClient){
+func MakeHealthServiceClientOrFail(cmd *cobra.Command) (context.Context, pb.HealthServiceClient){
 	host := viper.Get("nocloud")
 	if host == nil {
 		fmt.Fprintln(os.Stderr, "Error setting connection up")
 		panic("Host is unset")
 	}
 
-	conn, err := grpc.Dial(host.(string), grpc.WithInsecure())
+	creds := credentials.NewTLS(&tls.Config{InsecureSkipVerify: true})
+	opt := grpc.WithTransportCredentials(creds)
+	if r, _ := cmd.Flags().GetBool("insecure"); r {
+		opt = grpc.WithInsecure()
+	}
+	conn, err := grpc.Dial(host.(string), opt)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "Error setting connection up")
 		panic(err)

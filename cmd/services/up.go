@@ -30,12 +30,12 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func SelectDeployPoliciesInteractive(ctx context.Context, client apipb.ServicesServiceClient, id string) (res map[string]string, err error) {
+func SelectDeployPoliciesInteractive(ctx context.Context, cmd *cobra.Command, client apipb.ServicesServiceClient, id string) (res map[string]string, err error) {
 	service, err := client.Get(ctx, &pb.GetRequest{Id: id})
 	if err != nil {
 		return nil, err
 	}
-	ctx, spClient := sp.MakeServicesProviderServiceClientOrFail()
+	ctx, spClient := sp.MakeServicesProviderServiceClientOrFail(cmd)
 	sps, err := spClient.List(ctx, &sppb.ListRequest{})
 	if err != nil {
 		return nil, err
@@ -72,7 +72,7 @@ var UpCmd = &cobra.Command{
 	Short: "NoCloud Service Up",
 	Args: cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) (err error) {
-		ctx, client := MakeServicesServiceClientOrFail()
+		ctx, client := MakeServicesServiceClientOrFail(cmd)
 
 		req := pb.UpRequest{Id: args[0]}
 		if rulesJson, _ := cmd.Flags().GetString("rules"); rulesJson != "" {
@@ -87,7 +87,7 @@ var UpCmd = &cobra.Command{
 			json.Unmarshal(rulesJson, &req.DeployPolicies)
 		} else {
 			fmt.Println("Nothing given, selecting in interactive mode")
-			r, err := SelectDeployPoliciesInteractive(ctx, client, args[0])
+			r, err := SelectDeployPoliciesInteractive(ctx, cmd, client, args[0])
 			if err != nil {
 				return err
 			}

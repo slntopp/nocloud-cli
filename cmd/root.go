@@ -44,6 +44,7 @@ func init() {
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.default.nocloud.yaml)")
 	rootCmd.PersistentFlags().Bool("json", false, "Print output as json")
+	rootCmd.PersistentFlags().Bool("insecure", false, "Use WithInsecure instead of TLS")
 	rootCmd.PersistentFlags().Bool("verbose", false, "Print additional info related to the CLI itself")
 }
 

@@ -29,7 +29,7 @@ var GetCmd = &cobra.Command{
 	Short: "Get NoCloud Services Providers",
 	Args: cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		ctx, client := MakeServicesProviderServiceClientOrFail()
+		ctx, client := MakeServicesProviderServiceClientOrFail(cmd)
 		request := pb.GetRequest{Id: args[0]}
 		res, err := client.Get(ctx, &request)
 

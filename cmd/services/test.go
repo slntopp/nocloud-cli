@@ -74,7 +74,7 @@ var TestCmd = &cobra.Command{
 			return err
 		}
 
-		ctx, client := MakeServicesServiceClientOrFail()
+		ctx, client := MakeServicesServiceClientOrFail(cmd)
 		request := pb.CreateRequest{Service: &service, Namespace: namespace}
 		res, err := client.TestConfig(ctx, &request)
 		if err != nil {

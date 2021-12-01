@@ -66,7 +66,7 @@ var TestCmd = &cobra.Command{
 			return err
 		}
 
-		ctx, client := MakeServicesProviderServiceClientOrFail()
+		ctx, client := MakeServicesProviderServiceClientOrFail(cmd)
 		res, err := client.Test(ctx, &request)
 		if err != nil {
 			return err

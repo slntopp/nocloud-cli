@@ -29,7 +29,7 @@ var GetCmd = &cobra.Command{
 	Short: "Get NoCloud Account Data",
 	Args: cobra.MinimumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		ctx, client := MakeAccountsServiceClientOrFail()
+		ctx, client := MakeAccountsServiceClientOrFail(cmd)
 		res, err := client.Get(ctx, &accountspb.GetRequest{
 			Id: args[0],
 		})

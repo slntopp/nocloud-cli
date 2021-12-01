@@ -29,7 +29,7 @@ var CreateCmd = &cobra.Command{
 	Short: "Create NoCloud Namespace",
 	Args: cobra.MinimumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		ctx, client := MakeNamespacesServiceClientOrFail()
+		ctx, client := MakeNamespacesServiceClientOrFail(cmd)
 
 		req := namespacespb.CreateRequest{
 			Title: args[0],

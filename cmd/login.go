@@ -17,6 +17,7 @@ package cmd
 
 import (
 	"context"
+	"crypto/tls"
 	"fmt"
 
 	"github.com/slntopp/nocloud/pkg/accounting/accountspb"
@@ -24,6 +25,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 )
 
 // loginCmd represents the login command
@@ -33,7 +35,12 @@ var loginCmd = &cobra.Command{
 	Long: `Generate Auth Token in NoCloud API and store it in CLI config.`,
 	Args: cobra.MinimumNArgs(3),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		conn, err := grpc.Dial(args[0], grpc.WithInsecure())
+		creds := credentials.NewTLS(&tls.Config{InsecureSkipVerify: true})
+		opt := grpc.WithTransportCredentials(creds)
+		if r, _ := cmd.Flags().GetBool("insecure"); r {
+			opt = grpc.WithInsecure()
+		}
+		conn, err := grpc.Dial(args[0], opt)
 		if err != nil {
 			return err
 		}

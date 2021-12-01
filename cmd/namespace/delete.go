@@ -29,7 +29,7 @@ var DeleteCmd = &cobra.Command{
 	Short: "Delete NoCloud Namespace",
 	Args: cobra.MinimumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		ctx, client := MakeNamespacesServiceClientOrFail()
+		ctx, client := MakeNamespacesServiceClientOrFail(cmd)
 		res, err := client.Delete(ctx, &namespacespb.DeleteRequest{
 			Id: args[0],
 		})

@@ -17,26 +17,34 @@ package sp
 
 import (
 	"context"
+	"crypto/tls"
 	"fmt"
 	"os"
 
 	"github.com/jedib0t/go-pretty/v6/table"
 	pb "github.com/slntopp/nocloud/pkg/api/apipb"
 	spb "github.com/slntopp/nocloud/pkg/services_providers/proto"
+	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/metadata"
 	"gopkg.in/yaml.v2"
 )
 
-func MakeServicesProviderServiceClientOrFail() (context.Context, pb.ServicesProvidersServiceClient){
+func MakeServicesProviderServiceClientOrFail(cmd *cobra.Command) (context.Context, pb.ServicesProvidersServiceClient){
 	host := viper.Get("nocloud")
 	if host == nil {
 		fmt.Fprintln(os.Stderr, "Error setting connection up")
 		panic("Host is unset")
 	}
 
-	conn, err := grpc.Dial(host.(string), grpc.WithInsecure())
+	creds := credentials.NewTLS(&tls.Config{InsecureSkipVerify: true})
+	opt := grpc.WithTransportCredentials(creds)
+	if r, _ := cmd.Flags().GetBool("insecure"); r {
+		opt = grpc.WithInsecure()
+	}
+	conn, err := grpc.Dial(host.(string), opt)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "Error setting connection up")
 		panic(err)

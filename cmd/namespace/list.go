@@ -28,7 +28,7 @@ var ListCmd = &cobra.Command{
 	Use:   "list [[flags]]",
 	Short: "List NoCloud Namespaces",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		ctx, client := MakeNamespacesServiceClientOrFail()
+		ctx, client := MakeNamespacesServiceClientOrFail(cmd)
 		request := namespacespb.ListRequest{}
 
 		d, _ := cmd.Flags().GetInt32("depth")
