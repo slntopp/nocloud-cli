@@ -29,7 +29,7 @@ var DeleteCmd = &cobra.Command{
 	Short: "Delete NoCloud Account",
 	Args: cobra.MinimumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		ctx, client := MakeAccountsServiceClientOrFail(cmd)
+		ctx, client := MakeAccountsServiceClientOrFail()
 		res, err := client.Delete(ctx, &accountspb.DeleteRequest{
 			Id: args[0],
 		})

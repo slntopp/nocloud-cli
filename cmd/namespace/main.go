@@ -24,14 +24,13 @@ import (
 	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/slntopp/nocloud/pkg/accounting/namespacespb"
 	pb "github.com/slntopp/nocloud/pkg/api/apipb"
-	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/metadata"
 )
 
-func MakeNamespacesServiceClientOrFail(cmd *cobra.Command) (context.Context, pb.NamespacesServiceClient){
+func MakeNamespacesServiceClientOrFail() (context.Context, pb.NamespacesServiceClient){
 	host := viper.Get("nocloud")
 	if host == nil {
 		fmt.Fprintln(os.Stderr, "Error setting connection up")
@@ -40,7 +39,8 @@ func MakeNamespacesServiceClientOrFail(cmd *cobra.Command) (context.Context, pb.
 
 	creds := credentials.NewTLS(&tls.Config{InsecureSkipVerify: true})
 	opt := grpc.WithTransportCredentials(creds)
-	if r, _ := cmd.Flags().GetBool("insecure"); r {
+	insecure := viper.GetBool("insecure")
+	if insecure {
 		opt = grpc.WithInsecure()
 	}
 	conn, err := grpc.Dial(host.(string), opt)

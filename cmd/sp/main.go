@@ -24,7 +24,6 @@ import (
 	"github.com/jedib0t/go-pretty/v6/table"
 	pb "github.com/slntopp/nocloud/pkg/api/apipb"
 	spb "github.com/slntopp/nocloud/pkg/services_providers/proto"
-	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
@@ -32,7 +31,7 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-func MakeServicesProviderServiceClientOrFail(cmd *cobra.Command) (context.Context, pb.ServicesProvidersServiceClient){
+func MakeServicesProviderServiceClientOrFail() (context.Context, pb.ServicesProvidersServiceClient){
 	host := viper.Get("nocloud")
 	if host == nil {
 		fmt.Fprintln(os.Stderr, "Error setting connection up")
@@ -41,7 +40,8 @@ func MakeServicesProviderServiceClientOrFail(cmd *cobra.Command) (context.Contex
 
 	creds := credentials.NewTLS(&tls.Config{InsecureSkipVerify: true})
 	opt := grpc.WithTransportCredentials(creds)
-	if r, _ := cmd.Flags().GetBool("insecure"); r {
+	insecure := viper.GetBool("insecure")
+	if insecure {
 		opt = grpc.WithInsecure()
 	}
 	conn, err := grpc.Dial(host.(string), opt)

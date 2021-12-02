@@ -29,7 +29,7 @@ var ProbeCmd = &cobra.Command{
 	Short: "Do health probe",
 	Args: cobra.MinimumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		ctx, client := MakeHealthServiceClientOrFail(cmd)
+		ctx, client := MakeHealthServiceClientOrFail()
 		var res *pb.ProbeResponse
 		var err error
 		switch args[0] {

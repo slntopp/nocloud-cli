@@ -31,7 +31,7 @@ var UpdateCmd = &cobra.Command{
 	Long: "In order to execute request you must change at least one field.",
 	Args: cobra.MinimumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		ctx, client := MakeAccountsServiceClientOrFail(cmd)
+		ctx, client := MakeAccountsServiceClientOrFail()
 
 		updated := false
 		req := accountspb.Account{

@@ -30,7 +30,7 @@ var accountCmd = &cobra.Command{
 	Use:   "account",
 	Short: "Manage accounts, prints info about current by default",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		ctx, client := account.MakeAccountsServiceClientOrFail(cmd)
+		ctx, client := account.MakeAccountsServiceClientOrFail()
 
 		res, err := client.Get(ctx, &accountspb.GetRequest{
 			Id: "me",

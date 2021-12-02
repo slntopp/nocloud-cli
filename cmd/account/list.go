@@ -29,7 +29,7 @@ var ListCmd = &cobra.Command{
 	Short: "List NoCloud Accounts",
 	Long: `Add namespace UUID after list command, to filter accounts by namespace`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		ctx, client := MakeAccountsServiceClientOrFail(cmd)
+		ctx, client := MakeAccountsServiceClientOrFail()
 		request := accountspb.ListRequest{}
 		if len(args) > 0 {
 			request.Namespace = &args[0]

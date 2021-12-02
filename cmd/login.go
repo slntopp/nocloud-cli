@@ -37,7 +37,8 @@ var loginCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		creds := credentials.NewTLS(&tls.Config{InsecureSkipVerify: true})
 		opt := grpc.WithTransportCredentials(creds)
-		if r, _ := cmd.Flags().GetBool("insecure"); r {
+		insecure, _ := cmd.Flags().GetBool("insecure")
+		if insecure {
 			opt = grpc.WithInsecure()
 		}
 		conn, err := grpc.Dial(args[0], opt)
@@ -62,6 +63,7 @@ var loginCmd = &cobra.Command{
 
 		viper.Set("nocloud", args[0])
 		viper.Set("token", token)
+		viper.Set("insecure", insecure)
 		err = viper.WriteConfig()
 		return err
 	},

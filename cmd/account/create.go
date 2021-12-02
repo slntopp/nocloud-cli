@@ -32,7 +32,7 @@ var CreateCmd = &cobra.Command{
 	Long: "Authorization data flags must be given('auth-type', 'auth-data')",
 	Args: cobra.MinimumNArgs(2),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		ctx, client := MakeAccountsServiceClientOrFail(cmd)
+		ctx, client := MakeAccountsServiceClientOrFail()
 
 		authType, _ := cmd.Flags().GetString("auth-type")
 		authData, _ := cmd.Flags().GetStringSlice("auth-data")

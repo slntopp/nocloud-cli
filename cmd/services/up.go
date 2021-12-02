@@ -35,7 +35,7 @@ func SelectDeployPoliciesInteractive(ctx context.Context, cmd *cobra.Command, cl
 	if err != nil {
 		return nil, err
 	}
-	ctx, spClient := sp.MakeServicesProviderServiceClientOrFail(cmd)
+	ctx, spClient := sp.MakeServicesProviderServiceClientOrFail()
 	sps, err := spClient.List(ctx, &sppb.ListRequest{})
 	if err != nil {
 		return nil, err
@@ -72,7 +72,7 @@ var UpCmd = &cobra.Command{
 	Short: "NoCloud Service Up",
 	Args: cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) (err error) {
-		ctx, client := MakeServicesServiceClientOrFail(cmd)
+		ctx, client := MakeServicesServiceClientOrFail()
 
 		req := pb.UpRequest{Id: args[0]}
 		if rulesJson, _ := cmd.Flags().GetString("rules"); rulesJson != "" {

@@ -29,7 +29,7 @@ var ListCmd = &cobra.Command{
 	Short: "List NoCloud Services",
 	Long: `Add namespace UUID after list command, to filter services by namespace`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		ctx, client := MakeServicesServiceClientOrFail(cmd)
+		ctx, client := MakeServicesServiceClientOrFail()
 		request := pb.ListRequest{}
 		if len(args) > 0 {
 			request.Namespace = &args[0]
