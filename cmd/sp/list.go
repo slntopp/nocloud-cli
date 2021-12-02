@@ -44,7 +44,7 @@ var ListCmd = &cobra.Command{
 			}
 			fmt.Println(string(data))
 		} else {
-			PrintServicesProvidersPool(res.GetServicesProviders())
+			PrintServicesProvidersPool(res.GetPool())
 		}
 
 		return nil

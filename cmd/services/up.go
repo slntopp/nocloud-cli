@@ -41,7 +41,7 @@ func SelectDeployPoliciesInteractive(ctx context.Context, cmd *cobra.Command, cl
 		return nil, err
 	}
 	providers := make(map[string][]string)
-	for _, sp := range sps.GetServicesProviders() {
+	for _, sp := range sps.GetPool() {
 		pool := providers[sp.GetType()]
 		if pool == nil {
 			pool = make([]string, 0)
