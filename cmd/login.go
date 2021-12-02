@@ -70,7 +70,8 @@ var loginCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(loginCmd)
-
 	loginCmd.Flags().Bool("print-token", false, "")
+	loginCmd.Flags().Bool("insecure", false, "Use WithInsecure instead of TLS")
+	
+	rootCmd.AddCommand(loginCmd)
 }
