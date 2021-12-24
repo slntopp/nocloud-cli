@@ -74,7 +74,7 @@ var CreateCmd = &cobra.Command{
 			return err
 		}
 
-		fmt.Println("Service Provider Created, ID:", res.GetUuid())
+		fmt.Println("Service Provider Created, UUID:", res.GetUuid())
 		return nil
 	},
 }

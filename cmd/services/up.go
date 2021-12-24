@@ -30,7 +30,7 @@ import (
 )
 
 func SelectDeployPoliciesInteractive(ctx context.Context, cmd *cobra.Command, client pb.ServicesServiceClient, id string) (res map[string]string, err error) {
-	service, err := client.Get(ctx, &pb.GetRequest{Id: id})
+	service, err := client.Get(ctx, &pb.GetRequest{Uuid: id})
 	if err != nil {
 		return nil, err
 	}
@@ -73,7 +73,7 @@ var UpCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) (err error) {
 		ctx, client := MakeServicesServiceClientOrFail()
 
-		req := pb.UpRequest{Id: args[0]}
+		req := pb.UpRequest{Uuid: args[0]}
 		if rulesJson, _ := cmd.Flags().GetString("rules"); rulesJson != "" {
 			fmt.Println("Rules as string given", rulesJson)
 			json.Unmarshal([]byte(rulesJson), &req.DeployPolicies)

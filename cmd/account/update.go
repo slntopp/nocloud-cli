@@ -35,7 +35,7 @@ var UpdateCmd = &cobra.Command{
 
 		updated := false
 		req := accountspb.Account{
-			Id: args[0],
+			Uuid: args[0],
 		}
 		title, _ := cmd.Flags().GetString("title")
 		if title != "" {

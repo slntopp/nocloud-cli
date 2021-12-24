@@ -60,7 +60,7 @@ var CreateCmd = &cobra.Command{
 			}
 			fmt.Println(string(data))
 		} else {
-			fmt.Println("ID:", res.GetId())
+			fmt.Println("UUID:", res.GetUuid())
 		}
 
 		return nil

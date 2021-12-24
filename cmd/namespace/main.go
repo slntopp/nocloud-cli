@@ -64,16 +64,16 @@ func MakeNamespacesServiceClientOrFail() (context.Context, regpb.NamespacesServi
 func PrintNamespacesPool(pool []*pb.Namespace) {
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
-	t.AppendHeader(table.Row{"ID", "Title"})
+	t.AppendHeader(table.Row{"UUID", "Title"})
 	
 	rows := make([]table.Row, len(pool))
 	for i, acc := range pool {
-		rows[i] = table.Row{acc.Id, acc.Title}
+		rows[i] = table.Row{acc.Uuid, acc.Title}
 	}
 	t.AppendRows(rows)
 
 	t.SortBy([]table.SortBy{
-		{Name: "ID", Mode: table.Asc},
+		{Name: "UUID", Mode: table.Asc},
 	})
 
 	t.AppendFooter(table.Row{"Total Found", len(pool)})

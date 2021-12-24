@@ -31,7 +31,7 @@ var DeleteCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, client := MakeAccountsServiceClientOrFail()
 		res, err := client.Delete(ctx, &accountspb.DeleteRequest{
-			Id: args[0],
+			Uuid: args[0],
 		})
 		if err != nil {
 			return err

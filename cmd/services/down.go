@@ -27,7 +27,7 @@ var DownCmd = &cobra.Command{
 	Args: cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, client := MakeServicesServiceClientOrFail()
-		request := pb.DownRequest{Id: args[0]}
+		request := pb.DownRequest{Uuid: args[0]}
 		_, err := client.Down(ctx, &request)
 		return err
 	},

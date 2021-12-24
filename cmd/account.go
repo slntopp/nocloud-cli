@@ -33,7 +33,7 @@ var accountCmd = &cobra.Command{
 		ctx, client := account.MakeAccountsServiceClientOrFail()
 
 		res, err := client.Get(ctx, &accountspb.GetRequest{
-			Id: "me",
+			Uuid: "me",
 		})
 		if err != nil {
 			return err
