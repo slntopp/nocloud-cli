@@ -15,13 +15,16 @@ jobs:
         goarch: [amd64, arm64]
     steps:
     - uses: actions/checkout@v2
+    - name: Check Release Tag
+      id: make_context
+      run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
     - uses: wangyoucao577/go-release-action@v1.20
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         goos: ${{ matrix.goos }}
         goarch: ${{ matrix.goarch }}
         goversion: 1.17
-        ldflags: -s -w
+        ldflags: -s -w -X ${{ steps.make_context.outputs.tag }}
         executable_compression: upx
         binary_name: "nocloud"
         extra_files: LICENSE README.md
