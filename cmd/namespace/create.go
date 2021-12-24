@@ -19,7 +19,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/slntopp/nocloud/pkg/accounting/namespacespb"
+	namespacespb "github.com/slntopp/nocloud/pkg/registry/proto/namespaces"
 	"github.com/spf13/cobra"
 )
 

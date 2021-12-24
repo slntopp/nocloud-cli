@@ -22,15 +22,15 @@ import (
 	"os"
 
 	"github.com/jedib0t/go-pretty/v6/table"
-	"github.com/slntopp/nocloud/pkg/accounting/accountspb"
-	pb "github.com/slntopp/nocloud/pkg/api/apipb"
+	regpb "github.com/slntopp/nocloud/pkg/registry/proto"
+	pb "github.com/slntopp/nocloud/pkg/registry/proto/accounts"
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/metadata"
 )
 
-func MakeAccountsServiceClientOrFail() (context.Context, pb.AccountsServiceClient){
+func MakeAccountsServiceClientOrFail() (context.Context, regpb.AccountsServiceClient){
 	host := viper.Get("nocloud")
 	if host == nil {
 		fmt.Fprintln(os.Stderr, "Error setting connection up")
@@ -55,20 +55,20 @@ func MakeAccountsServiceClientOrFail() (context.Context, pb.AccountsServiceClien
 		panic("Token is unset")
 	}
 
-	client := pb.NewAccountsServiceClient(conn)
+	client := regpb.NewAccountsServiceClient(conn)
 	ctx := context.Background()
 	ctx = metadata.AppendToOutgoingContext(ctx, "authorization", "bearer " + token.(string))
 	return ctx, client
 }
 
-func PrintAccount(acc *accountspb.Account) {
+func PrintAccount(acc *pb.Account) {
 	fmt.Println()
 
 	fmt.Println("ID:", acc.GetId())
 	fmt.Println("Title:", acc.GetTitle())
 }
 
-func PrintAccountsPool(pool []*accountspb.Account) {
+func PrintAccountsPool(pool []*pb.Account) {
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
 	t.AppendHeader(table.Row{"ID", "Title"})

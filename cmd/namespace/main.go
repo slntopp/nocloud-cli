@@ -22,15 +22,15 @@ import (
 	"os"
 
 	"github.com/jedib0t/go-pretty/v6/table"
-	"github.com/slntopp/nocloud/pkg/accounting/namespacespb"
-	pb "github.com/slntopp/nocloud/pkg/api/apipb"
+	regpb "github.com/slntopp/nocloud/pkg/registry/proto"
+	pb "github.com/slntopp/nocloud/pkg/registry/proto/namespaces"
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/metadata"
 )
 
-func MakeNamespacesServiceClientOrFail() (context.Context, pb.NamespacesServiceClient){
+func MakeNamespacesServiceClientOrFail() (context.Context, regpb.NamespacesServiceClient){
 	host := viper.Get("nocloud")
 	if host == nil {
 		fmt.Fprintln(os.Stderr, "Error setting connection up")
@@ -55,13 +55,13 @@ func MakeNamespacesServiceClientOrFail() (context.Context, pb.NamespacesServiceC
 		panic("Token is unset")
 	}
 
-	client := pb.NewNamespacesServiceClient(conn)
+	client := regpb.NewNamespacesServiceClient(conn)
 	ctx := context.Background()
 	ctx = metadata.AppendToOutgoingContext(ctx, "authorization", "bearer " + token.(string))
 	return ctx, client
 }
 
-func PrintNamespacesPool(pool []*namespacespb.Namespace) {
+func PrintNamespacesPool(pool []*pb.Namespace) {
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
 	t.AppendHeader(table.Row{"ID", "Title"})

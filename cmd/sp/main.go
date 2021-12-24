@@ -22,8 +22,7 @@ import (
 	"os"
 
 	"github.com/jedib0t/go-pretty/v6/table"
-	pb "github.com/slntopp/nocloud/pkg/api/apipb"
-	spb "github.com/slntopp/nocloud/pkg/services_providers/proto"
+	pb "github.com/slntopp/nocloud/pkg/services_providers/proto"
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
@@ -62,7 +61,7 @@ func MakeServicesProviderServiceClientOrFail() (context.Context, pb.ServicesProv
 	return ctx, client
 }
 
-func PrintServicesProvider(s *spb.ServicesProvider) error {
+func PrintServicesProvider(s *pb.ServicesProvider) error {
 	out, err := yaml.Marshal(s)
 	if err != nil {
 		return err
@@ -71,7 +70,7 @@ func PrintServicesProvider(s *spb.ServicesProvider) error {
 	return nil
 }
 
-func PrintServicesProvidersPool(pool []*spb.ServicesProvider) {
+func PrintServicesProvidersPool(pool []*pb.ServicesProvider) {
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
 	t.AppendHeader(table.Row{"UUID", "Title", "Type"})

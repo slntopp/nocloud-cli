@@ -22,8 +22,7 @@ import (
 	"os"
 
 	"github.com/jedib0t/go-pretty/v6/table"
-	pb "github.com/slntopp/nocloud/pkg/api/apipb"
-	spb "github.com/slntopp/nocloud/pkg/services/proto"
+	pb "github.com/slntopp/nocloud/pkg/services/proto"
 	"gopkg.in/yaml.v2"
 
 	"github.com/spf13/viper"
@@ -63,7 +62,7 @@ func MakeServicesServiceClientOrFail() (context.Context, pb.ServicesServiceClien
 	return ctx, client
 }
 
-func PrintTestErrors(pool []*spb.TestConfigError) {
+func PrintTestErrors(pool []*pb.TestConfigError) {
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
 	t.AppendHeader(table.Row{"Group", "Instance", "Error"})
@@ -78,7 +77,7 @@ func PrintTestErrors(pool []*spb.TestConfigError) {
     t.Render()
 }
 
-func PrintService(s *spb.Service) error {
+func PrintService(s *pb.Service) error {
 	out, err := yaml.Marshal(s)
 	if err != nil {
 		return err
@@ -87,7 +86,7 @@ func PrintService(s *spb.Service) error {
 	return nil
 }
 
-func PrintServicesPool(pool []*spb.Service) {
+func PrintServicesPool(pool []*pb.Service) {
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
 	t.AppendHeader(table.Row{"UUID", "Title", "Status"})

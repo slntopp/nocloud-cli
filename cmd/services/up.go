@@ -24,13 +24,12 @@ import (
 
 	"github.com/manifoldco/promptui"
 	"github.com/slntopp/nocloud-cli/cmd/sp"
-	"github.com/slntopp/nocloud/pkg/api/apipb"
 	pb "github.com/slntopp/nocloud/pkg/services/proto"
 	sppb "github.com/slntopp/nocloud/pkg/services_providers/proto"
 	"github.com/spf13/cobra"
 )
 
-func SelectDeployPoliciesInteractive(ctx context.Context, cmd *cobra.Command, client apipb.ServicesServiceClient, id string) (res map[string]string, err error) {
+func SelectDeployPoliciesInteractive(ctx context.Context, cmd *cobra.Command, client pb.ServicesServiceClient, id string) (res map[string]string, err error) {
 	service, err := client.Get(ctx, &pb.GetRequest{Id: id})
 	if err != nil {
 		return nil, err

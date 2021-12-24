@@ -21,7 +21,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/slntopp/nocloud/pkg/accounting/accountspb"
+	accountspb "github.com/slntopp/nocloud/pkg/registry/proto/accounts"
 	"github.com/spf13/cobra"
 )
 

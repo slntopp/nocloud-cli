@@ -20,8 +20,8 @@ import (
 	"crypto/tls"
 	"fmt"
 
-	"github.com/slntopp/nocloud/pkg/accounting/accountspb"
-	pb "github.com/slntopp/nocloud/pkg/api/apipb"
+	regpb "github.com/slntopp/nocloud/pkg/registry/proto"
+	pb "github.com/slntopp/nocloud/pkg/registry/proto/accounts"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"
@@ -46,9 +46,9 @@ var loginCmd = &cobra.Command{
 			return err
 		}
 
-		client := pb.NewAccountsServiceClient(conn)
-		res, err := client.Token(context.Background(), &accountspb.TokenRequest{
-			Auth: &accountspb.Credentials{
+		client := regpb.NewAccountsServiceClient(conn)
+		res, err := client.Token(context.Background(), &pb.TokenRequest{
+			Auth: &pb.Credentials{
 				Type: "standard", Data: []string{args[1], args[2]},
 			},
 		})
