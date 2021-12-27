@@ -32,7 +32,6 @@ var ListCmd = &cobra.Command{
 		ctx, client := MakeServicesProviderServiceClientOrFail()
 		request := pb.ListRequest{}
 		res, err := client.List(ctx, &request)
-
 		if err != nil {
 			return err
 		}
