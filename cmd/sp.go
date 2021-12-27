@@ -33,5 +33,7 @@ func init() {
 	spCmd.AddCommand(sp.GetCmd)
 	spCmd.AddCommand(sp.ListCmd)
 
+	spCmd.AddCommand(sp.ExtCmd)
+
 	rootCmd.AddCommand(spCmd)
 }
