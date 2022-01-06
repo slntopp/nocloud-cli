@@ -23,22 +23,31 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// GetCmd represents the get command
-var GetCmd = &cobra.Command{
-	Use:   "get [uuid] [[flags]]",
-	Short: "Get NoCloud Services Providers",
+// DeleteCmd represents the delete command
+var DeleteCmd = &cobra.Command{
+	Use:   "delete [uuid] [[flags]]",
+	Short: "Delete NoCloud Services Providers",
 	Args: cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, client := MakeServicesProviderServiceClientOrFail()
-		request := pb.GetRequest{Uuid: args[0]}
-		res, err := client.Get(ctx, &request)
+		request := pb.DeleteRequest{Uuid: args[0]}
+		res, err := client.Delete(ctx, &request)
 
 		if err != nil {
 			return err
 		}
 
 		if printJson, _ := cmd.Flags().GetBool("json"); !printJson {
-			return PrintServicesProvider(res)
+			if !res.GetResult() {
+				fmt.Println("Can't delete ServicesProvider, some services are still UP and provisioned")
+				fmt.Println("Services:")
+				for _, uuid := range res.GetServices() {
+					fmt.Println("- ", uuid)
+				}
+				return nil
+			}
+			fmt.Println("Done.")
+			return nil
 		}
 		
 		data, err := json.Marshal(res)

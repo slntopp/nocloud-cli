@@ -28,6 +28,7 @@ var spCmd = &cobra.Command{
 
 func init() {
 	spCmd.AddCommand(sp.CreateCmd)
+	spCmd.AddCommand(sp.DeleteCmd)
 	spCmd.AddCommand(sp.TestCmd)
 	
 	spCmd.AddCommand(sp.GetCmd)
