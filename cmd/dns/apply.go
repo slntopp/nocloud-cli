@@ -29,7 +29,7 @@ import (
 
 // ApplyCmd represents the dump command
 var ApplyCmd = &cobra.Command{
-	Use:   "apply",
+	Use:   "apply [path]",
 	Short: "Apply Zone config",
 	Args: cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {

@@ -26,7 +26,7 @@ import (
 
 // DumpCmd represents the dump command
 var DumpCmd = &cobra.Command{
-	Use:   "dump",
+	Use:   "dump [zone]",
 	Short: "Dump Zone config",
 	Args: cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {

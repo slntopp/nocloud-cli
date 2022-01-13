@@ -20,7 +20,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// spCmd represents the sp command
+// dnsCmd represents the dns command
 var dnsCmd = &cobra.Command{
 	Use:   "dns",
 	Short: "Manage DNS Configuration",

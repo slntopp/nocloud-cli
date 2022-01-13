@@ -25,7 +25,7 @@ import (
 
 // DeleteCmd represents the dump command
 var DeleteCmd = &cobra.Command{
-	Use:   "delete",
+	Use:   "delete [zone]",
 	Short: "Delete Zone config",
 	Args: cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
