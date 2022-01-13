@@ -8,6 +8,7 @@ Official CLI for [NoCloud Platform](https://github.com/slntopp/nocloud)
 * [Installation](#installation)
 * [Update](#update)
 * [Notes](#notes)
+* [Example Configs](#example-configs)
 
 ## Usage
 
@@ -67,3 +68,32 @@ Simple repeat steps from [Installation](#installation)
 > CLI is based on [spf13/cobra](https://github.com/spf13/cobra) and supports auto-completion,
 > you can see register scripts by running `nocloud completion [your shell]`
 > To check how to register completions, add `-h` flag
+
+## Example Configs
+
+### Setting
+
+Use this config for `nocloud settings apply`
+
+```yaml
+key: setting-from-yaml
+value: not a json
+description: sample setting
+public: false
+```
+
+### DNS
+
+Use this config for `nocloud dns apply`
+
+```yaml
+name: cluster.nocloud.
+locations:
+  tunnel:
+    cname:
+    - host: tunnelserver
+      ttl: 360
+    txt:
+    - text: I'm a DNS record
+      ttl: 360
+```
