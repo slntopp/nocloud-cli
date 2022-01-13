@@ -47,11 +47,15 @@ var loginCmd = &cobra.Command{
 		}
 
 		client := regpb.NewAccountsServiceClient(conn)
-		res, err := client.Token(context.Background(), &pb.TokenRequest{
+		req := &pb.TokenRequest{
 			Auth: &pb.Credentials{
 				Type: "standard", Data: []string{args[1], args[2]},
 			},
-		})
+		}
+		if rootClaim, _ := cmd.Flags().GetBool("root-claim"); rootClaim {
+			req.RootClaim = true
+		}
+		res, err := client.Token(context.Background(), req)
 		if err != nil {
 			return err
 		}
@@ -71,6 +75,7 @@ var loginCmd = &cobra.Command{
 
 func init() {
 	loginCmd.Flags().Bool("print-token", false, "")
+	loginCmd.Flags().Bool("root-claim", true, "")
 	loginCmd.Flags().Bool("insecure", false, "Use WithInsecure instead of TLS")
 	
 	rootCmd.AddCommand(loginCmd)

@@ -6,7 +6,7 @@ require (
 	github.com/google/go-github/v41 v41.0.0
 	github.com/jedib0t/go-pretty/v6 v6.2.4
 	github.com/manifoldco/promptui v0.9.0
-	github.com/slntopp/nocloud v0.0.0-20220106171217-e1a4e657bfe7
+	github.com/slntopp/nocloud v0.0.0-20220113153822-c0d7bd4e9992
 	github.com/spf13/cobra v1.3.0
 	github.com/spf13/viper v1.10.1
 	github.com/walle/targz v0.0.0-20140417120357-57fe4206da5a
