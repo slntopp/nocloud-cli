@@ -44,7 +44,6 @@ var hashCmd = &cobra.Command{
 
 		if cert, err := cmd.Flags().GetString("cert"); err == nil && cert != "" {
 			r, err := ioutil.ReadFile(cert)
-			fmt.Println(r)
 			if err != nil {
 				return err
 			}
@@ -54,6 +53,7 @@ var hashCmd = &cobra.Command{
 				return err
 			}
 			data = cert.Raw
+			fmt.Println(data)
 		} else if str, err := cmd.Flags().GetString("string"); err == nil && str != "" {
 			data = []byte(str)
 		} else {
