@@ -37,6 +37,7 @@ func convert(i interface{}) interface{} {
     return i
 }
 
+// Convert YAML to JSON
 func ConvertBytes(in []byte) (out []byte, err error) {
 	var middle interface{}
 	err = yaml.Unmarshal(in, &middle)
