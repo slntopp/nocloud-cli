@@ -35,6 +35,12 @@ var ListCmd = &cobra.Command{
 			request.Namespace = &args[0]
 		}
 
+		a, _ := cmd.Flags().GetBool("show-deleted")
+		if a {
+			showDeletedValue := "true"
+			request.ShowDeleted = &showDeletedValue
+		}
+
 		d, _ := cmd.Flags().GetInt32("depth")
 		request.Depth = &d
 
@@ -59,5 +65,6 @@ var ListCmd = &cobra.Command{
 }
 
 func init() {
-	ListCmd.Flags().Int32P("depth", "d", 4, "Accounts Search(Traversal) depth")
+	ListCmd.Flags().BoolP("show-deleted", "a", false, "Show Deleted Services")
+	ListCmd.Flags().Int32P("depth", "d", 4, "Services Search(Traversal) depth")
 }
