@@ -26,7 +26,7 @@ var VERSION string
 // versionCmd represents the version command
 var versionCmd = &cobra.Command{
 	Use:   "version",
-	Short: "Print NoCloud CLI Vesrion",
+	Short: "Print NoCloud CLI Version",
 	Run: func(cmd *cobra.Command, args []string) {
 		if VERSION == "" {
 			fmt.Println("development")
