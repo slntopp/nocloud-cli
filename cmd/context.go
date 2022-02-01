@@ -28,7 +28,7 @@ import (
 var contextCmd = &cobra.Command{
 	Use:   "context",
 	Aliases: []string{"ctx"},
-	Short: "Print current NoCloud CLI Context",
+	Short: "Print current NoCloud CLI Context | Aliases: ctx",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		data := make(map[string]interface{})
 		data["host"] = viper.Get("nocloud")

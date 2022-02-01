@@ -28,7 +28,8 @@ import (
 // accountCmd represents the account command
 var accountCmd = &cobra.Command{
 	Use:   "account",
-	Short: "Manage accounts, prints info about current by default",
+	Aliases: []string{"acc", "accounts"},
+	Short: "Manage accounts, prints info about current by default | Aliases: acc, accounts",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, client := account.MakeAccountsServiceClientOrFail()
 

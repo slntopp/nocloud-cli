@@ -23,7 +23,8 @@ import (
 // namespaceCmd represents the namespace command
 var namespaceCmd = &cobra.Command{
 	Use:   "namespace",
-	Short: "Manage Namespaces. Doesn't do anything by default",
+	Aliases: []string{"ns", "namespaces"},
+	Short: "Manage Namespaces. Doesn't do anything by default | Aliases: ns, namespaces",
 	Run: func(cmd *cobra.Command, args []string) {
 		cmd.Help()
 	},

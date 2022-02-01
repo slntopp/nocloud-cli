@@ -22,8 +22,9 @@ import (
 
 // servicesCmd represents the services command
 var servicesCmd = &cobra.Command{
-	Use:   "services",
-	Short: "Manage NoCloud Services",
+	Use:   "service",
+	Aliases: []string{"srv", "services"},
+	Short: "Manage NoCloud Services | Aliases: srv, services",
 }
 
 func init() {

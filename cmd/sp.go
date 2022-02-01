@@ -23,6 +23,7 @@ import (
 // spCmd represents the sp command
 var spCmd = &cobra.Command{
 	Use:   "sp",
+	Aliases: []string{"services-provider", "services-providers"},
 	Short: "Manage Services Providers | Doesn't do anything by default",
 }
 
