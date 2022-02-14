@@ -100,3 +100,15 @@ func PrintServicesPool(pool []*pb.Service) {
 	t.AppendFooter(table.Row{"", "Total Found", len(pool)})
     t.Render()
 }
+
+func PrintServiceActionResponse(res *pb.PerformActionResponse) error {
+	fmt.Println("Result:", res.Result)
+	if len(res.GetMeta()) == 0 {
+		return nil
+	}
+	fmt.Println("Meta:")
+	for k, v := range res.GetMeta() {
+		fmt.Printf("\t%s:\t%s", k, v.String())
+	}
+	return nil
+}
