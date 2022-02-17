@@ -21,6 +21,7 @@ import (
 
 	pb "github.com/slntopp/nocloud/pkg/services/proto"
 	"github.com/spf13/cobra"
+	"google.golang.org/protobuf/types/known/structpb"
 )
 
 // GetCmd represents the list command
@@ -42,10 +43,16 @@ var InvokeCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		err = json.Unmarshal([]byte(data), &request.Data)
+		var dataMap map[string]interface{}
+		err = json.Unmarshal([]byte(data), &dataMap)
 		if err != nil {
 			return err
 		}
+		dataStruct, err := structpb.NewStruct(dataMap)
+		if err != nil {
+			return err
+		}
+		request.Data = dataStruct.GetFields()
 
 		res, err := client.PerformServiceAction(ctx, &request)
 
