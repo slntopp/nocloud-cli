@@ -115,6 +115,9 @@ var CliCmd = &cobra.Command{
 
 		debug, _ := cmd.Flags().GetBool("debug")
 
+		if debug {
+			fmt.Println("mv", "./" + asset_base + "/nocloud", path + "/nocloud")
+		}
 		output, err := exec.Command("mv", "./" + asset_base + "/nocloud", path + "/nocloud").Output()
 		
 		if !debug {
