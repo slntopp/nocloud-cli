@@ -91,7 +91,7 @@ var CliCmd = &cobra.Command{
 				goto asset_found
 			}
 		}
-		return errors.New("Required asset not found")
+		return errors.New("required asset not found")
 		
 		asset_found:
 		fmt.Println("Downloading: ", asset_url)
