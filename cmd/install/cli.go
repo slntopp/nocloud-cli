@@ -115,7 +115,7 @@ var CliCmd = &cobra.Command{
 
 		debug, _ := cmd.Flags().GetBool("debug")
 
-		err = os.Rename(asset_base + "/nocloud", path + "/nocloud")
+		err = os.Rename("./" + asset_base + "/nocloud", path + "/nocloud")
 		
 		if !debug {
 			os.RemoveAll(asset_base)
