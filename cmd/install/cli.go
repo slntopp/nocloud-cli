@@ -104,7 +104,7 @@ var CliCmd = &cobra.Command{
 		targz.Extract(asset_name, asset_base)
 
 		var path string
-		pathB, err := exec.Command("which", "noclouds").Output()
+		pathB, err := exec.Command("which", "nocloud").Output()
 		if err == nil {
 			path = string(pathB)
 			fmt.Println("Found nocloud executable at '" + path + "'. Replacing.")
