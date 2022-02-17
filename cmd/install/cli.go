@@ -118,8 +118,9 @@ var CliCmd = &cobra.Command{
 		if debug {
 			fmt.Println("mv", "./" + asset_base + "/nocloud", path + "/nocloud")
 		}
-		output, err := exec.Command("mv", "./" + asset_base + "/nocloud", path + "/nocloud").Output()
-		
+
+		err = os.Rename("./" + asset_base + "/nocloud", path + "/nocloud")
+
 		if !debug {
 			os.RemoveAll(asset_base)
 			os.Remove(asset_base + ".tar.gz")
@@ -128,9 +129,6 @@ var CliCmd = &cobra.Command{
 		os.Chmod(path + "/nocloud", os.FileMode(0755))
 
 		fmt.Println("Installation Finished")
-		if output != nil {
-			fmt.Println(string(output))
-		}
 		return err
 	},
 }
