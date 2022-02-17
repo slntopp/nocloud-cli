@@ -113,11 +113,15 @@ var CliCmd = &cobra.Command{
 			path = "/usr/local/bin"
 		}
 
+		debug, _ := cmd.Flags().GetBool("debug")
+
 		err = os.Rename(asset_base + "/nocloud", path + "/nocloud")
 		
-		os.RemoveAll(asset_base)
-		os.Remove(asset_base + ".tar.gz")
-
+		if !debug {
+			os.RemoveAll(asset_base)
+			os.Remove(asset_base + ".tar.gz")
+		}
+			
 		os.Chmod(path + "/nocloud", os.FileMode(0755))
 
 		fmt.Println("Installation Finished")
@@ -125,3 +129,6 @@ var CliCmd = &cobra.Command{
 	},
 }
 
+func init() {
+	CliCmd.Flags().Bool("debug", false, "Keeps assets and tarball after unpacking and moving")
+}
