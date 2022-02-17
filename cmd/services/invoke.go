@@ -29,7 +29,7 @@ var InvokeCmd = &cobra.Command{
 	Aliases: []string{"call", "perform"},
 	Short: "Invokes NoCloud Service Group Instance Action",
 	Long: `Invokes Instance method, requires fuul UUIDs path, so args are: <service uuid> <group uuid> <instance uuid> <action key> --meta <json data>`,
-	Args: cobra.ExactArgs(1),
+	Args: cobra.ExactArgs(4),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, client := MakeServicesServiceClientOrFail()
 		request := pb.PerformActionRequest{
