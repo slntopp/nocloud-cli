@@ -38,7 +38,7 @@ var InvokeCmd = &cobra.Command{
 			Instance: args[2],
 			Action: args[3],
 		}
-		data, err := cmd.Flags().GetString("meta")
+		data, err := cmd.Flags().GetString("data")
 		if err != nil {
 			return err
 		}
