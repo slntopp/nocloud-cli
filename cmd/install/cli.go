@@ -115,7 +115,7 @@ var CliCmd = &cobra.Command{
 
 		debug, _ := cmd.Flags().GetBool("debug")
 
-		err = os.Rename("./" + asset_base + "/nocloud", path + "/nocloud")
+		output, err := exec.Command("mv", "./" + asset_base + "/nocloud", path + "/nocloud").Output()
 		
 		if !debug {
 			os.RemoveAll(asset_base)
@@ -125,6 +125,9 @@ var CliCmd = &cobra.Command{
 		os.Chmod(path + "/nocloud", os.FileMode(0755))
 
 		fmt.Println("Installation Finished")
+		if output != nil {
+			fmt.Println(string(output))
+		}
 		return err
 	},
 }
