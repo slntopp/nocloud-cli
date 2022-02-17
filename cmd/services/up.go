@@ -68,6 +68,7 @@ func SelectDeployPoliciesInteractive(ctx context.Context, cmd *cobra.Command, cl
 // createCmd represents the create command
 var UpCmd = &cobra.Command{
 	Use:   "up [service_id] [flags]",
+	Aliases: []string{"u"},
 	Short: "NoCloud Service Up",
 	Args: cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) (err error) {

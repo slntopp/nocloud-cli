@@ -26,6 +26,7 @@ import (
 // ListCmd represents the list command
 var ListCmd = &cobra.Command{
 	Use:   "list [[NAMESPACE]] [[flags]]",
+	Aliases: []string{"l"},
 	Short: "List NoCloud Services",
 	Long: `Add namespace UUID after list command, to filter services by namespace`,
 	RunE: func(cmd *cobra.Command, args []string) error {

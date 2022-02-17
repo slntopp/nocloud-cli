@@ -23,6 +23,7 @@ import (
 // GetCmd represents the list command
 var DownCmd = &cobra.Command{
 	Use:   "down [uuid] [[flags]]",
+	Aliases: []string{"d"},
 	Short: "NoCloud Service Down",
 	Args: cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {

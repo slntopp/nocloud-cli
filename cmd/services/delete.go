@@ -26,6 +26,7 @@ import (
 // DeleteCmd represents the delete command
 var DeleteCmd = &cobra.Command{
 	Use:   "delete [UUID]",
+	Aliases: []string{"del", "rm", "r"},
 	Short: "Delete NoCloud Service",
 	Args: cobra.MinimumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
