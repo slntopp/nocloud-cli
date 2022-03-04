@@ -45,6 +45,8 @@ var ProbeCmd = &cobra.Command{
 			res, err = client.Probe(ctx, &pb.ProbeRequest{ProbeType: "ping"})
 		case "services":
 			return CheckServices(cmd, ctx, client)
+		case "routines":
+			return CheckRoutines(cmd, ctx, client)
 		default:
 			err = errors.New("Probe type " + args[0] + " not declared")
 		}
@@ -81,6 +83,37 @@ func CheckServices(cmd *cobra.Command, ctx context.Context, client pb.HealthServ
 
 	for _, service := range res.GetServing() {
 		t.AppendRow(table.Row{service.GetService(), service.GetStatus().String(), service.GetError()})
+	}
+
+    t.Render()
+
+	return nil
+}
+
+func CheckRoutines(cmd *cobra.Command, ctx context.Context, client pb.HealthServiceClient) error {
+
+	res, err := client.Probe(ctx, &pb.ProbeRequest{ProbeType: "routines"})
+	if err != nil {
+		return err
+	}
+
+	if printJson, _ := cmd.Flags().GetBool("json"); printJson {
+		data, err := json.Marshal(res)
+		if err != nil {
+			return err
+		}
+		fmt.Println(string(data))
+		return nil
+	}
+
+	fmt.Println("Probe Result: ", res.GetStatus().String())
+	
+	t := table.NewWriter()
+	t.SetOutputMirror(os.Stdout)
+	t.AppendHeader(table.Row{"Service", "Routine", "Status", "Error"})
+
+	for _, service := range res.GetRoutines() {
+		t.AppendRow(table.Row{service.GetStatus().GetService(), service.GetRoutine(), service.GetStatus().GetStatus().String(), service.GetStatus().GetError()})
 	}
 
     t.Render()
