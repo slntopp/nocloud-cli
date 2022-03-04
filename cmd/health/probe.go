@@ -16,10 +16,14 @@ limitations under the License.
 package health
 
 import (
+	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
+	"os"
 
-	pb "github.com/slntopp/nocloud/pkg/health/healthpb"
+	"github.com/jedib0t/go-pretty/v6/table"
+	pb "github.com/slntopp/nocloud/pkg/health/proto"
 	"github.com/spf13/cobra"
 )
 
@@ -27,6 +31,10 @@ import (
 var ProbeCmd = &cobra.Command{
 	Use:   "probe [probe_type]",
 	Short: "Do health probe",
+	Long: `Available probe types:
+	* ping — Make PING probe. NoCloud should return PONG
+	* services - Check if NoCloud microservices are up, resolvable and responding
+	`,
 	Args: cobra.MinimumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, client := MakeHealthServiceClientOrFail()
@@ -35,6 +43,8 @@ var ProbeCmd = &cobra.Command{
 		switch args[0] {
 		case "ping":
 			res, err = client.Probe(ctx, &pb.ProbeRequest{ProbeType: "ping"})
+		case "services":
+			return CheckServices(cmd, ctx, client)
 		default:
 			err = errors.New("Probe type " + args[0] + " not declared")
 		}
@@ -45,6 +55,37 @@ var ProbeCmd = &cobra.Command{
 		fmt.Println("Probe Result:", res.Response)
 		return nil
 	},
+}
+
+func CheckServices(cmd *cobra.Command, ctx context.Context, client pb.HealthServiceClient) error {
+
+	res, err := client.Probe(ctx, &pb.ProbeRequest{ProbeType: "services"})
+	if err != nil {
+		return err
+	}
+
+	if printJson, _ := cmd.Flags().GetBool("json"); printJson {
+		data, err := json.Marshal(res)
+		if err != nil {
+			return err
+		}
+		fmt.Println(string(data))
+		return nil
+	}
+
+	fmt.Println("Probe Result: ", res.GetStatus().String())
+	
+	t := table.NewWriter()
+	t.SetOutputMirror(os.Stdout)
+	t.AppendHeader(table.Row{"Service", "Status", "Error"})
+
+	for _, service := range res.GetServing() {
+		t.AppendRow(table.Row{service.GetService(), service.GetStatus().String(), service.GetError()})
+	}
+
+    t.Render()
+
+	return nil
 }
 
 func init() {

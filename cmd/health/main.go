@@ -21,7 +21,7 @@ import (
 	"fmt"
 	"os"
 
-	pb "github.com/slntopp/nocloud/pkg/health/healthpb"
+	pb "github.com/slntopp/nocloud/pkg/health/proto"
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
