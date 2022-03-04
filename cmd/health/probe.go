@@ -110,10 +110,10 @@ func CheckRoutines(cmd *cobra.Command, ctx context.Context, client pb.HealthServ
 	
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
-	t.AppendHeader(table.Row{"Service", "Routine", "Status", "Error"})
+	t.AppendHeader(table.Row{"Service", "Routine", "Status", "Error", "Last Executed"})
 
 	for _, service := range res.GetRoutines() {
-		t.AppendRow(table.Row{service.GetStatus().GetService(), service.GetRoutine(), service.GetStatus().GetStatus().String(), service.GetStatus().GetError()})
+		t.AppendRow(table.Row{service.GetStatus().GetService(), service.GetRoutine(), service.GetStatus().GetStatus().String(), service.GetStatus().GetError(), service.GetLastExecution()})
 	}
 
     t.Render()
