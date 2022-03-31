@@ -22,16 +22,16 @@ import (
 
 // spCmd represents the sp command
 var spCmd = &cobra.Command{
-	Use:   "sp",
+	Use:     "sp",
 	Aliases: []string{"services-provider", "services-providers"},
-	Short: "Manage Services Providers | Doesn't do anything by default",
+	Short:   "Manage Services Providers | Doesn't do anything by default",
 }
 
 func init() {
 	spCmd.AddCommand(sp.CreateCmd)
 	spCmd.AddCommand(sp.DeleteCmd)
 	spCmd.AddCommand(sp.TestCmd)
-	
+	spCmd.AddCommand(sp.UpdateCmd)
 	spCmd.AddCommand(sp.GetCmd)
 	spCmd.AddCommand(sp.ListCmd)
 
