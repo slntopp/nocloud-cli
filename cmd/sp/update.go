@@ -67,7 +67,16 @@ var UpdateCmd = &cobra.Command{
 		}
 
 		ctx, client := MakeServicesProviderServiceClientOrFail()
-		res, err := client.Update(ctx, &request)
+		res, err := client.Get(ctx, &pb.GetRequest{Uuid: request.GetUuid()})
+		if err != nil {
+			return err
+		}
+		if res.GetUuid() == "" {
+			errMsg := fmt.Sprintf("Service Provider with given Uuid %v is not found", request.GetUuid())
+			return errors.New(errMsg)
+		}
+
+		res, err = client.Update(ctx, &request)
 		if err != nil {
 			return err
 		}
