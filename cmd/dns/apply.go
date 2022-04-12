@@ -22,7 +22,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/slntopp/nocloud-cli/pkg/convert"
+	"github.com/ghodss/yaml"
 	pb "github.com/slntopp/nocloud/pkg/dns/proto"
 	"github.com/spf13/cobra"
 )
@@ -42,7 +42,7 @@ var ApplyCmd = &cobra.Command{
 		switch format {
 		case "json":
 		case "yml", "yaml":
-			template, err = convert.ConvertBytes(template)
+			template, err = yaml.YAMLToJSON(template)
 		default:
 			return errors.New("Unsupported template format " + format)
 		}
