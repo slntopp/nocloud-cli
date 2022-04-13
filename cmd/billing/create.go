@@ -22,7 +22,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/ghodss/yaml"
+	"sigs.k8s.io/yaml"
 	"github.com/spf13/cobra"
 
 	pb "github.com/slntopp/nocloud/pkg/billing/proto"
