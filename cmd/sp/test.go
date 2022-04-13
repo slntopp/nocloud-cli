@@ -24,7 +24,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/ghodss/yaml"
+	"sigs.k8s.io/yaml"
 	pb "github.com/slntopp/nocloud/pkg/services_providers/proto"
 )
 
