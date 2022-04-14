@@ -9,7 +9,7 @@ builds:
       - CGO_ENABLED=0
     binary: nocloud
     ldflags:
-      - -s -w -X main.build={{.Version}}
+      - -s -w -X github.com/slntopp/nocloud-cli/cmd.VERSION={{.Version}}
     tags:
       - nocloud
       - cli
