@@ -66,16 +66,23 @@ func PrintAccount(acc *pb.Account) {
 
 	fmt.Println("UUID:", acc.GetUuid())
 	fmt.Println("Title:", acc.GetTitle())
+	if acc.Balance != nil {
+		fmt.Printf("Balance: %.2f NCU\n", acc.GetBalance())
+	}
 }
 
 func PrintAccountsPool(pool []*pb.Account) {
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
-	t.AppendHeader(table.Row{"UUID", "Title"})
+	t.AppendHeader(table.Row{"UUID", "Title", "Balance NCU"})
 	
 	rows := make([]table.Row, len(pool))
 	for i, acc := range pool {
-		rows[i] = table.Row{acc.Uuid, acc.Title}
+		balance := "-"
+		if acc.Balance != nil {
+			balance = fmt.Sprintf("%.2f", *acc.Balance)
+		}
+		rows[i] = table.Row{acc.Uuid, acc.Title, balance}
 	}
 	t.AppendRows(rows)
 
