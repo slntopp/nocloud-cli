@@ -51,3 +51,17 @@ changelog:
 release:
   mode: keep-existing
   draft: true
+  github:
+    owner: slntopp
+    name: nocloud-cli
+
+brews:
+  -
+    name: nocloud
+    homepage: "https://github.com/slntopp/nocloud"
+    tap:
+      owner: slntopp
+      name: homebrew-nocloud
+    commit_author:
+      name: slntopp
+      email: info@slnt-opp.xyz
