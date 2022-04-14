@@ -32,7 +32,7 @@ You must authorize first, to use other commands, see `nocloud help login`.
 
 ### Building from Source
 
-> You must have golang (version `1.17`) environment set
+> You must have golang (version `1.18`) environment set
 
 1. Clone this repo
 2. Run `go build -o nocloud`

@@ -1,13 +1,13 @@
 module github.com/slntopp/nocloud-cli
 
-go 1.17
+go 1.18
 
 require (
 	github.com/ghodss/yaml v1.0.0
 	github.com/google/go-github/v41 v41.0.0
 	github.com/jedib0t/go-pretty/v6 v6.2.4
 	github.com/manifoldco/promptui v0.9.0
-	github.com/slntopp/nocloud v0.0.14-r9
+	github.com/slntopp/nocloud v0.0.14-r12
 	github.com/spf13/cobra v1.3.0
 	github.com/spf13/viper v1.10.1
 	github.com/walle/targz v0.0.0-20140417120357-57fe4206da5a
