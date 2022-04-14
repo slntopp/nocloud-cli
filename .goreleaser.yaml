@@ -27,6 +27,16 @@ archives:
       windows: Windows
       386: i386
       amd64: x86_64
+    name_template: "nocloud_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    builds:
+      - default
+    format_overrides:
+      - goos: windows
+        format: zip
+    files:
+      - LICENSE
+      - README
+      - examples
 checksum:
   name_template: 'checksums.txt'
 snapshot:
