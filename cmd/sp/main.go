@@ -27,7 +27,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/metadata"
-	"gopkg.in/yaml.v2"
+	"sigs.k8s.io/yaml"
 )
 
 func MakeServicesProviderServiceClientOrFail() (context.Context, pb.ServicesProvidersServiceClient){
@@ -63,6 +63,18 @@ func MakeServicesProviderServiceClientOrFail() (context.Context, pb.ServicesProv
 
 func PrintServicesProvider(s *pb.ServicesProvider) error {
 	out, err := yaml.Marshal(s)
+	if err != nil {
+		return err
+	}
+	fmt.Println(string(out))
+	return nil
+
+	j, err := yaml.YAMLToJSON(out)
+	if err != nil {
+		return err
+	}
+
+	out, err = yaml.Marshal(j)
 	if err != nil {
 		return err
 	}

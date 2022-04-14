@@ -23,7 +23,7 @@ import (
 
 	"github.com/jedib0t/go-pretty/v6/table"
 	pb "github.com/slntopp/nocloud/pkg/services/proto"
-	"gopkg.in/yaml.v2"
+	"sigs.k8s.io/yaml"
 
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"
@@ -79,6 +79,18 @@ func PrintTestErrors(pool []*pb.TestConfigError) {
 
 func PrintService(s *pb.Service) error {
 	out, err := yaml.Marshal(s)
+	if err != nil {
+		return err
+	}
+	fmt.Println(string(out))
+	return nil
+
+	j, err := yaml.YAMLToJSON(out)
+	if err != nil {
+		return err
+	}
+
+	out, err = yaml.Marshal(j)
 	if err != nil {
 		return err
 	}
