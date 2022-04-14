@@ -18,10 +18,14 @@ package billing
 import (
 	"context"
 	"crypto/tls"
+	"encoding/json"
 	"fmt"
 	"os"
+	"sort"
 	"strings"
+	"time"
 
+	"github.com/jedib0t/go-pretty/v6/table"
 	pb "github.com/slntopp/nocloud/pkg/billing/proto"
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"
@@ -77,5 +81,59 @@ func PrintPlan(p *pb.Plan) {
 			fmt.Print("not ")
 		}
 		fmt.Println(strings.Join(on, ", "))
+	}
+}
+
+func PrintTransactions(pool []*pb.Transaction, meta bool) {
+	t := table.NewWriter()
+	t.SetOutputMirror(os.Stdout)
+	if meta {
+		t.AppendHeader(table.Row{"UUID", "Account", "Service", "Timestamp", "Total NCU", "Meta"})
+	} else {
+		t.AppendHeader(table.Row{"UUID", "Account", "Service", "Timestamp", "Total NCU"})
+	}
+
+	rowFunc := MakeTrRow
+	if meta {
+		rowFunc = MakeTrRowWithMeta
+	}
+
+	sort.Slice(pool, func(i, j int) bool {
+		return (pool[i].Exec - pool[j].Exec) < 0
+	})
+	for _, tr := range pool {
+		t.AppendRow(rowFunc(tr))
+	}
+
+	t.Render()
+}
+
+func MakeTrRow(t *pb.Transaction) table.Row {
+	ts := t.Exec
+	if t.Processed {
+		ts = t.Proc
+	}
+	return table.Row{
+		t.Uuid,
+		t.Account,
+		t.Service,
+		time.Unix(int64(ts), 0).Format("2006-01-02 15:04:05"),
+		t.Total,
+	}
+}
+
+func MakeTrRowWithMeta(t *pb.Transaction) table.Row {
+	ts := t.Exec
+	if t.Processed {
+		ts = t.Proc
+	}
+	meta, _ := json.Marshal(t.Meta)
+	return table.Row{
+		t.Uuid,
+		t.Account,
+		t.Service,
+		ts,
+		t.Total,
+		string(meta),
 	}
 }

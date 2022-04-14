@@ -33,6 +33,8 @@ func init() {
 	billingCmd.AddCommand(billing.ListCmd)
 	billingCmd.AddCommand(billing.DeleteCmd)
 
+	billingCmd.AddCommand(billing.TransactionsCmd)
+
 	rootCmd.AddCommand(billingCmd)
 }
 
