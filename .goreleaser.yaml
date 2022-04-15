@@ -98,9 +98,6 @@ nfpms:
     # Setting metadata might interfere with version comparisons depending on the packager.
     version_metadata: git
 
-    # Version Release.
-    release: 1
-
     # Section.
     section: default
 
