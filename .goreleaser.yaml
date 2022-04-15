@@ -69,3 +69,40 @@ brews:
     commit_author:
       name: slntopp
       email: info@slnt-opp.xyz
+
+nfpms:
+  - package_name: nocloud
+    homepage: https://github.com/slntopp/nocloud
+    maintainer: slntopp info@slnt-opp.xyz
+    description: NoCloud Platform CLI
+    license: Apache 2.0
+    file_name_template: "{{ .ConventionalFileName }}"
+    builds:
+      - default
+    replacements:
+      amd64: 64-bit
+      386: 32-bit
+      darwin: macOS
+      linux: Tux
+
+    formats:
+      - deb
+      - rpm
+
+    dependencies:
+      - git
+
+
+    # Version Metadata (previously deb.metadata).
+    # Default is extracted from `version` if it is semver compatible.
+    # Setting metadata might interfere with version comparisons depending on the packager.
+    version_metadata: git
+
+    # Version Release.
+    release: 1
+
+    # Section.
+    section: default
+
+    # Priority.
+    priority: extra
