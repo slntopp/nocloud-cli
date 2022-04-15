@@ -106,10 +106,3 @@ nfpms:
 
     # Priority.
     priority: extra
-
-furies:
-  - account: slntopp
-    secret_name: FURYIO_TOKEN
-    formats:
-     - deb
-     - rpm
