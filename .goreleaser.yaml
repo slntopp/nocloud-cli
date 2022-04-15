@@ -60,6 +60,9 @@ brews:
   -
     name: nocloud
     homepage: "https://github.com/slntopp/nocloud"
+    license: "Apache-2.0"
+    description: "NoCloud Platform CLI"
+    caveats: "Start with nocloud help login ;)"
     tap:
       owner: slntopp
       name: homebrew-nocloud
