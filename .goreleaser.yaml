@@ -51,7 +51,6 @@ changelog:
 
 release:
   mode: keep-existing
-  draft: true
   github:
     owner: slntopp
     name: nocloud-cli
