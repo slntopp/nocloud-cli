@@ -93,13 +93,29 @@ nfpms:
       - git
 
 
-    # Version Metadata (previously deb.metadata).
-    # Default is extracted from `version` if it is semver compatible.
-    # Setting metadata might interfere with version comparisons depending on the packager.
     version_metadata: git
-
-    # Section.
     section: default
-
-    # Priority.
     priority: extra
+
+aurs:
+  -
+    name: nocloud-bin
+
+    homepage: "https://github.com/slntopp/nocloud"
+    description: "NoCloud Platform CLI"
+
+    maintainers:
+      - 'Mikita Iwanowski <info@slnt-opp.xyz>'
+
+    contributors:
+      - 'Mikita Iwanowski <info@slnt-opp.xyz>'
+
+    license: "Apache-2.0"
+
+    private_key: '{{ .Env.AUR_KEY }}'
+
+    git_url: 'ssh://aur@aur.archlinux.org/nocloud-bin.git'
+
+    commit_author:
+      name: slntopp
+      email: info@slnt-opp.xyz
