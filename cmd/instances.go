@@ -16,27 +16,19 @@ limitations under the License.
 package cmd
 
 import (
-	"github.com/slntopp/nocloud-cli/cmd/services"
+	"github.com/slntopp/nocloud-cli/cmd/instances"
 	"github.com/spf13/cobra"
 )
 
-// servicesCmd represents the services command
-var servicesCmd = &cobra.Command{
-	Use:   "service",
-	Aliases: []string{"srv", "services"},
-	Short: "Manage NoCloud Services | Aliases: srv, services",
+// instancesCmd represents the instances command
+var instancesCmd = &cobra.Command{
+	Use:   "instance",
+	Aliases: []string{"i", "inst", "instances"},
+	Short: "Manage NoCloud Instances",
 }
 
 func init() {
-	servicesCmd.AddCommand(services.TestCmd)
-	servicesCmd.AddCommand(services.CreateCmd)
-	
-	servicesCmd.AddCommand(services.UpCmd)
-	servicesCmd.AddCommand(services.DownCmd)
+	instancesCmd.AddCommand(instances.InvokeCmd)
 
-	servicesCmd.AddCommand(services.GetCmd)
-	servicesCmd.AddCommand(services.ListCmd)
-	servicesCmd.AddCommand(services.DeleteCmd)
-	
-	rootCmd.AddCommand(servicesCmd)
+	rootCmd.AddCommand(instancesCmd)
 }

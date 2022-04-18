@@ -13,31 +13,28 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package services
+package instances
 
 import (
 	"encoding/json"
 	"fmt"
 
-	pb "github.com/slntopp/nocloud/pkg/services/proto"
+	pb "github.com/slntopp/nocloud/pkg/instances/proto"
 	"github.com/spf13/cobra"
 	"google.golang.org/protobuf/types/known/structpb"
 )
 
 // GetCmd represents the list command
 var InvokeCmd = &cobra.Command{
-	Use:   "invoke [uuid] [uuid] [uuid] [action] [[flags]]",
+	Use:   "invoke [uuid] [action] [[flags]]",
 	Aliases: []string{"call", "perform"},
-	Short: "Invokes NoCloud Service Group Instance Action",
-	Long: `Invokes Instance method, requires fuul UUIDs path, so args are: <service uuid> <group uuid> <instance uuid> <action key> --meta <json data>`,
-	Args: cobra.ExactArgs(4),
+	Short: "Invokes NoCloud Instance Action",
+	Args: cobra.ExactArgs(2),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		ctx, client := MakeServicesServiceClientOrFail()
-		request := pb.PerformActionRequest{
-			Service: args[0],
-			Group: args[1],
-			Instance: args[2],
-			Action: args[3],
+		ctx, client := MakeInstancesServiceClientOrFail()
+		request := pb.InvokeRequest{
+			Uuid: args[0],
+			Method: args[1],
 		}
 		data, err := cmd.Flags().GetString("data")
 		if err != nil {
@@ -52,16 +49,16 @@ var InvokeCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		request.Data = dataStruct.GetFields()
+		request.Params = dataStruct.GetFields()
 
-		res, err := client.PerformServiceAction(ctx, &request)
+		res, err := client.Invoke(ctx, &request)
 
 		if err != nil {
 			return err
 		}
 
 		if printJson, _ := cmd.Flags().GetBool("json"); !printJson {
-			return PrintServiceActionResponse(res)
+			return PrintInstanceInvokeResponse(res)
 		}
 		
 		meta, err := json.Marshal(res)

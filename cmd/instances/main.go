@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package services
+package instances
 
 import (
 	"context"
@@ -22,17 +22,16 @@ import (
 	"os"
 
 	"github.com/jedib0t/go-pretty/v6/table"
-	pb "github.com/slntopp/nocloud/pkg/services/proto"
+	pb "github.com/slntopp/nocloud/pkg/instances/proto"
 	"sigs.k8s.io/yaml"
 
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
-	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/metadata"
 )
 
-func MakeServicesServiceClientOrFail() (context.Context, pb.ServicesServiceClient){
+func MakeInstancesServiceClientOrFail() (context.Context, pb.InstancesServiceClient){
 	host := viper.Get("nocloud")
 	if host == nil {
 		fmt.Fprintln(os.Stderr, "Error setting connection up")
@@ -40,11 +39,12 @@ func MakeServicesServiceClientOrFail() (context.Context, pb.ServicesServiceClien
 	}
 
 	creds := credentials.NewTLS(&tls.Config{InsecureSkipVerify: true})
-	insec := viper.GetBool("insecure")
-	if insec {
-		creds = insecure.NewCredentials()
+	opt := grpc.WithTransportCredentials(creds)
+	insecure := viper.GetBool("insecure")
+	if insecure {
+		opt = grpc.WithInsecure()
 	}
-	conn, err := grpc.Dial(host.(string), grpc.WithTransportCredentials(creds))
+	conn, err := grpc.Dial(host.(string), opt)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "Error setting connection up")
 		panic(err)
@@ -56,28 +56,13 @@ func MakeServicesServiceClientOrFail() (context.Context, pb.ServicesServiceClien
 		panic("Token is unset")
 	}
 
-	client := pb.NewServicesServiceClient(conn)
+	client := pb.NewInstancesServiceClient(conn)
 	ctx := context.Background()
 	ctx = metadata.AppendToOutgoingContext(ctx, "authorization", "bearer " + token.(string))
 	return ctx, client
 }
 
-func PrintTestErrors(pool []*pb.TestConfigError) {
-	t := table.NewWriter()
-	t.SetOutputMirror(os.Stdout)
-	t.AppendHeader(table.Row{"Group", "Instance", "Error"})
-	
-	rows := make([]table.Row, len(pool))
-	for i, err := range pool {
-		rows[i] = table.Row{err.GetInstanceGroup(), err.GetInstance(), err.GetError()}
-	}
-	t.AppendRows(rows)
-
-	t.AppendFooter(table.Row{"", "Total Found", len(pool)})
-    t.Render()
-}
-
-func PrintService(s *pb.Service) error {
+func PrintInstance(s *pb.Instance) error {
 	out, err := yaml.Marshal(s)
 	if err != nil {
 		return err
@@ -96,7 +81,7 @@ func PrintService(s *pb.Service) error {
 	return nil
 }
 
-func PrintServicesPool(pool []*pb.Service) {
+func PrintInstancesPool(pool []*pb.Instance) {
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
 	t.AppendHeader(table.Row{"UUID", "Title", "Status"})
@@ -109,4 +94,16 @@ func PrintServicesPool(pool []*pb.Service) {
 
 	t.AppendFooter(table.Row{"", "Total Found", len(pool)})
     t.Render()
+}
+
+func PrintInstanceInvokeResponse(res *pb.InvokeResponse) error {
+	fmt.Println("Result:", res.Result)
+	if len(res.GetMeta()) == 0 {
+		return nil
+	}
+	fmt.Println("Meta:")
+	for k, v := range res.GetMeta() {
+		fmt.Printf("\t%s:\t%s", k, v.String())
+	}
+	return nil
 }
