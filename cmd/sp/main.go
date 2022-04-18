@@ -26,6 +26,7 @@ import (
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
+	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/metadata"
 	"sigs.k8s.io/yaml"
 )
@@ -38,12 +39,11 @@ func MakeServicesProviderServiceClientOrFail() (context.Context, pb.ServicesProv
 	}
 
 	creds := credentials.NewTLS(&tls.Config{InsecureSkipVerify: true})
-	opt := grpc.WithTransportCredentials(creds)
-	insecure := viper.GetBool("insecure")
-	if insecure {
-		opt = grpc.WithInsecure()
+	insec := viper.GetBool("insecure")
+	if insec {
+		creds = insecure.NewCredentials()
 	}
-	conn, err := grpc.Dial(host.(string), opt)
+	conn, err := grpc.Dial(host.(string), grpc.WithTransportCredentials(creds))
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "Error setting connection up")
 		panic(err)
