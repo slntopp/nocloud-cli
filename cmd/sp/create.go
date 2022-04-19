@@ -22,8 +22,8 @@ import (
 	"os"
 	"strings"
 
-	"sigs.k8s.io/yaml"
 	"github.com/spf13/cobra"
+	"sigs.k8s.io/yaml"
 
 	pb "github.com/slntopp/nocloud/pkg/services_providers/proto"
 )
@@ -58,8 +58,6 @@ var CreateCmd = &cobra.Command{
 			fmt.Println("Error while parsing template")
 			return err
 		}
-
-		fmt.Println("Template", string(template))
 
 		var request pb.ServicesProvider
 		err = json.Unmarshal(template, &request)
