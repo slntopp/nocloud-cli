@@ -50,9 +50,9 @@ func SelectDeployPoliciesInteractive(ctx context.Context, cmd *cobra.Command, cl
 	}
 
 	res = make(map[string]string)
-	for name, group := range service.GetInstancesGroups() {
+	for _, group := range service.GetInstancesGroups() {
 		p := promptui.Select{
-			Label: fmt.Sprintf("Select Service Provider for Instances Group %s (%s)", name, group.GetUuid()),
+			Label: fmt.Sprintf("Select Service Provider for Instances Group %s (%s)", group.Title, group.GetUuid()),
 			Items: providers[group.GetType()],
 		}
 		_, selected, err := p.Run()
