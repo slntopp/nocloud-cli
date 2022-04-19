@@ -40,16 +40,19 @@ var InvokeCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		var dataMap map[string]interface{}
-		err = json.Unmarshal([]byte(data), &dataMap)
-		if err != nil {
-			return err
+		
+		if data != "" {
+			var dataMap map[string]interface{}
+			err = json.Unmarshal([]byte(data), &dataMap)
+			if err != nil {
+				return err
+			}
+			dataStruct, err := structpb.NewStruct(dataMap)
+			if err != nil {
+				return err
+			}
+			request.Params = dataStruct.GetFields()
 		}
-		dataStruct, err := structpb.NewStruct(dataMap)
-		if err != nil {
-			return err
-		}
-		request.Params = dataStruct.GetFields()
 
 		res, err := client.Invoke(ctx, &request)
 
