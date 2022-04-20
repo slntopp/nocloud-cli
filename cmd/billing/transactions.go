@@ -38,7 +38,7 @@ var TransactionsCmd = &cobra.Command{
 var ListTransactionsCmd = &cobra.Command{
 	Use:   "list",
 	Aliases: []string{"l", "ls"},
-	Short: "List NoCloud Billing Plans",
+	Short: "List NoCloud Transactions",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, client := MakeBillingServiceClientOrFail()
 		request := pb.GetTransactionsRequest{}
