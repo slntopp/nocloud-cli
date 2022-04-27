@@ -118,3 +118,30 @@ aurs:
     commit_author:
       name: slntopp
       email: info@slnt-opp.xyz
+
+snapcrafts:
+  - builds:
+      - default
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    replacements:
+      amd64: 64-bit
+      386: 32-bit
+      darwin: macOS
+      linux: Tux
+
+    name: nocloud
+    publish: true
+    summary: NoCloud Platform CLI
+    channel_templates:
+      - edge
+      - stable
+    grade: stable
+    confinement: strict
+    license: Apache-2.0
+    base: core18
+    layout:
+      HOME:
+        bind: $SNAP_USER_DATA
+    apps:
+      nocloud:
+        completer: nocloud completion bash
