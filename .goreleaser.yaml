@@ -132,6 +132,7 @@ snapcrafts:
     name: nocloud
     publish: true
     summary: NoCloud Platform CLI
+    description: Univeral CLI made with Cobra to work with NoCloud platform - local and remote.
     channel_templates:
       - edge
       - stable
@@ -139,9 +140,9 @@ snapcrafts:
     confinement: strict
     license: Apache-2.0
     base: core18
-    layout:
-      HOME:
-        bind: $SNAP_USER_DATA
     apps:
       nocloud:
-        completer: nocloud completion bash
+        plugs:
+          - network
+          - home
+      
