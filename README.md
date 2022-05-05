@@ -6,7 +6,6 @@ Official CLI for [NoCloud Platform](https://github.com/slntopp/nocloud)
 
 * [Usage](#usage)
 * [Installation](#installation)
-* [Update](#update)
 * [Notes](#notes)
 * [Example Configs](#example-configs)
 
