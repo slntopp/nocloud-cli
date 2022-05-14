@@ -22,21 +22,22 @@ import (
 
 // servicesCmd represents the services command
 var servicesCmd = &cobra.Command{
-	Use:   "service",
+	Use:     "service",
 	Aliases: []string{"srv", "services"},
-	Short: "Manage NoCloud Services | Aliases: srv, services",
+	Short:   "Manage NoCloud Services | Aliases: srv, services",
 }
 
 func init() {
 	servicesCmd.AddCommand(services.TestCmd)
 	servicesCmd.AddCommand(services.CreateCmd)
-	
+	servicesCmd.AddCommand(services.UpdateCmd)
+
 	servicesCmd.AddCommand(services.UpCmd)
 	servicesCmd.AddCommand(services.DownCmd)
 
 	servicesCmd.AddCommand(services.GetCmd)
 	servicesCmd.AddCommand(services.ListCmd)
 	servicesCmd.AddCommand(services.DeleteCmd)
-	
+
 	rootCmd.AddCommand(servicesCmd)
 }
