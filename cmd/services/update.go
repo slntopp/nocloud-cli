@@ -35,6 +35,15 @@ var UpdateCmd = &cobra.Command{
 	Short:   "Update Service Config",
 	Args:    cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) (err error) {
+
+		namespace, err := cmd.Flags().GetString("namespace")
+		if err != nil {
+			return err
+		}
+		if namespace == "" {
+			return errors.New("Namespace UUID isn't given")
+		}
+
 		if _, err := os.Stat(args[0]); os.IsNotExist(err) {
 			return errors.New("Template doesn't exist at path " + args[0])
 		}
@@ -67,7 +76,7 @@ var UpdateCmd = &cobra.Command{
 		}
 
 		ctx, client := MakeServicesServiceClientOrFail()
-		request := pb.UpdateRequest{Service: &service}
+		request := pb.UpdateRequest{Service: &service, Namespace: namespace}
 		res, err := client.Update(ctx, &request)
 		if err != nil {
 			return err
@@ -81,4 +90,8 @@ var UpdateCmd = &cobra.Command{
 		fmt.Println("Result: ", string(output))
 		return nil
 	},
+}
+
+func init() {
+	UpdateCmd.Flags().StringP("namespace", "n", "", "Namespace UUID (required)")
 }
