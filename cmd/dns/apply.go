@@ -22,21 +22,22 @@ import (
 	"os"
 	"strings"
 
-	"sigs.k8s.io/yaml"
+	"github.com/slntopp/nocloud-cli/pkg/tools"
 	pb "github.com/slntopp/nocloud/pkg/dns/proto"
 	"github.com/spf13/cobra"
+	"sigs.k8s.io/yaml"
 )
 
 // ApplyCmd represents the dump command
 var ApplyCmd = &cobra.Command{
 	Use:   "apply [path]",
 	Short: "Apply Zone config",
-	Args: cobra.ExactArgs(1),
+	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		var format string
 		{
 			pathSlice := strings.Split(args[0], ".")
-			format = pathSlice[len(pathSlice) - 1]
+			format = pathSlice[len(pathSlice)-1]
 		}
 		template, err := os.ReadFile(args[0])
 		switch format {
@@ -64,13 +65,11 @@ var ApplyCmd = &cobra.Command{
 			return err
 		}
 
-		if printJson, _ := cmd.Flags().GetBool("json"); printJson {
-			data, err := json.Marshal(res)
-			if err != nil {
-				return err
-			}
-			fmt.Println(string(data))
-		} else {
+		ok, err := tools.PrintJsonDataQ(cmd, res)
+		if err != nil {
+			return err
+		}
+		if !ok {
 			fmt.Println("Keys added", res.GetResult())
 		}
 

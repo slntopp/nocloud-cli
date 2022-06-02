@@ -16,9 +16,9 @@ limitations under the License.
 package dns
 
 import (
-	"encoding/json"
 	"fmt"
 
+	"github.com/slntopp/nocloud-cli/pkg/tools"
 	pb "github.com/slntopp/nocloud/pkg/dns/proto"
 	"github.com/spf13/cobra"
 	"gopkg.in/yaml.v2"
@@ -28,10 +28,10 @@ import (
 var DumpCmd = &cobra.Command{
 	Use:   "dump [zone]",
 	Short: "Dump Zone config",
-	Args: cobra.ExactArgs(1),
+	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, client := MakeDNSClientOrFail()
-		
+
 		zone := args[0]
 		request := pb.Zone{Name: zone}
 		res, err := client.Get(ctx, &request)
@@ -39,13 +39,11 @@ var DumpCmd = &cobra.Command{
 			return err
 		}
 
-		if printJson, _ := cmd.Flags().GetBool("json"); printJson {
-			data, err := json.Marshal(res)
-			if err != nil {
-				return err
-			}
-			fmt.Println(string(data))
-		} else {
+		ok, err := tools.PrintJsonDataQ(cmd, res)
+		if err != nil {
+			return err
+		}
+		if !ok {
 			data, err := yaml.Marshal(res)
 			if err != nil {
 				return err
