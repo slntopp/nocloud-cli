@@ -17,12 +17,12 @@ package health
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"os"
 
 	"github.com/jedib0t/go-pretty/v6/table"
+	"github.com/slntopp/nocloud-cli/pkg/tools"
 	pb "github.com/slntopp/nocloud/pkg/health/proto"
 	"github.com/spf13/cobra"
 )
@@ -54,7 +54,14 @@ var ProbeCmd = &cobra.Command{
 			return err
 		}
 
-		fmt.Println("Probe Result:", res.Response)
+		ok, err := tools.PrintJsonDataQ(cmd, res)
+		if err != nil {
+			return err
+		}
+		if !ok {
+			fmt.Println("Probe Result:", res.Response)
+		}
+
 		return nil
 	},
 }
@@ -66,17 +73,16 @@ func CheckServices(cmd *cobra.Command, ctx context.Context, client pb.HealthServ
 		return err
 	}
 
-	if printJson, _ := cmd.Flags().GetBool("json"); printJson {
-		data, err := json.Marshal(res)
-		if err != nil {
-			return err
-		}
-		fmt.Println(string(data))
+	ok, err := tools.PrintJsonDataQ(cmd, res)
+	if err != nil {
+		return err
+	}
+	if ok {
 		return nil
 	}
 
 	fmt.Println("Probe Result: ", res.GetStatus().String())
-	
+
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
 	t.AppendHeader(table.Row{"Service", "Status", "Error"})
@@ -85,7 +91,7 @@ func CheckServices(cmd *cobra.Command, ctx context.Context, client pb.HealthServ
 		t.AppendRow(table.Row{service.GetService(), service.GetStatus().String(), service.GetError()})
 	}
 
-    t.Render()
+	t.Render()
 
 	return nil
 }
@@ -97,17 +103,16 @@ func CheckRoutines(cmd *cobra.Command, ctx context.Context, client pb.HealthServ
 		return err
 	}
 
-	if printJson, _ := cmd.Flags().GetBool("json"); printJson {
-		data, err := json.Marshal(res)
-		if err != nil {
-			return err
-		}
-		fmt.Println(string(data))
+	ok, err := tools.PrintJsonDataQ(cmd, res)
+	if err != nil {
+		return err
+	}
+	if ok {
 		return nil
 	}
 
 	fmt.Println("Probe Result: ", res.GetStatus().String())
-	
+
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
 	t.AppendHeader(table.Row{"Service", "Routine", "Status", "Error", "Last Executed"})
@@ -116,7 +121,7 @@ func CheckRoutines(cmd *cobra.Command, ctx context.Context, client pb.HealthServ
 		t.AppendRow(table.Row{service.GetStatus().GetService(), service.GetRoutine(), service.GetStatus().GetStatus().String(), service.GetStatus().GetError(), service.GetLastExecution()})
 	}
 
-    t.Render()
+	t.Render()
 
 	return nil
 }
