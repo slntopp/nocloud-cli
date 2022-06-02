@@ -20,6 +20,7 @@ import (
 	"crypto/tls"
 	"fmt"
 
+	tools "github.com/slntopp/nocloud-cli/pkg/tools"
 	regpb "github.com/slntopp/nocloud/pkg/registry/proto"
 	pb "github.com/slntopp/nocloud/pkg/registry/proto/accounts"
 	"github.com/spf13/cobra"
@@ -60,7 +61,7 @@ var loginCmd = &cobra.Command{
 			return err
 		}
 		token := res.GetToken()
-		ok, _ := PrintJsonDataQ(cmd, map[string]string{"token": token})
+		ok, _ := tools.PrintJsonDataQ(cmd, map[string]string{"token": token})
 		if !ok {
 			fmt.Println(token)
 		}

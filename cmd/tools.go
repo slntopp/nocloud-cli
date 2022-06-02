@@ -20,12 +20,12 @@ import (
 	"crypto/sha256"
 	"crypto/x509"
 	"encoding/hex"
-	"encoding/json"
 	"encoding/pem"
 	"errors"
 	"fmt"
 	"io/ioutil"
 
+	tools "github.com/slntopp/nocloud-cli/pkg/tools"
 	"github.com/spf13/cobra"
 )
 
@@ -74,7 +74,7 @@ var hashCmd = &cobra.Command{
 		}
 
 		result := hex.EncodeToString(resultB)
-		ok, _ := PrintJsonDataQ(cmd, map[string]string{
+		ok, _ := tools.PrintJsonDataQ(cmd, map[string]string{
 			"hash": string(result), "alg": alg,
 		})
 		if !ok {
@@ -84,18 +84,6 @@ var hashCmd = &cobra.Command{
 
 		return nil
 	},
-}
-
-func PrintJsonDataQ(cmd *cobra.Command, data interface{}) (ok bool, err error) {
-	if printJson, _ := cmd.Flags().GetBool("json"); !printJson {
-		return false, nil
-	}
-	b, err := json.Marshal(data)
-	if err != nil {
-		return false, err
-	}
-	fmt.Println(string(b))
-	return true, nil
 }
 
 func init() {
