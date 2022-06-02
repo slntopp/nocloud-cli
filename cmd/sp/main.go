@@ -31,7 +31,7 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
-func MakeServicesProviderServiceClientOrFail() (context.Context, pb.ServicesProvidersServiceClient){
+func MakeServicesProviderServiceClientOrFail() (context.Context, pb.ServicesProvidersServiceClient) {
 	host := viper.Get("nocloud")
 	if host == nil {
 		fmt.Fprintln(os.Stderr, "Error setting connection up")
@@ -57,24 +57,12 @@ func MakeServicesProviderServiceClientOrFail() (context.Context, pb.ServicesProv
 
 	client := pb.NewServicesProvidersServiceClient(conn)
 	ctx := context.Background()
-	ctx = metadata.AppendToOutgoingContext(ctx, "authorization", "bearer " + token.(string))
+	ctx = metadata.AppendToOutgoingContext(ctx, "authorization", "bearer "+token.(string))
 	return ctx, client
 }
 
 func PrintServicesProvider(s *pb.ServicesProvider) error {
 	out, err := yaml.Marshal(s)
-	if err != nil {
-		return err
-	}
-	fmt.Println(string(out))
-	return nil
-
-	j, err := yaml.YAMLToJSON(out)
-	if err != nil {
-		return err
-	}
-
-	out, err = yaml.Marshal(j)
 	if err != nil {
 		return err
 	}
@@ -94,5 +82,5 @@ func PrintServicesProvidersPool(pool []*pb.ServicesProvider) {
 	t.AppendRows(rows)
 
 	t.AppendFooter(table.Row{"", "Total Found", len(pool)})
-    t.Render()
+	t.Render()
 }
