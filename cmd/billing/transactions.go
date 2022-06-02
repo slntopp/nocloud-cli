@@ -23,22 +23,23 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/slntopp/nocloud-cli/pkg/tools"
 	pb "github.com/slntopp/nocloud/pkg/billing/proto"
 	"github.com/spf13/cobra"
 	"google.golang.org/protobuf/types/known/structpb"
 )
 
 var TransactionsCmd = &cobra.Command{
-	Use:   "transactions",
+	Use:     "transactions",
 	Aliases: []string{"t", "transaction", "tr", "trx"},
-	Short: "Manage transactions",
+	Short:   "Manage transactions",
 }
 
 // ListCmd represents the list command
 var ListTransactionsCmd = &cobra.Command{
-	Use:   "list",
+	Use:     "list",
 	Aliases: []string{"l", "ls"},
-	Short: "List NoCloud Transactions",
+	Short:   "List NoCloud Transactions",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, client := MakeBillingServiceClientOrFail()
 		request := pb.GetTransactionsRequest{}
@@ -59,13 +60,11 @@ var ListTransactionsCmd = &cobra.Command{
 			return err
 		}
 
-		if printJson, _ := cmd.Flags().GetBool("json"); printJson {
-			data, err := json.Marshal(res)
-			if err != nil {
-				return err
-			}
-			fmt.Println(string(data))
-		} else {
+		ok, err := tools.PrintJsonDataQ(cmd, res)
+		if err != nil {
+			return err
+		}
+		if !ok {
 			meta, _ := cmd.Flags().GetBool("meta")
 			PrintTransactions(res.GetPool(), meta)
 		}
@@ -75,9 +74,9 @@ var ListTransactionsCmd = &cobra.Command{
 }
 
 var CreateTransactionCmd = &cobra.Command{
-	Use:   "create",
+	Use:     "create",
 	Aliases: []string{"c", "new", "crt", "add"},
-	Short: "Create the new Transaction",
+	Short:   "Create the new Transaction",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		acc, _ := cmd.Flags().GetString("account")
 		if acc == "" {
@@ -126,10 +125,10 @@ var CreateTransactionCmd = &cobra.Command{
 
 		ctx, client := MakeBillingServiceClientOrFail()
 		r, err := client.CreateTransaction(ctx, &pb.Transaction{
-			Account: 	acc,
-			Total:   	total,
-			Meta:    	meta,
-			Exec: 		exec,
+			Account: acc,
+			Total:   total,
+			Meta:    meta,
+			Exec:    exec,
 		})
 		if err != nil {
 			return err
@@ -143,7 +142,7 @@ var CreateTransactionCmd = &cobra.Command{
 			fmt.Println(string(data))
 		} else {
 			meta, _ := cmd.Flags().GetBool("meta")
-			PrintTransactions([]*pb.Transaction{ r }, meta)
+			PrintTransactions([]*pb.Transaction{r}, meta)
 		}
 
 		return nil
@@ -151,11 +150,11 @@ var CreateTransactionCmd = &cobra.Command{
 }
 
 var ReprocessTransactionsCmd = &cobra.Command{
-	Use:   "reprocess",
+	Use:     "reprocess",
 	Aliases: []string{"r", "re", "rep", "repr", "repro"},
-	Short: "Reprocess transactions for Account",
-	Args: cobra.ExactArgs(1),
-	RunE: func (cmd *cobra.Command, args []string) error  {
+	Short:   "Reprocess transactions for Account",
+	Args:    cobra.ExactArgs(1),
+	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, client := MakeBillingServiceClientOrFail()
 		r, err := client.Reprocess(ctx, &pb.ReprocessTransactionsRequest{
 			Account: args[0],

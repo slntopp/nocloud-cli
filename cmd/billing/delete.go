@@ -16,19 +16,19 @@ limitations under the License.
 package billing
 
 import (
-	"encoding/json"
 	"fmt"
 
+	"github.com/slntopp/nocloud-cli/pkg/tools"
 	pb "github.com/slntopp/nocloud/pkg/billing/proto"
 	"github.com/spf13/cobra"
 )
 
 // DeleteCmd represents the delete command
 var DeleteCmd = &cobra.Command{
-	Use:   "delete [UUID]",
+	Use:     "delete [UUID]",
 	Aliases: []string{"del", "rm", "r"},
-	Short: "Delete NoCloud Billing Plan",
-	Args: cobra.MinimumNArgs(1),
+	Short:   "Delete NoCloud Billing Plan",
+	Args:    cobra.MinimumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, client := MakeBillingServiceClientOrFail()
 		res, err := client.DeletePlan(ctx, &pb.Plan{
@@ -38,13 +38,11 @@ var DeleteCmd = &cobra.Command{
 			return err
 		}
 
-		if printJson, _ := cmd.Flags().GetBool("json"); printJson {
-			data, err := json.Marshal(res)
-			if err != nil {
-				return err
-			}
-			fmt.Println(string(data))
-		} else {
+		ok, err := tools.PrintJsonDataQ(cmd, res)
+		if err != nil {
+			return err
+		}
+		if !ok {
 			fmt.Println("Success delete ", res.Uuid)
 		}
 
