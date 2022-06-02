@@ -16,18 +16,16 @@ limitations under the License.
 package namespace
 
 import (
-	"encoding/json"
-	"fmt"
-
+	"github.com/slntopp/nocloud-cli/pkg/tools"
 	namespacespb "github.com/slntopp/nocloud/pkg/registry/proto/namespaces"
 	"github.com/spf13/cobra"
 )
 
 // ListCmd represents the list command
 var ListCmd = &cobra.Command{
-	Use:   "list [[flags]]",
+	Use:     "list [[flags]]",
 	Aliases: []string{"l"},
-	Short: "List NoCloud Namespaces",
+	Short:   "List NoCloud Namespaces",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, client := MakeNamespacesServiceClientOrFail()
 		request := namespacespb.ListRequest{}
@@ -41,13 +39,11 @@ var ListCmd = &cobra.Command{
 			return err
 		}
 
-		if printJson, _ := cmd.Flags().GetBool("json"); printJson {
-			data, err := json.Marshal(res)
-			if err != nil {
-				return err
-			}
-			fmt.Println(string(data))
-		} else {
+		ok, err := tools.PrintJsonDataQ(cmd, res)
+		if err != nil {
+			return err
+		}
+		if !ok {
 			PrintNamespacesPool(res.Pool)
 		}
 

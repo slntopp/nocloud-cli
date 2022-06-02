@@ -16,19 +16,19 @@ limitations under the License.
 package namespace
 
 import (
-	"encoding/json"
 	"fmt"
 
+	"github.com/slntopp/nocloud-cli/pkg/tools"
 	namespacespb "github.com/slntopp/nocloud/pkg/registry/proto/namespaces"
 	"github.com/spf13/cobra"
 )
 
 // DeleteCmd represents the delete command
 var DeleteCmd = &cobra.Command{
-	Use:   "delete [UUID]",
+	Use:     "delete [UUID]",
 	Aliases: []string{"del", "d"},
-	Short: "Delete NoCloud Namespace",
-	Args: cobra.MinimumNArgs(1),
+	Short:   "Delete NoCloud Namespace",
+	Args:    cobra.MinimumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, client := MakeNamespacesServiceClientOrFail()
 		res, err := client.Delete(ctx, &namespacespb.DeleteRequest{
@@ -38,13 +38,11 @@ var DeleteCmd = &cobra.Command{
 			return err
 		}
 
-		if printJson, _ := cmd.Flags().GetBool("json"); printJson {
-			data, err := json.Marshal(res)
-			if err != nil {
-				return err
-			}
-			fmt.Println(string(data))
-		} else {
+		ok, err := tools.PrintJsonDataQ(cmd, res)
+		if err != nil {
+			return err
+		}
+		if !ok {
 			fmt.Printf("Result: %t\n", res.GetResult())
 		}
 

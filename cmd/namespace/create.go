@@ -16,19 +16,19 @@ limitations under the License.
 package namespace
 
 import (
-	"encoding/json"
 	"fmt"
 
+	"github.com/slntopp/nocloud-cli/pkg/tools"
 	namespacespb "github.com/slntopp/nocloud/pkg/registry/proto/namespaces"
 	"github.com/spf13/cobra"
 )
 
 // CreateCmd represents the create command
 var CreateCmd = &cobra.Command{
-	Use: "create [title]",
+	Use:     "create [title]",
 	Aliases: []string{"crt", "c"},
-	Short: "Create NoCloud Namespace",
-	Args: cobra.MinimumNArgs(1),
+	Short:   "Create NoCloud Namespace",
+	Args:    cobra.MinimumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, client := MakeNamespacesServiceClientOrFail()
 
@@ -39,13 +39,12 @@ var CreateCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		if printJson, _ := cmd.Flags().GetBool("json"); printJson {
-			data, err := json.Marshal(res)
-			if err != nil {
-				return err
-			}
-			fmt.Println(string(data))
-		} else {
+
+		ok, err := tools.PrintJsonDataQ(cmd, res)
+		if err != nil {
+			return err
+		}
+		if !ok {
 			fmt.Println("UUID:", res.GetUuid())
 		}
 
