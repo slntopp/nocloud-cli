@@ -25,6 +25,7 @@ import (
 	"github.com/spf13/cobra"
 	"sigs.k8s.io/yaml"
 
+	"github.com/slntopp/nocloud-cli/pkg/tools"
 	pb "github.com/slntopp/nocloud/pkg/services_providers/proto"
 )
 
@@ -32,7 +33,7 @@ import (
 var CreateCmd = &cobra.Command{
 	Use:   "create [path to template] [flags]",
 	Short: "Create Services Provider Config",
-	Args: cobra.ExactArgs(1),
+	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) (err error) {
 		if _, err := os.Stat(args[0]); os.IsNotExist(err) {
 			return errors.New("Template doesn't exist at path " + args[0])
@@ -41,7 +42,7 @@ var CreateCmd = &cobra.Command{
 		var format string
 		{
 			pathSlice := strings.Split(args[0], ".")
-			format = pathSlice[len(pathSlice) - 1]
+			format = pathSlice[len(pathSlice)-1]
 		}
 
 		template, err := os.ReadFile(args[0])
@@ -72,7 +73,10 @@ var CreateCmd = &cobra.Command{
 			return err
 		}
 
-		fmt.Println("Service Provider Created, UUID:", res.GetUuid())
+		ok, _ := tools.PrintJsonDataQ(cmd, map[string]string{"uuid": res.GetUuid()})
+		if !ok {
+			fmt.Println("Service Provider Created, UUID:", res.GetUuid())
+		}
 		return nil
 	},
 }
