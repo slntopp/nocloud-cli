@@ -57,7 +57,7 @@ var hashCmd = &cobra.Command{
 		} else if str, err := cmd.Flags().GetString("string"); err == nil && str != "" {
 			data = []byte(str)
 		} else {
-			return errors.New("Nothing to do or an Error occured while parsing flags")
+			return errors.New("nothing to do or an Error occured while parsing flags")
 		}
 
 		var resultB []byte
@@ -70,19 +70,16 @@ var hashCmd = &cobra.Command{
 			hash := md5.Sum(data)
 			resultB = hash[:]
 		default:
-			return errors.New("Not supported Algorythm")
+			return errors.New("not supported Algorythm")
 		}
+
 		result := hex.EncodeToString(resultB)
-		if printJson, _ := cmd.Flags().GetBool("json"); printJson {
-			data, err := json.Marshal(map[string]string{
-				"hash": string(result), "alg": alg,
-			})
-			if err != nil {
-				return err
-			}
-			fmt.Println(string(data))
-		} else {
+		ok, _ := PrintJsonDataQ(cmd, map[string]string{
+			"hash": string(result), "alg": alg,
+		})
+		if !ok {
 			fmt.Println("Hash:", string(result))
+
 		}
 
 		return nil
