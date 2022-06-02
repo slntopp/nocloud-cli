@@ -16,22 +16,22 @@ limitations under the License.
 package account
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"strings"
 
+	"github.com/slntopp/nocloud-cli/pkg/tools"
 	accountspb "github.com/slntopp/nocloud/pkg/registry/proto/accounts"
 	"github.com/spf13/cobra"
 )
 
 // CreateCmd represents the create command
 var CreateCmd = &cobra.Command{
-	Use: "create [title] [namespace UUID] [flags]",
+	Use:     "create [title] [namespace UUID] [flags]",
 	Aliases: []string{"crt", "c"},
-	Short: "Create NoCloud Account",
-	Long: "Authorization data flags must be given('auth-type', 'auth-data')",
-	Args: cobra.MinimumNArgs(2),
+	Short:   "Create NoCloud Account",
+	Long:    "Authorization data flags must be given('auth-type', 'auth-data')",
+	Args:    cobra.MinimumNArgs(2),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, client := MakeAccountsServiceClientOrFail()
 
@@ -54,13 +54,12 @@ var CreateCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		if printJson, _ := cmd.Flags().GetBool("json"); printJson {
-			data, err := json.Marshal(res)
-			if err != nil {
-				return err
-			}
-			fmt.Println(string(data))
-		} else {
+
+		ok, err := tools.PrintJsonDataQ(cmd, res)
+		if err != nil {
+			return err
+		}
+		if !ok {
 			fmt.Println("UUID:", res.GetUuid())
 		}
 

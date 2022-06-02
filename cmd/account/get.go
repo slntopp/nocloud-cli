@@ -16,9 +16,7 @@ limitations under the License.
 package account
 
 import (
-	"encoding/json"
-	"fmt"
-
+	"github.com/slntopp/nocloud-cli/pkg/tools"
 	accountspb "github.com/slntopp/nocloud/pkg/registry/proto/accounts"
 	"github.com/spf13/cobra"
 )
@@ -27,7 +25,7 @@ import (
 var GetCmd = &cobra.Command{
 	Use:   "get [UUID]",
 	Short: "Get NoCloud Account Data",
-	Args: cobra.MinimumNArgs(1),
+	Args:  cobra.MinimumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, client := MakeAccountsServiceClientOrFail()
 		res, err := client.Get(ctx, &accountspb.GetRequest{
@@ -37,13 +35,11 @@ var GetCmd = &cobra.Command{
 			return err
 		}
 
-		if printJson, _ := cmd.Flags().GetBool("json"); printJson {
-			data, err := json.Marshal(res)
-			if err != nil {
-				return err
-			}
-			fmt.Println(string(data))
-		} else {
+		ok, err := tools.PrintJsonDataQ(cmd, res)
+		if err != nil {
+			return err
+		}
+		if !ok {
 			PrintAccount(res)
 		}
 

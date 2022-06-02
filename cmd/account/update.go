@@ -16,21 +16,21 @@ limitations under the License.
 package account
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 
+	"github.com/slntopp/nocloud-cli/pkg/tools"
 	accountspb "github.com/slntopp/nocloud/pkg/registry/proto/accounts"
 	"github.com/spf13/cobra"
 )
 
 // UpdateCmd represents the update command
 var UpdateCmd = &cobra.Command{
-	Use: "update [account UUID] [flags]",
+	Use:     "update [account UUID] [flags]",
 	Aliases: []string{"upd"},
-	Short: "Update NoCloud Account",
-	Long: "In order to execute request you must change at least one field.",
-	Args: cobra.MinimumNArgs(1),
+	Short:   "Update NoCloud Account",
+	Long:    "In order to execute request you must change at least one field.",
+	Args:    cobra.MinimumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, client := MakeAccountsServiceClientOrFail()
 
@@ -45,20 +45,19 @@ var UpdateCmd = &cobra.Command{
 		}
 
 		if !updated {
-			return errors.New("No fields updated, exiting")
+			return errors.New("no fields updated, exiting")
 		}
 
 		res, err := client.Update(ctx, &req)
 		if err != nil {
 			return err
 		}
-		if printJson, _ := cmd.Flags().GetBool("json"); printJson {
-			data, err := json.Marshal(res)
-			if err != nil {
-				return err
-			}
-			fmt.Println(string(data))
-		} else {
+
+		ok, err := tools.PrintJsonDataQ(cmd, res)
+		if err != nil {
+			return err
+		}
+		if !ok {
 			fmt.Printf("Result: %t\n", res.GetResult())
 		}
 
