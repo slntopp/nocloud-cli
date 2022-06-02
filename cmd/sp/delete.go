@@ -16,9 +16,9 @@ limitations under the License.
 package sp
 
 import (
-	"encoding/json"
 	"fmt"
 
+	"github.com/slntopp/nocloud-cli/pkg/tools"
 	pb "github.com/slntopp/nocloud/pkg/services_providers/proto"
 	"github.com/spf13/cobra"
 )
@@ -27,7 +27,7 @@ import (
 var DeleteCmd = &cobra.Command{
 	Use:   "delete [uuid] [[flags]]",
 	Short: "Delete NoCloud Services Providers",
-	Args: cobra.ExactArgs(1),
+	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, client := MakeServicesProviderServiceClientOrFail()
 		request := pb.DeleteRequest{Uuid: args[0]}
@@ -37,7 +37,11 @@ var DeleteCmd = &cobra.Command{
 			return err
 		}
 
-		if printJson, _ := cmd.Flags().GetBool("json"); !printJson {
+		ok, err := tools.PrintJsonDataQ(cmd, res)
+		if err != nil {
+			return err
+		}
+		if !ok {
 			if !res.GetResult() {
 				fmt.Println("Can't delete ServicesProvider, some services are still UP and provisioned")
 				fmt.Println("Services:")
@@ -47,14 +51,7 @@ var DeleteCmd = &cobra.Command{
 				return nil
 			}
 			fmt.Println("Done.")
-			return nil
 		}
-		
-		data, err := json.Marshal(res)
-		if err != nil {
-			return err
-		}
-		fmt.Println(string(data))
 		return nil
 	},
 }
