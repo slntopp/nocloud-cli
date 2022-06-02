@@ -36,9 +36,9 @@ var toolsCmd = &cobra.Command{
 }
 
 var hashCmd = &cobra.Command{
-	Use: "hash",
+	Use:   "hash",
 	Short: "Generate Hash of various things like string, certs etc",
-	Args: cobra.MaximumNArgs(0),
+	Args:  cobra.MaximumNArgs(0),
 	RunE: func(cmd *cobra.Command, args []string) (err error) {
 		var data []byte
 
@@ -87,6 +87,18 @@ var hashCmd = &cobra.Command{
 
 		return nil
 	},
+}
+
+func PrintJsonDataQ(cmd *cobra.Command, data interface{}) (ok bool, err error) {
+	if printJson, _ := cmd.Flags().GetBool("json"); !printJson {
+		return false, nil
+	}
+	b, err := json.Marshal(data)
+	if err != nil {
+		return false, err
+	}
+	fmt.Println(string(b))
+	return true, nil
 }
 
 func init() {
