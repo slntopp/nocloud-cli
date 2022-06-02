@@ -17,8 +17,8 @@ package instances
 
 import (
 	"encoding/json"
-	"fmt"
 
+	"github.com/slntopp/nocloud-cli/pkg/tools"
 	pb "github.com/slntopp/nocloud/pkg/instances/proto"
 	"github.com/spf13/cobra"
 	"google.golang.org/protobuf/types/known/structpb"
@@ -26,21 +26,21 @@ import (
 
 // GetCmd represents the list command
 var InvokeCmd = &cobra.Command{
-	Use:   "invoke [uuid] [action] [[flags]]",
+	Use:     "invoke [uuid] [action] [[flags]]",
 	Aliases: []string{"call", "perform"},
-	Short: "Invokes NoCloud Instance Action",
-	Args: cobra.ExactArgs(2),
+	Short:   "Invokes NoCloud Instance Action",
+	Args:    cobra.ExactArgs(2),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, client := MakeInstancesServiceClientOrFail()
 		request := pb.InvokeRequest{
-			Uuid: args[0],
+			Uuid:   args[0],
 			Method: args[1],
 		}
 		data, err := cmd.Flags().GetString("data")
 		if err != nil {
 			return err
 		}
-		
+
 		if data != "" {
 			var dataMap map[string]interface{}
 			err = json.Unmarshal([]byte(data), &dataMap)
@@ -60,15 +60,14 @@ var InvokeCmd = &cobra.Command{
 			return err
 		}
 
-		if printJson, _ := cmd.Flags().GetBool("json"); !printJson {
-			return PrintInstanceInvokeResponse(res)
-		}
-		
-		meta, err := json.Marshal(res)
+		ok, err := tools.PrintJsonDataQ(cmd, res)
 		if err != nil {
 			return err
 		}
-		fmt.Println(string(meta))
+		if !ok {
+			return PrintInstanceInvokeResponse(res)
+		}
+
 		return nil
 	},
 }
