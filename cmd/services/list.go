@@ -16,19 +16,17 @@ limitations under the License.
 package services
 
 import (
-	"encoding/json"
-	"fmt"
-
+	"github.com/slntopp/nocloud-cli/pkg/tools"
 	pb "github.com/slntopp/nocloud/pkg/services/proto"
 	"github.com/spf13/cobra"
 )
 
 // ListCmd represents the list command
 var ListCmd = &cobra.Command{
-	Use:   "list [[NAMESPACE]] [[flags]]",
+	Use:     "list [[NAMESPACE]] [[flags]]",
 	Aliases: []string{"l"},
-	Short: "List NoCloud Services",
-	Long: `Add namespace UUID after list command, to filter services by namespace`,
+	Short:   "List NoCloud Services",
+	Long:    `Add namespace UUID after list command, to filter services by namespace`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, client := MakeServicesServiceClientOrFail()
 		request := pb.ListRequest{}
@@ -51,13 +49,11 @@ var ListCmd = &cobra.Command{
 			return err
 		}
 
-		if printJson, _ := cmd.Flags().GetBool("json"); printJson {
-			data, err := json.Marshal(res)
-			if err != nil {
-				return err
-			}
-			fmt.Println(string(data))
-		} else {
+		ok, err := tools.PrintJsonDataQ(cmd, res)
+		if err != nil {
+			return err
+		}
+		if !ok {
 			PrintServicesPool(res.GetPool())
 		}
 

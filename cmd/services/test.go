@@ -22,9 +22,10 @@ import (
 	"os"
 	"strings"
 
-	"sigs.k8s.io/yaml"
 	"github.com/spf13/cobra"
+	"sigs.k8s.io/yaml"
 
+	"github.com/slntopp/nocloud-cli/pkg/tools"
 	pb "github.com/slntopp/nocloud/pkg/services/proto"
 )
 
@@ -32,7 +33,7 @@ import (
 var TestCmd = &cobra.Command{
 	Use:   "test [path to template] [flags]",
 	Short: "Test Service Config",
-	Args: cobra.ExactArgs(1),
+	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) (err error) {
 
 		namespace, err := cmd.Flags().GetString("namespace")
@@ -50,7 +51,7 @@ var TestCmd = &cobra.Command{
 		var format string
 		{
 			pathSlice := strings.Split(args[0], ".")
-			format = pathSlice[len(pathSlice) - 1]
+			format = pathSlice[len(pathSlice)-1]
 		}
 
 		template, err := os.ReadFile(args[0])
@@ -79,6 +80,14 @@ var TestCmd = &cobra.Command{
 		res, err := client.TestConfig(ctx, &request)
 		if err != nil {
 			return err
+		}
+
+		ok, err := tools.PrintJsonDataQ(cmd, res)
+		if err != nil {
+			return err
+		}
+		if ok {
+			return nil
 		}
 
 		fmt.Print("Result: ")
