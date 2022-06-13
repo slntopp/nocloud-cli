@@ -30,9 +30,32 @@ import (
 )
 
 var TransactionsCmd = &cobra.Command{
-	Use:     "transactions",
-	Aliases: []string{"t", "transaction", "tr", "trx"},
-	Short:   "Manage transactions",
+	Use:     "transaction",
+	Aliases: []string{"t", "transactions", "tr", "trx"},
+	Short:   "Get Records for Transaction",
+	Args:    cobra.ExactArgs(1),
+	RunE: func(cmd *cobra.Command, args []string) error {
+
+		ctx, client := MakeBillingServiceClientOrFail()
+
+		res, err := client.GetRecords(ctx, &pb.Transaction{
+			Uuid: args[0],
+		})
+
+		if err != nil {
+			return err
+		}
+
+		ok, err := tools.PrintJsonDataQ(cmd, res)
+		if err != nil {
+			return err
+		}
+		if !ok {
+			PrintRecords(res.Pool)
+		}
+
+		return nil
+	},
 }
 
 // ListCmd represents the list command
