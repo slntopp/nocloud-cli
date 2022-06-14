@@ -16,90 +16,22 @@ limitations under the License.
 package services
 
 import (
-	"context"
-	"encoding/json"
-	"fmt"
-	"os"
-	"strings"
-
-	"github.com/manifoldco/promptui"
-	"github.com/slntopp/nocloud-cli/cmd/sp"
 	pb "github.com/slntopp/nocloud/pkg/services/proto"
-	sppb "github.com/slntopp/nocloud/pkg/services_providers/proto"
 	"github.com/spf13/cobra"
 )
 
-func SelectDeployPoliciesInteractive(ctx context.Context, cmd *cobra.Command, client pb.ServicesServiceClient, id string) (res map[string]string, err error) {
-	service, err := client.Get(ctx, &pb.GetRequest{Uuid: id})
-	if err != nil {
-		return nil, err
-	}
-	ctx, spClient := sp.MakeServicesProviderServiceClientOrFail()
-	sps, err := spClient.List(ctx, &sppb.ListRequest{})
-	if err != nil {
-		return nil, err
-	}
-	providers := make(map[string][]string)
-	for _, sp := range sps.GetPool() {
-		pool := providers[sp.GetType()]
-		if pool == nil {
-			pool = make([]string, 0)
-		}
-		pool = append(pool, fmt.Sprintf("%s | %s", sp.GetTitle(), sp.GetUuid()))
-		providers[sp.GetType()] = pool
-	}
-
-	res = make(map[string]string)
-	for _, group := range service.GetInstancesGroups() {
-		p := promptui.Select{
-			Label: fmt.Sprintf("Select Service Provider for Instances Group %s (%s)", group.Title, group.GetUuid()),
-			Items: providers[group.GetType()],
-		}
-		_, selected, err := p.Run()
-		if err != nil {
-			return nil, err
-		}
-		selected = strings.Split(selected, " | ")[1]
-		res[group.GetUuid()] = selected
-	}
-	return res, nil
-}
-
 // createCmd represents the create command
 var UpCmd = &cobra.Command{
-	Use:   "up [service_id] [flags]",
+	Use:     "up [service_id] [flags]",
 	Aliases: []string{"u"},
-	Short: "NoCloud Service Up",
-	Args: cobra.ExactArgs(1),
+	Short:   "NoCloud Service Up",
+	Args:    cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) (err error) {
 		ctx, client := MakeServicesServiceClientOrFail()
 
 		req := pb.UpRequest{Uuid: args[0]}
-		if rulesJson, _ := cmd.Flags().GetString("rules"); rulesJson != "" {
-			fmt.Println("Rules as string given", rulesJson)
-			json.Unmarshal([]byte(rulesJson), &req.DeployPolicies)
-		} else if rulesFile, _ := cmd.Flags().GetString("rules-file"); rulesFile != "" {
-			fmt.Println("Rules as File given", rulesFile)
-			rulesJson, err := os.ReadFile(rulesFile)
-			if err != nil {
-				return err
-			}
-			json.Unmarshal(rulesJson, &req.DeployPolicies)
-		} else {
-			fmt.Println("Nothing given, selecting in interactive mode")
-			r, err := SelectDeployPoliciesInteractive(ctx, cmd, client, args[0])
-			if err != nil {
-				return err
-			}
-			req.DeployPolicies = r
-		}
 
 		_, err = client.Up(ctx, &req)
 		return err
 	},
-}
-
-func init() {
-	UpCmd.Flags().StringP("rules", "r", "", "Deploy rules")
-	UpCmd.Flags().StringP("rules-file", "f", "", "Deploy rules")
 }

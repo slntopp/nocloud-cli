@@ -5,10 +5,10 @@ go 1.18
 require (
 	github.com/jedib0t/go-pretty/v6 v6.2.4
 	github.com/manifoldco/promptui v0.9.0
-	github.com/slntopp/nocloud v0.0.15-r7
+	github.com/slntopp/nocloud v0.0.15-r9.0.20220614174705-1c355713bdaa
 	github.com/spf13/cobra v1.3.0
 	github.com/spf13/viper v1.12.0
-	google.golang.org/grpc v1.46.2
+	google.golang.org/grpc v1.47.0
 	google.golang.org/protobuf v1.28.0
 	gopkg.in/yaml.v2 v2.4.0
 	sigs.k8s.io/yaml v1.3.0
@@ -18,7 +18,7 @@ require (
 	github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e // indirect
 	github.com/fsnotify/fsnotify v1.5.4 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
-	github.com/grpc-ecosystem/grpc-gateway/v2 v2.10.2 // indirect
+	github.com/grpc-ecosystem/grpc-gateway/v2 v2.10.3 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/magiconair/properties v1.8.6 // indirect
