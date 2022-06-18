@@ -22,21 +22,21 @@ import (
 	"os"
 	"strings"
 
-	"sigs.k8s.io/yaml"
 	pb "github.com/slntopp/nocloud/pkg/dns/proto"
 	"github.com/spf13/cobra"
+	"sigs.k8s.io/yaml"
 )
 
 // ApplyCmd represents the dump command
 var ApplyCmd = &cobra.Command{
 	Use:   "apply [path]",
 	Short: "Apply Zone config",
-	Args: cobra.ExactArgs(1),
+	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		var format string
 		{
 			pathSlice := strings.Split(args[0], ".")
-			format = pathSlice[len(pathSlice) - 1]
+			format = pathSlice[len(pathSlice)-1]
 		}
 		template, err := os.ReadFile(args[0])
 		switch format {
