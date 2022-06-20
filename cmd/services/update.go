@@ -25,15 +25,15 @@ import (
 	"github.com/spf13/cobra"
 	"sigs.k8s.io/yaml"
 
-	"github.com/slntopp/nocloud-cli/pkg/tools"
 	pb "github.com/slntopp/nocloud/pkg/services/proto"
 )
 
 // createCmd represents the create command
-var TestCmd = &cobra.Command{
-	Use:   "test [path to template] [flags]",
-	Short: "Test Service Config",
-	Args:  cobra.ExactArgs(1),
+var UpdateCmd = &cobra.Command{
+	Use:     "update [path to template] [flags]",
+	Aliases: []string{"upd", "u"},
+	Short:   "Update Service Config",
+	Args:    cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) (err error) {
 
 		namespace, err := cmd.Flags().GetString("namespace")
@@ -76,32 +76,22 @@ var TestCmd = &cobra.Command{
 		}
 
 		ctx, client := MakeServicesServiceClientOrFail()
-		request := pb.CreateRequest{Service: &service, Namespace: namespace}
-		res, err := client.TestConfig(ctx, &request)
+		request := pb.UpdateRequest{Service: &service, Namespace: namespace, Uuid: service.Uuid}
+		res, err := client.Update(ctx, &request)
 		if err != nil {
 			return err
 		}
 
-		ok, err := tools.PrintJsonDataQ(cmd, res)
+		output, err := json.MarshalIndent(res, "-", " ")
 		if err != nil {
+			fmt.Println(res)
 			return err
 		}
-		if ok {
-			return nil
-		}
-
-		fmt.Print("Result: ")
-		if res.GetResult() {
-			fmt.Println("Tests Passed")
-			return nil
-		}
-
-		fmt.Println("Something has failed. Errors:")
-		PrintTestErrors(res.GetErrors())
+		fmt.Println("Result: ", string(output))
 		return nil
 	},
 }
 
 func init() {
-	TestCmd.Flags().StringP("namespace", "n", "", "Namespace UUID (required)")
+	UpdateCmd.Flags().StringP("namespace", "n", "", "Namespace UUID (required)")
 }

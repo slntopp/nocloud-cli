@@ -1,0 +1,33 @@
+title: Sample Static
+type: ione
+public: true
+kind: 2 # stands for static
+products:
+  vds_m:
+    kind: 2
+    title: VDS M
+    price: 1
+    period: 85400
+    resources:
+      cpu: 1
+      ram: 2048
+    sorter: 0 # smallest product
+  vds_l:
+    kind: 2
+    title: VDS L
+    price: 2
+    period: 85400
+    resources:
+      cpu: 2
+      ram: 4096
+    sorter: 1 # middle product
+  vds_xl:
+    kind: 2
+    title: VDS XL
+    price: 3
+    period: 85400
+    resources:
+      cpu: 4
+      ram: 8192
+    sorter: 2 # biggest product
+   

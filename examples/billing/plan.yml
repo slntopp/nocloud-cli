@@ -1,6 +1,7 @@
 title: Sample
 type: ione
 public: true
+kind: 1 # 1 stands for static
 resources:
   - key: cpu # Resource Conf
     kind: 1

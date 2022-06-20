@@ -20,12 +20,12 @@ import (
 	"crypto/sha256"
 	"crypto/x509"
 	"encoding/hex"
-	"encoding/json"
 	"encoding/pem"
 	"errors"
 	"fmt"
 	"io/ioutil"
 
+	tools "github.com/slntopp/nocloud-cli/pkg/tools"
 	"github.com/spf13/cobra"
 )
 
@@ -36,9 +36,9 @@ var toolsCmd = &cobra.Command{
 }
 
 var hashCmd = &cobra.Command{
-	Use: "hash",
+	Use:   "hash",
 	Short: "Generate Hash of various things like string, certs etc",
-	Args: cobra.MaximumNArgs(0),
+	Args:  cobra.MaximumNArgs(0),
 	RunE: func(cmd *cobra.Command, args []string) (err error) {
 		var data []byte
 
@@ -57,7 +57,7 @@ var hashCmd = &cobra.Command{
 		} else if str, err := cmd.Flags().GetString("string"); err == nil && str != "" {
 			data = []byte(str)
 		} else {
-			return errors.New("Nothing to do or an Error occured while parsing flags")
+			return errors.New("nothing to do or an Error occured while parsing flags")
 		}
 
 		var resultB []byte
@@ -70,19 +70,16 @@ var hashCmd = &cobra.Command{
 			hash := md5.Sum(data)
 			resultB = hash[:]
 		default:
-			return errors.New("Not supported Algorythm")
+			return errors.New("not supported Algorythm")
 		}
+
 		result := hex.EncodeToString(resultB)
-		if printJson, _ := cmd.Flags().GetBool("json"); printJson {
-			data, err := json.Marshal(map[string]string{
-				"hash": string(result), "alg": alg,
-			})
-			if err != nil {
-				return err
-			}
-			fmt.Println(string(data))
-		} else {
+		ok, _ := tools.PrintJsonDataQ(cmd, map[string]string{
+			"hash": string(result), "alg": alg,
+		})
+		if !ok {
 			fmt.Println("Hash:", string(result))
+
 		}
 
 		return nil

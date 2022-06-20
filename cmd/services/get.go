@@ -16,9 +16,7 @@ limitations under the License.
 package services
 
 import (
-	"encoding/json"
-	"fmt"
-
+	"github.com/slntopp/nocloud-cli/pkg/tools"
 	pb "github.com/slntopp/nocloud/pkg/services/proto"
 	"github.com/spf13/cobra"
 )
@@ -27,7 +25,7 @@ import (
 var GetCmd = &cobra.Command{
 	Use:   "get [uuid] [[flags]]",
 	Short: "Get NoCloud Service",
-	Args: cobra.ExactArgs(1),
+	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, client := MakeServicesServiceClientOrFail()
 		request := pb.GetRequest{Uuid: args[0]}
@@ -37,15 +35,14 @@ var GetCmd = &cobra.Command{
 			return err
 		}
 
-		if printJson, _ := cmd.Flags().GetBool("json"); !printJson {
-			return PrintService(res)
-		}
-		
-		data, err := json.Marshal(res)
+		ok, err := tools.PrintJsonDataQ(cmd, res)
 		if err != nil {
 			return err
 		}
-		fmt.Println(string(data))
+		if !ok {
+			return PrintService(res)
+		}
+
 		return nil
 	},
 }

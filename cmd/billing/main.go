@@ -60,7 +60,7 @@ func MakeBillingServiceClientOrFail() (context.Context, pb.BillingServiceClient)
 
 	client := pb.NewBillingServiceClient(conn)
 	ctx := context.Background()
-	ctx = metadata.AppendToOutgoingContext(ctx, "authorization", "bearer " + token.(string))
+	ctx = metadata.AppendToOutgoingContext(ctx, "authorization", "bearer "+token.(string))
 	return ctx, client
 }
 
@@ -82,6 +82,28 @@ func PrintPlan(p *pb.Plan) {
 		}
 		fmt.Println(strings.Join(on, ", "))
 	}
+}
+
+var processedLabels = map[bool]string{
+	true:  "V",
+	false: "X",
+}
+
+func PrintRecords(pool []*pb.Record) {
+	t := table.NewWriter()
+	t.SetOutputMirror(os.Stdout)
+	t.AppendHeader(table.Row{"Instance", "Recource", "Start", "End", "Total NCU", "Processed"})
+
+	for _, r := range pool {
+		t.AppendRow(table.Row{
+			r.Instance, r.Resource,
+			time.Unix(r.Start, 0).Format("2006-01-02 15:04:05"),
+			time.Unix(r.End, 0).Format("2006-01-02 15:04:05"),
+			r.Total, processedLabels[r.Processed],
+		})
+	}
+
+	t.Render()
 }
 
 func PrintTransactions(pool []*pb.Transaction, meta bool) {
@@ -117,7 +139,7 @@ func MakeTrRow(t *pb.Transaction) table.Row {
 		t.Uuid,
 		t.Account,
 		t.Service,
-		time.Unix(int64(ts), 0).Format("2006-01-02 15:04:05"),
+		time.Unix(ts, 0).Format("2006-01-02 15:04:05"),
 		t.Total,
 	}
 }

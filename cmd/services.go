@@ -32,6 +32,7 @@ func init() {
 
 	servicesCmd.AddCommand(services.TestCmd)
 	servicesCmd.AddCommand(services.CreateCmd)
+	servicesCmd.AddCommand(services.UpdateCmd)
 
 	servicesCmd.AddCommand(services.UpCmd)
 	servicesCmd.AddCommand(services.DownCmd)

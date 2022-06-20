@@ -22,19 +22,20 @@ import (
 	"os"
 	"strings"
 
-	"sigs.k8s.io/yaml"
 	"github.com/spf13/cobra"
+	"sigs.k8s.io/yaml"
 
+	"github.com/slntopp/nocloud-cli/pkg/tools"
 	pb "github.com/slntopp/nocloud/pkg/billing/proto"
 )
 
 var CreateCmd = &cobra.Command{
-	Use:   "create [path to template] [flags]",
+	Use:     "create [path to template] [flags]",
 	Aliases: []string{"crt", "c"},
-	Short: "Create Billing Plan",
-	Args: cobra.ExactArgs(1),
+	Short:   "Create Billing Plan",
+	Args:    cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		
+
 		if _, err := os.Stat(args[0]); os.IsNotExist(err) {
 			return errors.New("Template doesn't exist at path " + args[0])
 		}
@@ -42,7 +43,7 @@ var CreateCmd = &cobra.Command{
 		var format string
 		{
 			pathSlice := strings.Split(args[0], ".")
-			format = pathSlice[len(pathSlice) - 1]
+			format = pathSlice[len(pathSlice)-1]
 		}
 
 		template, err := os.ReadFile(args[0])
@@ -73,12 +74,13 @@ var CreateCmd = &cobra.Command{
 			return err
 		}
 
-		if printJson, _ := cmd.Flags().GetBool("json"); printJson {
-			json.Marshal(map[string]string{"uuid": res.Uuid})
-			return nil
+		ok, err := tools.PrintJsonDataQ(cmd, map[string]string{"uuid": res.Uuid})
+		if err != nil {
+			return err
 		}
-
-		fmt.Println("Result:", res.Uuid)
+		if !ok {
+			fmt.Println("Result:", res.Uuid)
+		}
 
 		return nil
 	},

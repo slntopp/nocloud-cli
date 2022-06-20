@@ -22,9 +22,10 @@ import (
 	"os"
 	"strings"
 
-	"sigs.k8s.io/yaml"
+	"github.com/slntopp/nocloud-cli/pkg/tools"
 	pb "github.com/slntopp/nocloud/pkg/settings/proto"
 	"github.com/spf13/cobra"
+	"sigs.k8s.io/yaml"
 )
 
 // ApplyCmd represents the list command
@@ -42,7 +43,7 @@ public: setting visibility for non-root accounts
 		var format string
 		{
 			pathSlice := strings.Split(args[0], ".")
-			format = pathSlice[len(pathSlice) - 1]
+			format = pathSlice[len(pathSlice)-1]
 		}
 		template, err := os.ReadFile(args[0])
 		switch format {
@@ -70,13 +71,11 @@ public: setting visibility for non-root accounts
 			return err
 		}
 
-		if printJson, _ := cmd.Flags().GetBool("json"); printJson {
-			data, err := json.Marshal(res)
-			if err != nil {
-				return err
-			}
-			fmt.Println(string(data))
-		} else {
+		ok, err := tools.PrintJsonDataQ(cmd, res)
+		if err != nil {
+			return err
+		}
+		if !ok {
 			fmt.Println("Added:", res.GetKey())
 		}
 

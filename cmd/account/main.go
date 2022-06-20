@@ -31,7 +31,7 @@ import (
 	"google.golang.org/grpc/metadata"
 )
 
-func MakeAccountsServiceClientOrFail() (context.Context, regpb.AccountsServiceClient){
+func MakeAccountsServiceClientOrFail() (context.Context, regpb.AccountsServiceClient) {
 	host := viper.Get("nocloud")
 	if host == nil {
 		fmt.Fprintln(os.Stderr, "Error setting connection up")
@@ -57,13 +57,11 @@ func MakeAccountsServiceClientOrFail() (context.Context, regpb.AccountsServiceCl
 
 	client := regpb.NewAccountsServiceClient(conn)
 	ctx := context.Background()
-	ctx = metadata.AppendToOutgoingContext(ctx, "authorization", "bearer " + token.(string))
+	ctx = metadata.AppendToOutgoingContext(ctx, "authorization", "bearer "+token.(string))
 	return ctx, client
 }
 
 func PrintAccount(acc *pb.Account) {
-	fmt.Println()
-
 	fmt.Println("UUID:", acc.GetUuid())
 	fmt.Println("Title:", acc.GetTitle())
 	if acc.Balance != nil {
@@ -75,7 +73,7 @@ func PrintAccountsPool(pool []*pb.Account) {
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
 	t.AppendHeader(table.Row{"UUID", "Title", "Balance NCU"})
-	
+
 	rows := make([]table.Row, len(pool))
 	for i, acc := range pool {
 		balance := "-"
@@ -91,5 +89,5 @@ func PrintAccountsPool(pool []*pb.Account) {
 	})
 
 	t.AppendFooter(table.Row{"Total Found", len(pool)})
-    t.Render()
+	t.Render()
 }

@@ -16,9 +16,9 @@ limitations under the License.
 package settings
 
 import (
-	"encoding/json"
 	"fmt"
 
+	"github.com/slntopp/nocloud-cli/pkg/tools"
 	pb "github.com/slntopp/nocloud/pkg/settings/proto"
 	"github.com/spf13/cobra"
 	"gopkg.in/yaml.v2"
@@ -28,7 +28,7 @@ import (
 var GetCmd = &cobra.Command{
 	Use:   "get [...keys]",
 	Short: "Get NoCloud Settings",
-	Args: cobra.MinimumNArgs(1),
+	Args:  cobra.MinimumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, client := MakeSettingsServiceClientOrFail()
 		request := pb.GetRequest{
@@ -42,13 +42,12 @@ var GetCmd = &cobra.Command{
 		}
 
 		result := res.AsMap()
-		if printJson, _ := cmd.Flags().GetBool("json"); printJson {
-			data, err := json.Marshal(result)
-			if err != nil {
-				return err
-			}
-			fmt.Println(string(data))
-		} else {
+
+		ok, err := tools.PrintJsonDataQ(cmd, result)
+		if err != nil {
+			return err
+		}
+		if !ok {
 			data, err := yaml.Marshal(result)
 			if err != nil {
 				return err

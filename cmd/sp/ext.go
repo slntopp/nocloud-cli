@@ -16,9 +16,9 @@ limitations under the License.
 package sp
 
 import (
-	"encoding/json"
 	"fmt"
 
+	"github.com/slntopp/nocloud-cli/pkg/tools"
 	pb "github.com/slntopp/nocloud/pkg/services_providers/proto"
 	"github.com/spf13/cobra"
 )
@@ -40,13 +40,11 @@ var listExtCmd = &cobra.Command{
 			return err
 		}
 
-		if printJson, _ := cmd.Flags().GetBool("json"); printJson {
-			data, err := json.Marshal(res)
-			if err != nil {
-				return err
-			}
-			fmt.Println(string(data))
-		} else {
+		ok, err := tools.PrintJsonDataQ(cmd, res)
+		if err != nil {
+			return err
+		}
+		if !ok {
 			for key, ext := range res.GetTypes() {
 				fmt.Println(key, " - ", ext)
 			}

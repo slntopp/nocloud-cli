@@ -24,15 +24,16 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"sigs.k8s.io/yaml"
+	"github.com/slntopp/nocloud-cli/pkg/tools"
 	pb "github.com/slntopp/nocloud/pkg/services_providers/proto"
+	"sigs.k8s.io/yaml"
 )
 
 // createCmd represents the create command
 var TestCmd = &cobra.Command{
 	Use:   "test [path to template] [flags]",
 	Short: "Test Services Provider Config",
-	Args: cobra.ExactArgs(1),
+	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) (err error) {
 		if _, err := os.Stat(args[0]); os.IsNotExist(err) {
 			return errors.New("Template doesn't exist at path " + args[0])
@@ -41,7 +42,7 @@ var TestCmd = &cobra.Command{
 		var format string
 		{
 			pathSlice := strings.Split(args[0], ".")
-			format = pathSlice[len(pathSlice) - 1]
+			format = pathSlice[len(pathSlice)-1]
 		}
 
 		template, err := os.ReadFile(args[0])
@@ -72,14 +73,24 @@ var TestCmd = &cobra.Command{
 			return err
 		}
 
-		fmt.Print("Result: ")
 		if res.GetResult() {
-			fmt.Println("Tests Passed")
+			ok, _ := tools.PrintJsonDataQ(cmd, map[string]bool{"result": true})
+			if !ok {
+				fmt.Println("Result: Tests Passed")
+			}
+
 			return nil
 		}
 
-		fmt.Println("Something has failed")
-		err = fmt.Errorf("Error: %s\n", res.GetError())
-		return err
+		ok, err := tools.PrintJsonDataQ(cmd, map[string]interface{}{"result": false, "error": res.GetError()})
+		if err != nil {
+			return err
+		}
+		if !ok {
+			fmt.Println("Result: Something has failed")
+			fmt.Printf("Error: %s\n", res.GetError())
+		}
+
+		return nil
 	},
 }

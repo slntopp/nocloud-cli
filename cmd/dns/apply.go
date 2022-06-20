@@ -22,6 +22,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/slntopp/nocloud-cli/pkg/tools"
 	pb "github.com/slntopp/nocloud/pkg/dns/proto"
 	"github.com/spf13/cobra"
 	"sigs.k8s.io/yaml"
@@ -64,13 +65,11 @@ var ApplyCmd = &cobra.Command{
 			return err
 		}
 
-		if printJson, _ := cmd.Flags().GetBool("json"); printJson {
-			data, err := json.Marshal(res)
-			if err != nil {
-				return err
-			}
-			fmt.Println(string(data))
-		} else {
+		ok, err := tools.PrintJsonDataQ(cmd, res)
+		if err != nil {
+			return err
+		}
+		if !ok {
 			fmt.Println("Keys added", res.GetResult())
 		}
 

@@ -16,9 +16,9 @@ limitations under the License.
 package dns
 
 import (
-	"encoding/json"
 	"fmt"
 
+	"github.com/slntopp/nocloud-cli/pkg/tools"
 	pb "github.com/slntopp/nocloud/pkg/dns/proto"
 	"github.com/spf13/cobra"
 )
@@ -27,10 +27,10 @@ import (
 var DeleteCmd = &cobra.Command{
 	Use:   "delete [zone]",
 	Short: "Delete Zone config",
-	Args: cobra.ExactArgs(1),
+	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, client := MakeDNSClientOrFail()
-		
+
 		zone := args[0]
 		request := pb.Zone{Name: zone}
 		res, err := client.Delete(ctx, &request)
@@ -38,14 +38,12 @@ var DeleteCmd = &cobra.Command{
 			return err
 		}
 
-		if printJson, _ := cmd.Flags().GetBool("json"); printJson {
-			data, err := json.Marshal(res)
-			if err != nil {
-				return err
-			}
-			fmt.Println(string(data))
-		} else {
-			fmt.Print("Keys deleted", res.GetResult())
+		ok, err := tools.PrintJsonDataQ(cmd, res)
+		if err != nil {
+			return err
+		}
+		if !ok {
+			fmt.Println("Keys deleted", res.GetResult())
 		}
 
 		return nil

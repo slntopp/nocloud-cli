@@ -20,6 +20,7 @@ import (
 	"crypto/tls"
 	"fmt"
 
+	tools "github.com/slntopp/nocloud-cli/pkg/tools"
 	regpb "github.com/slntopp/nocloud/pkg/registry/proto"
 	pb "github.com/slntopp/nocloud/pkg/registry/proto/accounts"
 	"github.com/spf13/cobra"
@@ -32,8 +33,8 @@ import (
 var loginCmd = &cobra.Command{
 	Use:   "login [host:port] [username] [password]",
 	Short: "Authorize in NoCloud Platform API",
-	Long: `Generate Auth Token in NoCloud API and store it in CLI config.`,
-	Args: cobra.MinimumNArgs(3),
+	Long:  `Generate Auth Token in NoCloud API and store it in CLI config.`,
+	Args:  cobra.MinimumNArgs(3),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		creds := credentials.NewTLS(&tls.Config{InsecureSkipVerify: true})
 		opt := grpc.WithTransportCredentials(creds)
@@ -60,8 +61,8 @@ var loginCmd = &cobra.Command{
 			return err
 		}
 		token := res.GetToken()
-		printToken, _ := cmd.Flags().GetBool("print-token")
-		if printToken {
+		ok, _ := tools.PrintJsonDataQ(cmd, map[string]string{"token": token})
+		if !ok {
 			fmt.Println(token)
 		}
 
@@ -77,6 +78,6 @@ func init() {
 	loginCmd.Flags().Bool("print-token", false, "")
 	loginCmd.Flags().Bool("root-claim", true, "")
 	loginCmd.Flags().Bool("insecure", false, "Use WithInsecure instead of TLS")
-	
+
 	rootCmd.AddCommand(loginCmd)
 }
