@@ -76,8 +76,7 @@ var UpdateCmd = &cobra.Command{
 		}
 
 		ctx, client := MakeServicesServiceClientOrFail()
-		request := pb.UpdateRequest{Service: &service, Namespace: namespace, Uuid: service.Uuid}
-		res, err := client.Update(ctx, &request)
+		res, err := client.Update(ctx, &service)
 		if err != nil {
 			return err
 		}

@@ -30,7 +30,7 @@ var ListCmd = &cobra.Command{
 	Short:   "List NoCloud Billing Plans",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, client := MakeBillingServiceClientOrFail()
-		request := pb.ListRequest{}
+		request := pb.ListRequest{Anonymously: false}
 
 		res, err := client.ListPlans(ctx, &request)
 
