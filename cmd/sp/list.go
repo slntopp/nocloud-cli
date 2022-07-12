@@ -28,7 +28,7 @@ var ListCmd = &cobra.Command{
 	Long:  `Add namespace UUID after list command, to filter services by namespace`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, client := MakeServicesProviderServiceClientOrFail()
-		request := pb.ListRequest{}
+		request := pb.ListRequest{Anonymously: false}
 		res, err := client.List(ctx, &request)
 		if err != nil {
 			return err
