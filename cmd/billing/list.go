@@ -28,10 +28,14 @@ var ListCmd = &cobra.Command{
 	Use:     "list [sp_uuid]",
 	Aliases: []string{"l", "ls"},
 	Short:   "List NoCloud Billing Plans",
-	Args:    cobra.MinimumNArgs(1),
+	Args:    cobra.MinimumNArgs(0),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, client := MakeBillingServiceClientOrFail()
-		request := pb.ListRequest{Anonymously: false, SpUuid: args[0]}
+		spUuid := ""
+		if len(args) > 0 {
+			spUuid = args[0]
+		}
+		request := pb.ListRequest{Anonymously: false, SpUuid: spUuid}
 
 		res, err := client.ListPlans(ctx, &request)
 
