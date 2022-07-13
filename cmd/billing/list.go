@@ -25,12 +25,13 @@ import (
 
 // ListCmd represents the list command
 var ListCmd = &cobra.Command{
-	Use:     "list",
+	Use:     "list [sp_uuid]",
 	Aliases: []string{"l", "ls"},
 	Short:   "List NoCloud Billing Plans",
+	Args:    cobra.MinimumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, client := MakeBillingServiceClientOrFail()
-		request := pb.ListRequest{Anonymously: false}
+		request := pb.ListRequest{Anonymously: false, SpUuid: args[0]}
 
 		res, err := client.ListPlans(ctx, &request)
 
