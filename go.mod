@@ -5,7 +5,7 @@ go 1.18
 require (
 	github.com/jedib0t/go-pretty/v6 v6.2.4
 	github.com/manifoldco/promptui v0.9.0
-	github.com/slntopp/nocloud v0.0.15-r12
+	github.com/slntopp/nocloud v0.0.15-r13
 	github.com/spf13/cobra v1.3.0
 	github.com/spf13/viper v1.12.0
 	google.golang.org/grpc v1.47.0
@@ -32,7 +32,7 @@ require (
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/subosito/gotenv v1.3.0 // indirect
-	golang.org/x/net v0.0.0-20220526153639-5463443f8c37 // indirect
+	golang.org/x/net v0.0.0-20220624214902-1bab6f366d9e // indirect
 	golang.org/x/sys v0.0.0-20220520151302-bc2c85ada10a // indirect
 	golang.org/x/text v0.3.7 // indirect
 	google.golang.org/genproto v0.0.0-20220527130721-00d5c0f3be58 // indirect

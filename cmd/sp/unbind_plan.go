@@ -13,31 +13,28 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package cmd
+package sp
 
 import (
-	"github.com/slntopp/nocloud-cli/cmd/sp"
+	"fmt"
+
+	pb "github.com/slntopp/nocloud/pkg/services_providers/proto"
 	"github.com/spf13/cobra"
 )
 
-// spCmd represents the sp command
-var spCmd = &cobra.Command{
-	Use:     "sp",
-	Aliases: []string{"services-provider", "services-providers"},
-	Short:   "Manage Services Providers | Doesn't do anything by default",
-}
-
-func init() {
-	spCmd.AddCommand(sp.CreateCmd)
-	spCmd.AddCommand(sp.DeleteCmd)
-	spCmd.AddCommand(sp.TestCmd)
-	spCmd.AddCommand(sp.UpdateCmd)
-	spCmd.AddCommand(sp.GetCmd)
-	spCmd.AddCommand(sp.ListCmd)
-	spCmd.AddCommand(sp.UnbindPlanCmd)
-	spCmd.AddCommand(sp.BindPlanCmd)
-
-	spCmd.AddCommand(sp.ExtCmd)
-
-	rootCmd.AddCommand(spCmd)
+// GetCmd represents the get command
+var UnbindPlanCmd = &cobra.Command{
+	Use:   "unbind-plan [uuid] [plan_uuid] [[flags]]",
+	Short: "Unbind Billing Plan",
+	Args:  cobra.ExactArgs(2),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		ctx, client := MakeServicesProviderServiceClientOrFail()
+		request := pb.UnbindPlanRequest{Uuid: args[0], PlanUuid: args[1]}
+		_, err := client.UnbindPlan(ctx, &request)
+		if err != nil {
+			return err
+		}
+		fmt.Println("Unbinding Completed")
+		return nil
+	},
 }
