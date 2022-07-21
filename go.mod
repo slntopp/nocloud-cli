@@ -5,10 +5,10 @@ go 1.18
 require (
 	github.com/jedib0t/go-pretty/v6 v6.2.4
 	github.com/manifoldco/promptui v0.9.0
-	github.com/slntopp/nocloud v0.0.15-r13
+	github.com/slntopp/nocloud v0.0.15-r14
 	github.com/spf13/cobra v1.3.0
 	github.com/spf13/viper v1.12.0
-	google.golang.org/grpc v1.47.0
+	google.golang.org/grpc v1.48.0
 	google.golang.org/protobuf v1.28.0
 	gopkg.in/yaml.v2 v2.4.0
 	sigs.k8s.io/yaml v1.3.0
