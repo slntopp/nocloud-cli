@@ -36,6 +36,7 @@ func init() {
 	spCmd.AddCommand(sp.ListCmd)
 	spCmd.AddCommand(sp.UnbindPlanCmd)
 	spCmd.AddCommand(sp.BindPlanCmd)
+	spCmd.AddCommand(sp.InvokeCmd)
 
 	spCmd.AddCommand(sp.ExtCmd)
 
