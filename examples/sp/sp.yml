@@ -1,0 +1,25 @@
+uuid: 6206ce1a-3327-4716-a1f6-d50840903da9
+type: ione
+title: "Orsha3"
+secrets:
+  group: 1
+  host: https://sunstone.demo.support.pl/RPC2
+  pass: e6e86d1bce22371b18e8657b7afe11976ff534dfd1ff8d5933165694466ae17e
+  user: oneadmin
+  vlans:
+    vcenter: 
+      start: 0
+      size: 4096
+vars:
+  private_vnet_tmpl:
+    value:
+      default: 0
+  public_ip_pool:
+    value:
+      default: 34
+  sched:
+    value:
+      default: ID="2"
+  sched_ds:
+    value:
+      default: ID="105"

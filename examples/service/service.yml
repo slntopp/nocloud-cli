@@ -1,0 +1,61 @@
+{ 
+  "uuid": "88f64668-20e2-4670-a013-7a6cc2b913ac",
+  "version": "1",
+  "title": "Vlados' service",
+  "instances_groups": [
+    {
+      "uuid": "16857034",
+      "type": "ione",
+      "title": "vdc",
+      "config": {},
+      "instances": [
+        {
+          "uuid": "a675b4dc-94b4-4625-920c-3fcac54bd1e4",
+          "title": "just",
+          "config": {
+            "password": "werferfewr3r23rd",
+            "template_id": 5
+          },
+          "resources": {
+            "cpu": 2,
+            "drive_size": 13000,
+            "drive_type": "SSD",
+            "ips_private": 0,
+            "ips_public": 1,
+            "ram": 1024
+          },
+          "hash": "e656993b1e8afd33494a198fd5a9dbe472974358fff92c31af7f6246a79f7f74",
+          "billing_plan": {
+          	"uuid": "bbe20a8a-39eb-4315-a131-9648e14b831a",  
+          },  
+        },
+        {
+          "uuid": "4ddsfsdfc-94b4-4625-920c-3fcac54bd1e4",
+          "title": "just2",
+          "config": {
+            "password": "werferfewr3r23rd",
+            "template_id": 5
+          },
+          "resources": {
+            "cpu": 2,
+            "drive_size": 13000,
+            "drive_type": "SSD",
+            "ips_private": 0,
+            "ips_public": 1,
+            "ram": 1024
+          },
+          "hash": "e656993b1e8afd33494a198fd5a9dbe472974358fff92c31af7f6246a79f7f74",
+          "billing_plan": {
+          	"uuid": "bbe20a8a-39eb-4315-a131-9648e14b831a",  
+          },  
+        },
+      ],
+      "resources": {
+        "ips_private": 0,
+        "ips_public": 2
+      },
+      "hash": "d83beb5db07e1d0b7c2f126e89bc99eef2f0d40f5b90b604ff8293982d60f3c5"
+    }
+  ],
+  "hash": "74af7c5a73b5e23c94aefc5ed9b4e3c96de3822f5c5e1e527f18114dae6c48c0",
+}
