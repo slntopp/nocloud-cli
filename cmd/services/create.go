@@ -16,7 +16,6 @@ limitations under the License.
 package services
 
 import (
-	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -32,7 +31,7 @@ import (
 	sppb "github.com/slntopp/nocloud/pkg/services_providers/proto"
 )
 
-func SelectDeployPoliciesInteractive(ctx context.Context, cmd *cobra.Command, client pb.ServicesServiceClient, service *pb.Service) (res map[int32]string, err error) {
+func SelectDeployPoliciesInteractive(service *pb.Service) (res map[int32]string, err error) {
 	if err != nil {
 		return nil, err
 	}
@@ -63,6 +62,8 @@ func SelectDeployPoliciesInteractive(ctx context.Context, cmd *cobra.Command, cl
 		}
 		selected = strings.Split(selected, " | ")[1]
 		res[int32(i)] = selected
+
+		group.Sp = &selected
 	}
 	return res, nil
 }
@@ -80,7 +81,7 @@ var CreateCmd = &cobra.Command{
 			return err
 		}
 		if namespace == "" {
-			return errors.New("Namespace UUID isn't given")
+			return errors.New(" Namespace UUID isn't given")
 		}
 
 		if _, err := os.Stat(args[0]); os.IsNotExist(err) {
@@ -129,7 +130,7 @@ var CreateCmd = &cobra.Command{
 			json.Unmarshal(rulesJson, &req.DeployPolicies)
 		} else {
 			fmt.Println("Nothing given, selecting in interactive mode")
-			r, err := SelectDeployPoliciesInteractive(ctx, cmd, client, &service)
+			r, err := SelectDeployPoliciesInteractive(&service)
 			if err != nil {
 				return err
 			}

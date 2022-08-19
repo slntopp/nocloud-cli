@@ -29,6 +29,10 @@ import (
 	pb "github.com/slntopp/nocloud/pkg/services/proto"
 )
 
+var (
+	namespace string
+)
+
 // createCmd represents the create command
 var TestCmd = &cobra.Command{
 	Use:   "test [path to template] [flags]",
@@ -36,12 +40,8 @@ var TestCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) (err error) {
 
-		namespace, err := cmd.Flags().GetString("namespace")
-		if err != nil {
-			return err
-		}
 		if namespace == "" {
-			return errors.New("Namespace UUID isn't given")
+			return errors.New(" Namespace UUID isn't given")
 		}
 
 		if _, err := os.Stat(args[0]); os.IsNotExist(err) {
@@ -68,15 +68,17 @@ var TestCmd = &cobra.Command{
 			fmt.Println("Error while parsing template")
 			return err
 		}
-		var service pb.Service
-		err = json.Unmarshal(template, &service)
+		service := &pb.Service{}
+		err = json.Unmarshal(template, service)
 		if err != nil {
 			fmt.Println("Error while parsing template")
 			return err
 		}
 
+		SelectDeployPoliciesInteractive(service)
+
 		ctx, client := MakeServicesServiceClientOrFail()
-		request := pb.CreateRequest{Service: &service, Namespace: namespace}
+		request := pb.CreateRequest{Service: service, Namespace: namespace}
 		res, err := client.TestConfig(ctx, &request)
 		if err != nil {
 			return err
@@ -103,5 +105,5 @@ var TestCmd = &cobra.Command{
 }
 
 func init() {
-	TestCmd.Flags().StringP("namespace", "n", "", "Namespace UUID (required)")
+	TestCmd.Flags().StringVarP(&namespace, "namespace", "n", "", "Namespace UUID (required)")
 }
