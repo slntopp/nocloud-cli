@@ -5,7 +5,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,7 +16,6 @@ limitations under the License.
 package services
 
 import (
-	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -32,15 +31,13 @@ import (
 	sppb "github.com/slntopp/nocloud/pkg/services_providers/proto"
 )
 
-func SelectDeployPoliciesInteractive(ctx context.Context, cmd *cobra.Command, client pb.ServicesServiceClient, service *pb.Service) (res map[int32]string, err error) {
-	if err != nil {
-		return nil, err
-	}
+func SelectSPInteractive(service *pb.Service) (map[int32]string, error) {
 	ctx, spClient := sp.MakeServicesProviderServiceClientOrFail()
 	sps, err := spClient.List(ctx, &sppb.ListRequest{})
 	if err != nil {
 		return nil, err
 	}
+
 	providers := make(map[string][]string)
 	for _, sp := range sps.GetPool() {
 		pool := providers[sp.GetType()]
@@ -51,19 +48,24 @@ func SelectDeployPoliciesInteractive(ctx context.Context, cmd *cobra.Command, cl
 		providers[sp.GetType()] = pool
 	}
 
-	res = make(map[int32]string)
+	res := make(map[int32]string)
 	for i, group := range service.GetInstancesGroups() {
 		p := promptui.Select{
 			Label: fmt.Sprintf("Select Service Provider for Instances Group %s (%s)", group.Title, group.GetUuid()),
 			Items: providers[group.GetType()],
 		}
+
 		_, selected, err := p.Run()
 		if err != nil {
 			return nil, err
 		}
+
 		selected = strings.Split(selected, " | ")[1]
 		res[int32(i)] = selected
+
+		group.Sp = &selected
 	}
+
 	return res, nil
 }
 
@@ -80,7 +82,7 @@ var CreateCmd = &cobra.Command{
 			return err
 		}
 		if namespace == "" {
-			return errors.New("Namespace UUID isn't given")
+			return errors.New(" Namespace UUID isn't given")
 		}
 
 		if _, err := os.Stat(args[0]); os.IsNotExist(err) {
@@ -102,12 +104,12 @@ var CreateCmd = &cobra.Command{
 		default:
 			return errors.New("Unsupported template format " + format)
 		}
-
 		if err != nil {
 			fmt.Println("Error while parsing template1")
 			return err
 		}
-		var service pb.Service
+
+		service := &pb.Service{}
 		err = json.Unmarshal(template, &service)
 		if err != nil {
 			fmt.Println("Error while parsing template2")
@@ -115,25 +117,10 @@ var CreateCmd = &cobra.Command{
 		}
 
 		ctx, client := MakeServicesServiceClientOrFail()
-		req := pb.CreateRequest{Service: &service, Namespace: namespace}
+		req := pb.CreateRequest{Service: service, Namespace: namespace}
 
-		if rulesJson, _ := cmd.Flags().GetString("rules"); rulesJson != "" {
-			fmt.Println("Rules as string given", rulesJson)
-			json.Unmarshal([]byte(rulesJson), &req.DeployPolicies)
-		} else if rulesFile, _ := cmd.Flags().GetString("rules-file"); rulesFile != "" {
-			fmt.Println("Rules as File given", rulesFile)
-			rulesJson, err := os.ReadFile(rulesFile)
-			if err != nil {
-				return err
-			}
-			json.Unmarshal(rulesJson, &req.DeployPolicies)
-		} else {
-			fmt.Println("Nothing given, selecting in interactive mode")
-			r, err := SelectDeployPoliciesInteractive(ctx, cmd, client, &service)
-			if err != nil {
-				return err
-			}
-			req.DeployPolicies = r
+		if _, err := SelectSPInteractive(service); err != nil {
+			return err
 		}
 
 		fmt.Println(req)
@@ -148,13 +135,13 @@ var CreateCmd = &cobra.Command{
 			fmt.Println(res)
 			return err
 		}
+
 		fmt.Println("Result: ", string(output))
+
 		return nil
 	},
 }
 
 func init() {
 	CreateCmd.Flags().StringP("namespace", "n", "", "Namespace UUID (required)")
-	CreateCmd.Flags().StringP("rules", "r", "", "Deploy rules")
-	CreateCmd.Flags().StringP("rules-file", "f", "", "Deploy rules")
 }

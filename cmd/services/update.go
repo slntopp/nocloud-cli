@@ -41,7 +41,7 @@ var UpdateCmd = &cobra.Command{
 			return err
 		}
 		if namespace == "" {
-			return errors.New("Namespace UUID isn't given")
+			return errors.New(" Namespace UUID isn't given")
 		}
 
 		if _, err := os.Stat(args[0]); os.IsNotExist(err) {
