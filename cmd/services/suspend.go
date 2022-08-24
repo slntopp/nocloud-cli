@@ -23,7 +23,7 @@ import (
 // SuspendCmd represents the suspend command
 var SuspendCmd = &cobra.Command{
 	Use:     "suspend [service_id] [flags]",
-	Aliases: []string{"u"},
+	Aliases: []string{"sus", "susp"},
 	Short:   "NoCloud Service Suspend",
 	Args:    cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) (err error) {

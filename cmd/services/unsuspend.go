@@ -23,7 +23,7 @@ import (
 // Unsuspend represents the unsuspend command
 var UnsuspendCmd = &cobra.Command{
 	Use:     "unsuspend [service_id] [flags]",
-	Aliases: []string{"unsus"},
+	Aliases: []string{"unsus, uns, unsusp"},
 	Short:   "NoCloud Service Unsuspend",
 	Args:    cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) (err error) {
