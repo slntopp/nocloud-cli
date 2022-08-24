@@ -20,18 +20,18 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// createCmd represents the create command
-var UpCmd = &cobra.Command{
-	Use:     "up [service_id] [flags]",
-	Aliases: []string{},
-	Short:   "NoCloud Service Up",
+// Unsuspend represents the unsuspend command
+var UnsuspendCmd = &cobra.Command{
+	Use:     "unsuspend [service_id] [flags]",
+	Aliases: []string{"unsus, uns, unsusp"},
+	Short:   "NoCloud Service Unsuspend",
 	Args:    cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) (err error) {
 		ctx, client := MakeServicesServiceClientOrFail()
 
-		req := pb.UpRequest{Uuid: args[0]}
+		req := pb.UnsuspendRequest{Uuid: args[0]}
 
-		_, err = client.Up(ctx, &req)
+		_, err = client.Unsuspend(ctx, &req)
 		return err
 	},
 }
