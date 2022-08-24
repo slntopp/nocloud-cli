@@ -1,6 +1,6 @@
 module github.com/slntopp/nocloud-cli
 
-go 1.18
+go 1.19
 
 require (
 	github.com/jedib0t/go-pretty/v6 v6.2.4
