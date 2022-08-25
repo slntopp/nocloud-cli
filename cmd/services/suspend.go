@@ -16,6 +16,8 @@ limitations under the License.
 package services
 
 import (
+	"fmt"
+
 	pb "github.com/slntopp/nocloud/pkg/services/proto"
 	"github.com/spf13/cobra"
 )
@@ -27,11 +29,16 @@ var SuspendCmd = &cobra.Command{
 	Short:   "NoCloud Service Suspend",
 	Args:    cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) (err error) {
+		uuid := args[0]
 		ctx, client := MakeServicesServiceClientOrFail()
 
-		req := pb.SuspendRequest{Uuid: args[0]}
+		req := pb.SuspendRequest{Uuid: uuid}
 
-		_, err = client.Suspend(ctx, &req)
+		if _, err = client.Suspend(ctx, &req); err != nil {
+			fmt.Printf("Error while suspending Service %s. Reason: %v.\n", uuid, err)
+		} else {
+			fmt.Printf("Successfuly suspended Service %s.\n", uuid)
+		}
 		return err
 	},
 }
