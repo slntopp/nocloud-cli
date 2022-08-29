@@ -18,6 +18,7 @@ package services
 import (
 	"fmt"
 
+	"github.com/slntopp/nocloud-cli/pkg/tools"
 	pb "github.com/slntopp/nocloud/pkg/services/proto"
 	"github.com/spf13/cobra"
 )
@@ -34,11 +35,19 @@ var UnsuspendCmd = &cobra.Command{
 
 		req := pb.UnsuspendRequest{Uuid: uuid}
 
-		if _, err = client.Unsuspend(ctx, &req); err != nil {
-			fmt.Printf("Error while unsuspending Service %s. Reason: %v.\n", uuid, err)
-		} else {
-			fmt.Printf("Successfuly unsuspended Service %s.\n", uuid)
+		res, err := client.Unsuspend(ctx, &req)
+		if err != nil {
+			return err
 		}
+
+		ok, err := tools.PrintJsonDataQ(cmd, res)
+		if err != nil {
+			return err
+		}
+		if !ok {
+			fmt.Println("UUID:", uuid)
+		}
+
 		return err
 	},
 }

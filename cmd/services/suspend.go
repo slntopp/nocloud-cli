@@ -18,6 +18,7 @@ package services
 import (
 	"fmt"
 
+	"github.com/slntopp/nocloud-cli/pkg/tools"
 	pb "github.com/slntopp/nocloud/pkg/services/proto"
 	"github.com/spf13/cobra"
 )
@@ -34,11 +35,19 @@ var SuspendCmd = &cobra.Command{
 
 		req := pb.SuspendRequest{Uuid: uuid}
 
-		if _, err = client.Suspend(ctx, &req); err != nil {
-			fmt.Printf("Error while suspending Service %s. Reason: %v.\n", uuid, err)
-		} else {
-			fmt.Printf("Successfuly suspended Service %s.\n", uuid)
+		res, err := client.Suspend(ctx, &req)
+		if err != nil {
+			return err
 		}
+
+		ok, err := tools.PrintJsonDataQ(cmd, res)
+		if err != nil {
+			return err
+		}
+		if !ok {
+			fmt.Println("UUID:", uuid)
+		}
+
 		return err
 	},
 }
