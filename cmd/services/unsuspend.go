@@ -37,15 +37,14 @@ var UnsuspendCmd = &cobra.Command{
 
 		res, err := client.Unsuspend(ctx, &req)
 		if err != nil {
+			fmt.Printf("Error while unsuspending Service %s. Reason: %v.\n", uuid, err)
 			return err
 		}
 
+		fmt.Printf("Successfuly unsuspended Service %s.\n", uuid)
 		ok, err := tools.PrintJsonDataQ(cmd, res)
-		if err != nil {
+		if !ok || err != nil {
 			return err
-		}
-		if !ok {
-			fmt.Println("UUID:", uuid)
 		}
 
 		return nil
