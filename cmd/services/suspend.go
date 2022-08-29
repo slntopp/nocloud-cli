@@ -41,10 +41,12 @@ var SuspendCmd = &cobra.Command{
 			return err
 		}
 
-		fmt.Printf("Successfuly suspended Service %s.\n", uuid)
 		ok, err := tools.PrintJsonDataQ(cmd, res)
-		if !ok || err != nil {
+		if err != nil {
 			return err
+		}
+		if !ok {
+			fmt.Printf("Successfuly suspended Service %s.\n", uuid)
 		}
 
 		return nil
