@@ -48,6 +48,6 @@ var UnsuspendCmd = &cobra.Command{
 			fmt.Println("UUID:", uuid)
 		}
 
-		return err
+		return nil
 	},
 }
