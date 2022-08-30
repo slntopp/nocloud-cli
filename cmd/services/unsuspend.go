@@ -16,6 +16,9 @@ limitations under the License.
 package services
 
 import (
+	"fmt"
+
+	"github.com/slntopp/nocloud-cli/pkg/tools"
 	pb "github.com/slntopp/nocloud/pkg/services/proto"
 	"github.com/spf13/cobra"
 )
@@ -27,11 +30,25 @@ var UnsuspendCmd = &cobra.Command{
 	Short:   "NoCloud Service Unsuspend",
 	Args:    cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) (err error) {
+		uuid := args[0]
 		ctx, client := MakeServicesServiceClientOrFail()
 
-		req := pb.UnsuspendRequest{Uuid: args[0]}
+		req := pb.UnsuspendRequest{Uuid: uuid}
 
-		_, err = client.Unsuspend(ctx, &req)
-		return err
+		res, err := client.Unsuspend(ctx, &req)
+		if err != nil {
+			fmt.Printf("Error while unsuspending Service %s. Reason: %v.\n", uuid, err)
+			return err
+		}
+
+		ok, err := tools.PrintJsonDataQ(cmd, res)
+		if err != nil {
+			return err
+		}
+		if !ok {
+			fmt.Printf("Successfuly unsuspended Service %s.\n", uuid)
+		}
+
+		return nil
 	},
 }
