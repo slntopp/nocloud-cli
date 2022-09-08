@@ -13,10 +13,24 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package main
+package cc
 
-import "github.com/slntopp/nocloud-cli/cmd"
+import (
+	"github.com/slntopp/nocloud-cli/cmd/cc/messages"
+	"github.com/spf13/cobra"
+)
 
-func main() {
-	cmd.Execute()
+// messageCmd represents the message command
+var MessagesCmd = &cobra.Command{
+	Use:     "messages",
+	Aliases: []string{"msg", "message"},
+	Short:   "Manage nocloud-cc messages",
+}
+
+func init() {
+	MessagesCmd.AddCommand(messages.SendCmd)
+	MessagesCmd.AddCommand(messages.DeleteCmd)
+	MessagesCmd.AddCommand(messages.UpdateCmd)
+	MessagesCmd.AddCommand(messages.ListCmd)
+	MessagesCmd.AddCommand(messages.GetCmd)
 }
