@@ -32,5 +32,6 @@ var ccCmd = &cobra.Command{
 
 func init() {
 	ccCmd.AddCommand(cc.ChatsCmd)
+	ccCmd.AddCommand(cc.MessagesCmd)
 	rootCmd.AddCommand(ccCmd)
 }

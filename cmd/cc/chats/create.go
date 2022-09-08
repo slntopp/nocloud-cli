@@ -53,7 +53,7 @@ var CreateCmd = &cobra.Command{
 			return err
 		}
 		if !ok {
-			fmt.Printf("Successfuly created chat %s.\n", title)
+			fmt.Printf("Successfuly created chat %s.\n", chat.GetUuid())
 		}
 
 		return err

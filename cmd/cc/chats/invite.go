@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package messages
+package chats
 
 import (
 	"errors"
@@ -25,33 +25,38 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// ListCmd represents the list command
-var ListCmd = &cobra.Command{
-	Use:   "list [flags]",
-	Short: "List messages from chat",
+// InviteCmd represents the invite command
+var InviteCmd = &cobra.Command{
+	Use:   "invite [flags]",
+	Short: "Invite to chat",
 	Args:  cobra.ExactArgs(0),
 	RunE: func(cmd *cobra.Command, _ []string) (err error) {
-		var uuid string
-		if uuid, err = cmd.Flags().GetString("uuid"); err != nil || uuid == "" {
+		ctx, client := helpers.MakeChatsServiceClientOrFail()
+		var account string
+		if account, err = cmd.Flags().GetString("account"); err != nil || account == "" {
+			return errors.New("empty account uui")
+		}
+		var chat string
+		if chat, err = cmd.Flags().GetString("chat"); err != nil || chat == "" {
 			return errors.New("empty chat uuid")
 		}
 
-		ctx, client := helpers.MakeChatsServiceClientOrFail()
-		resp, err := client.ListChatMessages(ctx, &proto.ListChatMessagesRequest{
-			ChatUuid: uuid,
+		_, err = client.Invite(ctx, &proto.InviteChatRequest{
+			ChatUuid: chat,
+			UserUuid: account,
 		})
 
 		if err != nil {
-			fmt.Printf("Error while getting messages from chat %s. Reason: %v.\n", uuid, err)
+			fmt.Printf("Error while inviting to chat %s. Reason: %v.\n", chat, err)
 			return err
 		}
 
-		ok, err := tools.PrintJsonDataQ(cmd, resp)
+		ok, err := tools.PrintJsonDataQ(cmd, chat)
 		if err != nil {
 			return err
 		}
 		if !ok {
-			fmt.Printf("Successfuly fetched messages %v.\n", resp.Messages)
+			fmt.Printf("Successfuly invited account %s to chat %s.\n", account, chat)
 		}
 
 		return err
@@ -59,5 +64,6 @@ var ListCmd = &cobra.Command{
 }
 
 func init() {
-	ListCmd.Flags().StringP("uuid", "u", "", "Chat uuid from where to fetch messages")
+	InviteCmd.Flags().StringP("account", "a", "", "Account uuid")
+	InviteCmd.Flags().StringP("chat", "c", "", "Chat uuid")
 }

@@ -33,4 +33,5 @@ func init() {
 	ChatsCmd.AddCommand(chats.DeleteCmd)
 	ChatsCmd.AddCommand(chats.UpdateCmd)
 	ChatsCmd.AddCommand(chats.GetCmd)
+	ChatsCmd.AddCommand(chats.InviteCmd)
 }

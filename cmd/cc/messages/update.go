@@ -47,6 +47,7 @@ var UpdateCmd = &cobra.Command{
 		}
 
 		resp, err := client.UpdateChatMessage(ctx, &proto.ChatMessage{
+			Uuid:    uuid,
 			Message: messageText,
 		})
 

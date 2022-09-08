@@ -42,7 +42,7 @@ var GetCmd = &cobra.Command{
 		})
 
 		if err != nil {
-			fmt.Printf("Error while deleting message %s. Reason: %v.\n", uuid, err)
+			fmt.Printf("Error while fetching message %s. Reason: %v.\n", uuid, err)
 			return err
 		}
 
