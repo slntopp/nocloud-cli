@@ -41,12 +41,17 @@ var SendCmd = &cobra.Command{
 		if reciever, err = cmd.Flags().GetString("to"); err != nil || reciever == "" {
 			return errors.New("reciever is empty")
 		}
+		var entities []string
+		if entities, err = cmd.Flags().GetStringSlice("entities"); err != nil {
+			return err
+		}
 
 		msg, err := client.SendChatMessage(ctx, &proto.SendChatMessageRequest{
 			Message: &proto.ChatMessage{
 				To:      reciever,
 				Message: messageText,
 			},
+			Entities: entities,
 		})
 
 		if err != nil {
@@ -69,4 +74,5 @@ var SendCmd = &cobra.Command{
 func init() {
 	SendCmd.Flags().StringP("to", "t", "", "Reciever uuid")
 	SendCmd.Flags().StringP("message", "m", "", "Message text")
+	SendCmd.Flags().StringSliceP("entities", "e", []string{}, "Message text")
 }
