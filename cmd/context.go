@@ -5,7 +5,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,17 +18,18 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
-	"strings"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
 
 // contextCmd represents the context command
 var contextCmd = &cobra.Command{
-	Use:   "context",
+	Use:     "context",
 	Aliases: []string{"ctx"},
-	Short: "Print current NoCloud CLI Context | Aliases: ctx",
+	Short:   "Print current NoCloud CLI Context | Aliases: ctx",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		data := make(map[string]interface{})
 		data["host"] = viper.Get("nocloud")
@@ -41,8 +42,9 @@ var contextCmd = &cobra.Command{
 			return nil
 		}
 
+		title := cases.Title(language.English)
 		for k, v := range data {
-			fmt.Printf("%s: %v\n", strings.Title(k), v)
+			fmt.Printf("%s: %v\n", title.String(k), v)
 		}
 
 		return nil

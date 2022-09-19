@@ -5,7 +5,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -103,12 +103,12 @@ var CreateTransactionCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		acc, _ := cmd.Flags().GetString("account")
 		if acc == "" {
-			return fmt.Errorf("Account is required")
+			return fmt.Errorf("args: Account is required")
 		}
 
 		total, _ := cmd.Flags().GetFloat64("total")
 		if total == 0 {
-			return fmt.Errorf("Total is required and must be not null")
+			return fmt.Errorf("args: Total is required and must be not null")
 		}
 
 		meta := make(map[string]*structpb.Value)
@@ -125,7 +125,7 @@ var CreateTransactionCmd = &cobra.Command{
 			re := regexp.MustCompile(`(?P<sign>^-?)(?P<num>\d+)(?P<mult>[smhdw]{1})`)
 			matches := re.FindStringSubmatch(delta)
 			if len(matches) == 0 {
-				return errors.New("Invalid delta format")
+				return errors.New("args: Invalid delta format")
 			}
 			multiplicators := map[string]int{
 				"s": 1,
