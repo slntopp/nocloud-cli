@@ -13,10 +13,25 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package main
+package cmd
 
-import "github.com/slntopp/nocloud-cli/cmd"
+import (
+	"github.com/slntopp/nocloud-cli/cmd/cc"
+	"github.com/spf13/cobra"
+)
 
-func main() {
-	cmd.Execute()
+// ccCmd represents Core Chat module cmd
+var ccCmd = &cobra.Command{
+	Use:     "cc",
+	Aliases: []string{},
+	Short:   "Core Chat nocloud-cli module",
+	RunE: func(cmd *cobra.Command, args []string) error {
+		return nil
+	},
+}
+
+func init() {
+	ccCmd.AddCommand(cc.ChatsCmd)
+	ccCmd.AddCommand(cc.MessagesCmd)
+	rootCmd.AddCommand(ccCmd)
 }
