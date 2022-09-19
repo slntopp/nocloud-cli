@@ -27,6 +27,7 @@ import (
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
+	"google.golang.org/grpc/credentials/insecure"
 )
 
 // loginCmd represents the login command
@@ -38,9 +39,9 @@ var loginCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		creds := credentials.NewTLS(&tls.Config{InsecureSkipVerify: true})
 		opt := grpc.WithTransportCredentials(creds)
-		insecure, _ := cmd.Flags().GetBool("insecure")
-		if insecure {
-			opt = grpc.WithInsecure()
+		_insecure, _ := cmd.Flags().GetBool("insecure")
+		if _insecure {
+			opt = grpc.WithTransportCredentials(insecure.NewCredentials())
 		}
 		conn, err := grpc.Dial(args[0], opt)
 		if err != nil {
@@ -69,7 +70,7 @@ var loginCmd = &cobra.Command{
 
 		viper.Set("nocloud", args[0])
 		viper.Set("token", token)
-		viper.Set("insecure", insecure)
+		viper.Set("insecure", _insecure)
 		err = viper.WriteConfig()
 		return err
 	},
