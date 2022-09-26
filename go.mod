@@ -1,12 +1,12 @@
 module github.com/slntopp/nocloud-cli
 
-go 1.19
+go 1.18
 
 require (
 	github.com/jedib0t/go-pretty/v6 v6.3.9
 	github.com/manifoldco/promptui v0.9.0
 	github.com/slntopp/nocloud v0.0.16-r00
-	github.com/slntopp/nocloud-cc v0.0.1-r2
+	github.com/slntopp/nocloud-cc v0.0.1-r3
 	github.com/spf13/cobra v1.5.0
 	github.com/spf13/viper v1.13.0
 	golang.org/x/text v0.3.7
