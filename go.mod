@@ -3,7 +3,7 @@ module github.com/slntopp/nocloud-cli
 go 1.19
 
 require (
-	github.com/jedib0t/go-pretty/v6 v6.3.8
+	github.com/jedib0t/go-pretty/v6 v6.3.9
 	github.com/manifoldco/promptui v0.9.0
 	github.com/slntopp/nocloud v0.0.15-r19
 	github.com/slntopp/nocloud-cc v0.0.1-r2
