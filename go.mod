@@ -4,6 +4,7 @@ go 1.18
 
 require (
 	github.com/jedib0t/go-pretty/v6 v6.3.9
+	github.com/jroimartin/gocui v0.5.0
 	github.com/manifoldco/promptui v0.9.0
 	github.com/slntopp/nocloud v0.0.16-r00
 	github.com/slntopp/nocloud-cc v0.0.1-r3
@@ -26,6 +27,7 @@ require (
 	github.com/magiconair/properties v1.8.6 // indirect
 	github.com/mattn/go-runewidth v0.0.13 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
+	github.com/nsf/termbox-go v1.1.1 // indirect
 	github.com/pelletier/go-toml v1.9.5 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.5 // indirect
 	github.com/rivo/uniseg v0.4.2 // indirect
