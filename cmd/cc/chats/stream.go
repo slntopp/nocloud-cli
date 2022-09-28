@@ -22,6 +22,7 @@ import (
 
 	"github.com/jroimartin/gocui"
 	"github.com/slntopp/nocloud-cc/pkg/chats/proto"
+	"github.com/slntopp/nocloud-cli/cmd/account"
 	"github.com/slntopp/nocloud-cli/cmd/cc/helpers"
 	"github.com/spf13/cobra"
 )
@@ -46,6 +47,8 @@ var StreamCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(0),
 	RunE: func(cmd *cobra.Command, _ []string) (err error) {
 		ctx, client := helpers.MakeChatsServiceClientOrFail()
+		ctxAcc, clientAcc := account.MakeAccountsServiceClientOrFail()
+
 		var uuid string
 		if uuid, err = cmd.Flags().GetString("uuid"); err != nil || uuid == "" {
 			return errors.New("empty uuid")
@@ -59,7 +62,7 @@ var StreamCmd = &cobra.Command{
 			return err
 		}
 
-		ui, err := NewUI(ctx, client, stream, uuid)
+		ui, err := NewUI(ctx, ctxAcc, client, clientAcc, stream, uuid)
 		if err != nil {
 			return err
 		}

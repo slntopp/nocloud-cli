@@ -6,23 +6,31 @@ import (
 
 	"github.com/jroimartin/gocui"
 	"github.com/slntopp/nocloud-cc/pkg/chats/proto"
+	regpb "github.com/slntopp/nocloud/pkg/registry/proto"
+	"github.com/slntopp/nocloud/pkg/registry/proto/accounts"
 )
 
 type UI struct {
 	*gocui.Gui
-	ctx    context.Context
-	stream proto.ChatService_StreamClient
-	client proto.ChatServiceClient
-	chat   string
+	ctx       context.Context
+	ctxAcc    context.Context
+	stream    proto.ChatService_StreamClient
+	client    proto.ChatServiceClient
+	clientAcc regpb.AccountsServiceClient
+	chat      string
 }
 
-func NewUI(ctx context.Context,
-	client proto.ChatServiceClient, stream proto.ChatService_StreamClient, chat string) (*UI, error) {
+func NewUI(
+	ctx context.Context,
+	ctxAcc context.Context,
+	client proto.ChatServiceClient,
+	clientAcc regpb.AccountsServiceClient,
+	stream proto.ChatService_StreamClient, chat string) (*UI, error) {
 	g, err := gocui.NewGui(gocui.OutputNormal)
 	if err != nil {
 		return nil, err
 	}
-	ui := &UI{Gui: g, stream: stream, client: client, chat: chat, ctx: ctx}
+	ui := &UI{Gui: g, stream: stream, client: client, chat: chat, ctx: ctx, ctxAcc: ctxAcc, clientAcc: clientAcc}
 
 	return ui, nil
 }
@@ -90,7 +98,14 @@ func (ui *UI) receiveMsg() {
 
 		ui.Update(func(g *gocui.Gui) error {
 			view, _ := ui.View("messages")
-			fmt.Fprintf(view, "%s: %s", message.From, message.Message)
+
+			from := "anon"
+			resp, err := ui.clientAcc.Get(ui.ctxAcc, &accounts.GetRequest{Uuid: message.From})
+			if err == nil {
+				from = resp.GetTitle()
+			}
+
+			fmt.Fprintf(view, "%s: %s", from, message.Message)
 			return nil
 		})
 	}
