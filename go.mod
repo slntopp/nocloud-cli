@@ -6,7 +6,7 @@ require (
 	github.com/jedib0t/go-pretty/v6 v6.4.2
 	github.com/jroimartin/gocui v0.5.0
 	github.com/manifoldco/promptui v0.9.0
-	github.com/slntopp/nocloud v0.0.16-r04.0.20221113192145-2b8e97c6d605
+	github.com/slntopp/nocloud v0.0.16-r04.0.20221114120939-9f82021717e2
 	github.com/slntopp/nocloud-cc v0.0.1-r3
 	github.com/spf13/cobra v1.6.1
 	github.com/spf13/viper v1.14.0
