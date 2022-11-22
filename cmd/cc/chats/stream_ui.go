@@ -100,7 +100,9 @@ func (ui *UI) receiveMsg() {
 			view, _ := ui.View("messages")
 
 			from := "anon"
-			resp, err := ui.clientAcc.Get(ui.ctxAcc, &accounts.GetRequest{Uuid: message.From})
+			resp, err := ui.clientAcc.Get(ui.ctxAcc,
+				&accounts.GetRequest{Uuid: message.From, Public: true},
+			)
 			if err == nil {
 				from = resp.GetTitle()
 			}
