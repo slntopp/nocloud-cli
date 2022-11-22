@@ -17,6 +17,7 @@ package ansible
 
 import (
 	"fmt"
+	"io"
 	"log"
 
 	pb "github.com/slntopp/nocloud-ansible/proto/ansible"
@@ -41,6 +42,10 @@ var WatchCmd = &cobra.Command{
 
 		for {
 			respObject, err := resp.Recv()
+			if err == io.EOF {
+				fmt.Println("All done")
+				return nil
+			}
 			if err != nil {
 				fmt.Println(err)
 				return err
