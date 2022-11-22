@@ -27,8 +27,8 @@ import (
 	"sigs.k8s.io/yaml"
 
 	"github.com/slntopp/nocloud-cli/cmd/sp"
-	pb "github.com/slntopp/nocloud/pkg/services/proto"
-	sppb "github.com/slntopp/nocloud/pkg/services_providers/proto"
+	pb "github.com/slntopp/nocloud-proto/services"
+	sppb "github.com/slntopp/nocloud-proto/services_providers"
 )
 
 func SelectSPInteractive(service *pb.Service) (map[int32]string, error) {

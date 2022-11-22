@@ -21,8 +21,8 @@ import (
 	"fmt"
 
 	tools "github.com/slntopp/nocloud-cli/pkg/tools"
-	regpb "github.com/slntopp/nocloud/pkg/registry/proto"
-	pb "github.com/slntopp/nocloud/pkg/registry/proto/accounts"
+	regpb "github.com/slntopp/nocloud-proto/registry"
+	pb "github.com/slntopp/nocloud-proto/registry/accounts"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"

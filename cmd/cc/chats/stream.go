@@ -21,9 +21,9 @@ import (
 	"log"
 
 	"github.com/jroimartin/gocui"
-	"github.com/slntopp/nocloud-cc/pkg/chats/proto"
 	"github.com/slntopp/nocloud-cli/cmd/account"
 	"github.com/slntopp/nocloud-cli/cmd/cc/helpers"
+	proto "github.com/slntopp/nocloud-proto/cc"
 	"github.com/spf13/cobra"
 )
 

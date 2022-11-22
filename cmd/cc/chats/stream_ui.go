@@ -5,9 +5,9 @@ import (
 	"fmt"
 
 	"github.com/jroimartin/gocui"
-	"github.com/slntopp/nocloud-cc/pkg/chats/proto"
-	regpb "github.com/slntopp/nocloud/pkg/registry/proto"
-	"github.com/slntopp/nocloud/pkg/registry/proto/accounts"
+	proto "github.com/slntopp/nocloud-proto/cc"
+	regpb "github.com/slntopp/nocloud-proto/registry"
+	"github.com/slntopp/nocloud-proto/registry/accounts"
 )
 
 type UI struct {

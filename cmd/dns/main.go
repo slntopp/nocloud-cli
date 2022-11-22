@@ -5,7 +5,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,7 +21,7 @@ import (
 	"fmt"
 	"os"
 
-	pb "github.com/slntopp/nocloud/pkg/dns/proto"
+	pb "github.com/slntopp/nocloud-proto/dns"
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
@@ -29,7 +29,7 @@ import (
 	"google.golang.org/grpc/metadata"
 )
 
-func MakeDNSClientOrFail() (context.Context, pb.DNSClient){
+func MakeDNSClientOrFail() (context.Context, pb.DNSClient) {
 	host := viper.Get("nocloud")
 	if host == nil {
 		fmt.Fprintln(os.Stderr, "Error setting connection up")
@@ -55,6 +55,6 @@ func MakeDNSClientOrFail() (context.Context, pb.DNSClient){
 
 	client := pb.NewDNSClient(conn)
 	ctx := context.Background()
-	ctx = metadata.AppendToOutgoingContext(ctx, "authorization", "bearer " + token.(string))
+	ctx = metadata.AppendToOutgoingContext(ctx, "authorization", "bearer "+token.(string))
 	return ctx, client
 }

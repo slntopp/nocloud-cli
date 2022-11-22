@@ -5,7 +5,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,7 +22,7 @@ import (
 	"os"
 
 	"github.com/jedib0t/go-pretty/v6/table"
-	pb "github.com/slntopp/nocloud/pkg/settings/proto"
+	pb "github.com/slntopp/nocloud-proto/settings"
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
@@ -30,7 +30,7 @@ import (
 	"google.golang.org/grpc/metadata"
 )
 
-func MakeSettingsServiceClientOrFail() (context.Context, pb.SettingsServiceClient){
+func MakeSettingsServiceClientOrFail() (context.Context, pb.SettingsServiceClient) {
 	host := viper.Get("nocloud")
 	if host == nil {
 		fmt.Fprintln(os.Stderr, "Error setting connection up")
@@ -56,7 +56,7 @@ func MakeSettingsServiceClientOrFail() (context.Context, pb.SettingsServiceClien
 
 	client := pb.NewSettingsServiceClient(conn)
 	ctx := context.Background()
-	ctx = metadata.AppendToOutgoingContext(ctx, "authorization", "bearer " + token.(string))
+	ctx = metadata.AppendToOutgoingContext(ctx, "authorization", "bearer "+token.(string))
 	return ctx, client
 }
 
@@ -64,12 +64,12 @@ func PrintKeys(res *pb.KeysResponse) {
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
 	t.AppendHeader(table.Row{"Key", "Description", "Public?"})
-	
+
 	rows := make([]table.Row, len(res.GetPool()))
 	for i, key := range res.GetPool() {
 		rows[i] = table.Row{key.Key, key.Description, key.Public}
 	}
 	t.AppendRows(rows)
 	t.AppendFooter(table.Row{"Total Found", len(rows)})
-    t.Render()
+	t.Render()
 }

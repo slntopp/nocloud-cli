@@ -5,7 +5,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,7 +22,7 @@ import (
 	"os"
 
 	"github.com/jedib0t/go-pretty/v6/table"
-	pb "github.com/slntopp/nocloud/pkg/instances/proto"
+	pb "github.com/slntopp/nocloud-proto/instances"
 	"sigs.k8s.io/yaml"
 
 	"github.com/spf13/viper"
@@ -32,7 +32,7 @@ import (
 	"google.golang.org/grpc/metadata"
 )
 
-func MakeInstancesServiceClientOrFail() (context.Context, pb.InstancesServiceClient){
+func MakeInstancesServiceClientOrFail() (context.Context, pb.InstancesServiceClient) {
 	host := viper.Get("nocloud")
 	if host == nil {
 		fmt.Fprintln(os.Stderr, "Error setting connection up")
@@ -58,7 +58,7 @@ func MakeInstancesServiceClientOrFail() (context.Context, pb.InstancesServiceCli
 
 	client := pb.NewInstancesServiceClient(conn)
 	ctx := context.Background()
-	ctx = metadata.AppendToOutgoingContext(ctx, "authorization", "bearer " + token.(string))
+	ctx = metadata.AppendToOutgoingContext(ctx, "authorization", "bearer "+token.(string))
 	return ctx, client
 }
 
@@ -93,7 +93,7 @@ func PrintInstancesPool(pool []*pb.Instance) {
 	t.AppendRows(rows)
 
 	t.AppendFooter(table.Row{"", "Total Found", len(pool)})
-    t.Render()
+	t.Render()
 }
 
 func PrintInstanceInvokeResponse(res *pb.InvokeResponse) error {

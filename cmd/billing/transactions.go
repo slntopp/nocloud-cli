@@ -24,7 +24,7 @@ import (
 	"time"
 
 	"github.com/slntopp/nocloud-cli/pkg/tools"
-	pb "github.com/slntopp/nocloud/pkg/billing/proto"
+	pb "github.com/slntopp/nocloud-proto/billing"
 	"github.com/spf13/cobra"
 	"google.golang.org/protobuf/types/known/structpb"
 )
