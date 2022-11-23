@@ -5,7 +5,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,7 +23,7 @@ import (
 
 	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/slntopp/nocloud-cli/pkg/tools"
-	pb "github.com/slntopp/nocloud/pkg/health/proto"
+	pb "github.com/slntopp/nocloud-proto/health"
 	"github.com/spf13/cobra"
 )
 

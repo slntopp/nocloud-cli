@@ -26,7 +26,7 @@ import (
 	"sigs.k8s.io/yaml"
 
 	"github.com/slntopp/nocloud-cli/pkg/tools"
-	pb "github.com/slntopp/nocloud/pkg/services/proto"
+	pb "github.com/slntopp/nocloud-proto/services"
 )
 
 var (

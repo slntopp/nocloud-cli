@@ -5,7 +5,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,8 +22,8 @@ import (
 	"os"
 
 	"github.com/jedib0t/go-pretty/v6/table"
-	regpb "github.com/slntopp/nocloud/pkg/registry/proto"
-	pb "github.com/slntopp/nocloud/pkg/registry/proto/namespaces"
+	regpb "github.com/slntopp/nocloud-proto/registry"
+	pb "github.com/slntopp/nocloud-proto/registry/namespaces"
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
@@ -31,7 +31,7 @@ import (
 	"google.golang.org/grpc/metadata"
 )
 
-func MakeNamespacesServiceClientOrFail() (context.Context, regpb.NamespacesServiceClient){
+func MakeNamespacesServiceClientOrFail() (context.Context, regpb.NamespacesServiceClient) {
 	host := viper.Get("nocloud")
 	if host == nil {
 		fmt.Fprintln(os.Stderr, "Error setting connection up")
@@ -57,7 +57,7 @@ func MakeNamespacesServiceClientOrFail() (context.Context, regpb.NamespacesServi
 
 	client := regpb.NewNamespacesServiceClient(conn)
 	ctx := context.Background()
-	ctx = metadata.AppendToOutgoingContext(ctx, "authorization", "bearer " + token.(string))
+	ctx = metadata.AppendToOutgoingContext(ctx, "authorization", "bearer "+token.(string))
 	return ctx, client
 }
 
@@ -65,7 +65,7 @@ func PrintNamespacesPool(pool []*pb.Namespace) {
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
 	t.AppendHeader(table.Row{"UUID", "Title"})
-	
+
 	rows := make([]table.Row, len(pool))
 	for i, acc := range pool {
 		rows[i] = table.Row{acc.Uuid, acc.Title}
@@ -77,5 +77,5 @@ func PrintNamespacesPool(pool []*pb.Namespace) {
 	})
 
 	t.AppendFooter(table.Row{"Total Found", len(pool)})
-    t.Render()
+	t.Render()
 }

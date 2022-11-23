@@ -25,7 +25,7 @@ import (
 	"github.com/spf13/cobra"
 	"sigs.k8s.io/yaml"
 
-	pb "github.com/slntopp/nocloud/pkg/services/proto"
+	pb "github.com/slntopp/nocloud-proto/services"
 )
 
 // createCmd represents the create command
