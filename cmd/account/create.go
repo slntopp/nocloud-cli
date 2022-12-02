@@ -21,7 +21,7 @@ import (
 	"strings"
 
 	"github.com/slntopp/nocloud-cli/pkg/tools"
-	accountspb "github.com/slntopp/nocloud/pkg/registry/proto/accounts"
+	accountspb "github.com/slntopp/nocloud-proto/registry/accounts"
 	"github.com/spf13/cobra"
 )
 

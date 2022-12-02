@@ -22,9 +22,9 @@ import (
 	"os"
 	"strings"
 
-	"github.com/slntopp/nocloud-cc/pkg/chats/proto"
 	"github.com/slntopp/nocloud-cli/cmd/cc/helpers"
 	"github.com/slntopp/nocloud-cli/pkg/tools"
+	proto "github.com/slntopp/nocloud-proto/cc"
 	"github.com/spf13/cobra"
 	"sigs.k8s.io/yaml"
 )

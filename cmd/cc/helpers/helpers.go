@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/slntopp/nocloud-cc/pkg/chats/proto"
+	proto "github.com/slntopp/nocloud-proto/cc"
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"

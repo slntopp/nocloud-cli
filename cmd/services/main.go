@@ -5,7 +5,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,7 +22,7 @@ import (
 	"os"
 
 	"github.com/jedib0t/go-pretty/v6/table"
-	pb "github.com/slntopp/nocloud/pkg/services/proto"
+	pb "github.com/slntopp/nocloud-proto/services"
 	"sigs.k8s.io/yaml"
 
 	"github.com/spf13/viper"
@@ -32,7 +32,7 @@ import (
 	"google.golang.org/grpc/metadata"
 )
 
-func MakeServicesServiceClientOrFail() (context.Context, pb.ServicesServiceClient){
+func MakeServicesServiceClientOrFail() (context.Context, pb.ServicesServiceClient) {
 	host := viper.Get("nocloud")
 	if host == nil {
 		fmt.Fprintln(os.Stderr, "Error setting connection up")
@@ -58,7 +58,7 @@ func MakeServicesServiceClientOrFail() (context.Context, pb.ServicesServiceClien
 
 	client := pb.NewServicesServiceClient(conn)
 	ctx := context.Background()
-	ctx = metadata.AppendToOutgoingContext(ctx, "authorization", "bearer " + token.(string))
+	ctx = metadata.AppendToOutgoingContext(ctx, "authorization", "bearer "+token.(string))
 	return ctx, client
 }
 
@@ -66,7 +66,7 @@ func PrintTestErrors(pool []*pb.TestConfigError) {
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
 	t.AppendHeader(table.Row{"Group", "Instance", "Error"})
-	
+
 	rows := make([]table.Row, len(pool))
 	for i, err := range pool {
 		rows[i] = table.Row{err.GetInstanceGroup(), err.GetInstance(), err.GetError()}
@@ -74,7 +74,7 @@ func PrintTestErrors(pool []*pb.TestConfigError) {
 	t.AppendRows(rows)
 
 	t.AppendFooter(table.Row{"", "Total Found", len(pool)})
-    t.Render()
+	t.Render()
 }
 
 func PrintService(s *pb.Service) error {
@@ -108,5 +108,5 @@ func PrintServicesPool(pool []*pb.Service) {
 	t.AppendRows(rows)
 
 	t.AppendFooter(table.Row{"", "Total Found", len(pool)})
-    t.Render()
+	t.Render()
 }

@@ -5,7 +5,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,7 +19,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	accountspb "github.com/slntopp/nocloud/pkg/registry/proto/accounts"
+	accountspb "github.com/slntopp/nocloud-proto/registry/accounts"
 	"github.com/spf13/cobra"
 
 	"github.com/slntopp/nocloud-cli/cmd/account"
@@ -27,9 +27,9 @@ import (
 
 // accountCmd represents the account command
 var accountCmd = &cobra.Command{
-	Use:   "account",
+	Use:     "account",
 	Aliases: []string{"acc", "accounts"},
-	Short: "Manage accounts, prints info about current by default | Aliases: acc, accounts",
+	Short:   "Manage accounts, prints info about current by default | Aliases: acc, accounts",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, client := account.MakeAccountsServiceClientOrFail()
 
@@ -63,4 +63,3 @@ func init() {
 
 	rootCmd.AddCommand(accountCmd)
 }
-
