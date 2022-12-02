@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package ansible
+package playbooks
 
 import (
 	"encoding/json"
@@ -25,16 +25,16 @@ import (
 	"github.com/spf13/cobra"
 	"sigs.k8s.io/yaml"
 
+	"github.com/slntopp/nocloud-cli/pkg/tools"
 	pb "github.com/slntopp/nocloud-proto/ansible"
 )
 
-// createCmd represents the create command
 var CreateCmd = &cobra.Command{
 	Use:     "create [path to template]",
 	Aliases: []string{"crt", "c"},
-	Short:   "Create Ansible Run",
+	Short:   "Create Playbook",
 	Args:    cobra.ExactArgs(1),
-	RunE: func(cmd *cobra.Command, args []string) (err error) {
+	RunE: func(cmd *cobra.Command, args []string) error {
 
 		if _, err := os.Stat(args[0]); os.IsNotExist(err) {
 			return errors.New("Template doesn't exist at path " + args[0])
@@ -47,10 +47,6 @@ var CreateCmd = &cobra.Command{
 		}
 
 		template, err := os.ReadFile(args[0])
-		if err != nil {
-			fmt.Println("Error reading template file")
-			return err
-		}
 
 		switch format {
 		case "json":
@@ -60,27 +56,33 @@ var CreateCmd = &cobra.Command{
 			return errors.New("Unsupported template format " + format)
 		}
 
-		run := &pb.Run{}
-		err = json.Unmarshal(template, &run)
 		if err != nil {
 			fmt.Println("Error while parsing template")
 			return err
 		}
 
-		ctx, client := MakeAnsibleServiceCleintOrFail()
+		playbook := &pb.Playbook{}
+		err = json.Unmarshal(template, playbook)
+		if err != nil {
+			fmt.Println("Error while parsing template")
+			return err
+		}
 
-		res, err := client.Create(ctx, &pb.CreateRunRequest{Run: run})
+		ctx, client := MakePlaybooksServiceClientOrFail()
+		res, err := client.Create(ctx, &pb.CreatePlaybookRequest{
+			Playbook: playbook,
+		})
 		if err != nil {
 			return err
 		}
 
-		output, err := json.MarshalIndent(res, "-", " ")
+		ok, err := tools.PrintJsonDataQ(cmd, map[string]string{"uuid": res.Playbook.Uuid})
 		if err != nil {
-			fmt.Println(res)
 			return err
 		}
-
-		fmt.Println("Result: ", string(output))
+		if !ok {
+			fmt.Println("Result:", res.Playbook.Uuid)
+		}
 
 		return nil
 	},

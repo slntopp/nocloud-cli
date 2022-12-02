@@ -20,7 +20,7 @@ import (
 	"io"
 	"log"
 
-	pb "github.com/slntopp/nocloud-ansible/proto/ansible"
+	pb "github.com/slntopp/nocloud-proto/ansible"
 	"github.com/spf13/cobra"
 )
 

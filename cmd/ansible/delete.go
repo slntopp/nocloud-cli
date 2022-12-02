@@ -19,57 +19,29 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"os"
-	"strings"
 
 	"github.com/spf13/cobra"
-	"sigs.k8s.io/yaml"
 
 	pb "github.com/slntopp/nocloud-proto/ansible"
 )
 
-// createCmd represents the create command
-var CreateCmd = &cobra.Command{
-	Use:     "create [path to template]",
-	Aliases: []string{"crt", "c"},
-	Short:   "Create Ansible Run",
+var DeleteCmd = &cobra.Command{
+	Use:     "delete [uuid]",
+	Aliases: []string{"del", "remove", "d"},
+	Short:   "Delete Ansible Run",
 	Args:    cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) (err error) {
 
-		if _, err := os.Stat(args[0]); os.IsNotExist(err) {
-			return errors.New("Template doesn't exist at path " + args[0])
-		}
-
-		var format string
-		{
-			pathSlice := strings.Split(args[0], ".")
-			format = pathSlice[len(pathSlice)-1]
-		}
-
-		template, err := os.ReadFile(args[0])
-		if err != nil {
-			fmt.Println("Error reading template file")
-			return err
-		}
-
-		switch format {
-		case "json":
-		case "yml", "yaml":
-			template, err = yaml.YAMLToJSON(template)
-		default:
-			return errors.New("Unsupported template format " + format)
-		}
-
-		run := &pb.Run{}
-		err = json.Unmarshal(template, &run)
-		if err != nil {
-			fmt.Println("Error while parsing template")
-			return err
+		uuid := args[0]
+		if uuid == "" {
+			return errors.New("empty uuid")
 		}
 
 		ctx, client := MakeAnsibleServiceCleintOrFail()
 
-		res, err := client.Create(ctx, &pb.CreateRunRequest{Run: run})
+		res, err := client.Delete(ctx, &pb.DeleteRunRequest{
+			Uuid: uuid,
+		})
 		if err != nil {
 			return err
 		}

@@ -16,23 +16,24 @@ limitations under the License.
 package cmd
 
 import (
-	"github.com/slntopp/nocloud-cli/cmd/ansible"
+	"github.com/slntopp/nocloud-cli/cmd/playbooks"
 	"github.com/spf13/cobra"
 )
 
-var ansibleCmd = &cobra.Command{
-	Use:     "ansible",
-	Aliases: []string{"ans"},
-	Short:   "Manage ansible runs",
+var playbooksCmd = &cobra.Command{
+	Use:     "playbooks",
+	Aliases: []string{"play", "playbook"},
+	Short:   "Manage ansible playbooks",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return nil
 	},
 }
 
 func init() {
-	ansibleCmd.AddCommand(ansible.CreateCmd)
-	ansibleCmd.AddCommand(ansible.ExecCmd)
-	ansibleCmd.AddCommand(ansible.WatchCmd)
+	playbooksCmd.AddCommand(playbooks.CreateCmd)
+	playbooksCmd.AddCommand(playbooks.ListCmd)
+	playbooksCmd.AddCommand(playbooks.DeleteCmd)
+	playbooksCmd.AddCommand(playbooks.CreateCmd)
 
-	rootCmd.AddCommand(ansibleCmd)
+	rootCmd.AddCommand(playbooksCmd)
 }

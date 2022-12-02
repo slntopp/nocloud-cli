@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package ansible
+package playbooks
 
 import (
 	"context"
@@ -22,7 +22,6 @@ import (
 	"os"
 
 	pb "github.com/slntopp/nocloud-proto/ansible"
-
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
@@ -30,7 +29,7 @@ import (
 	"google.golang.org/grpc/metadata"
 )
 
-func MakeAnsibleServiceCleintOrFail() (context.Context, pb.AnsibleServiceClient) {
+func MakePlaybooksServiceClientOrFail() (context.Context, pb.PlaybooksServiceClient) {
 	host := viper.Get("nocloud")
 	if host == nil {
 		fmt.Fprintln(os.Stderr, "Error setting connection up")
@@ -54,7 +53,7 @@ func MakeAnsibleServiceCleintOrFail() (context.Context, pb.AnsibleServiceClient)
 		panic("Token is unset")
 	}
 
-	client := pb.NewAnsibleServiceClient(conn)
+	client := pb.NewPlaybooksServiceClient(conn)
 	ctx := context.Background()
 	ctx = metadata.AppendToOutgoingContext(ctx, "authorization", "bearer "+token.(string))
 	return ctx, client

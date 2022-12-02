@@ -13,44 +13,43 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package ansible
+package playbooks
 
 import (
 	"fmt"
-	"io"
-	"log"
 
+	"github.com/slntopp/nocloud-cli/pkg/tools"
 	pb "github.com/slntopp/nocloud-proto/ansible"
 	"github.com/spf13/cobra"
 )
 
-var WatchCmd = &cobra.Command{
-	Use:     "watch [service_id]",
-	Aliases: []string{},
-	Short:   "Watch Run",
-	Args:    cobra.ExactArgs(1),
-	RunE: func(cmd *cobra.Command, args []string) (err error) {
-		ctx, client := MakeAnsibleServiceCleintOrFail()
+// ListCmd represents the list command
+var ListCmd = &cobra.Command{
+	Use:     "list",
+	Aliases: []string{"l", "ls"},
+	Short:   "List Ansible Playbook",
+	Args:    cobra.MinimumNArgs(0),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		ctx, client := MakePlaybooksServiceClientOrFail()
 
-		req := pb.WatchRunRequest{Uuid: args[0]}
+		res, err := client.List(ctx, &pb.ListPlaybooksRequest{})
 
-		resp, err := client.Watch(ctx, &req)
 		if err != nil {
-			log.Fatal(err)
 			return err
 		}
 
-		for {
-			respObject, err := resp.Recv()
-			if err == io.EOF {
-				fmt.Println("All done")
-				return nil
-			}
-			if err != nil {
-				fmt.Println(err)
-				return err
-			}
-			fmt.Println(respObject)
+		ok, err := tools.PrintJsonDataQ(cmd, res)
+		if err != nil {
+			return err
 		}
+		if !ok {
+			fmt.Println("--------------------------------")
+			for _, playbook := range res.GetPlaybooks() {
+				fmt.Println(playbook)
+				fmt.Println("--------------------------------")
+			}
+		}
+
+		return nil
 	},
 }

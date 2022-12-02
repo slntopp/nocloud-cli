@@ -13,26 +13,38 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package cmd
+package playbooks
 
 import (
-	"github.com/slntopp/nocloud-cli/cmd/ansible"
+	"fmt"
+
+	"github.com/slntopp/nocloud-cli/pkg/tools"
+	pb "github.com/slntopp/nocloud-proto/ansible"
 	"github.com/spf13/cobra"
 )
 
-var ansibleCmd = &cobra.Command{
-	Use:     "ansible",
-	Aliases: []string{"ans"},
-	Short:   "Manage ansible runs",
+// GetCmd represents the get command
+var GetCmd = &cobra.Command{
+	Use:   "get [UUID]",
+	Short: "Get Ansible Playbook",
+	Args:  cobra.MinimumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
+		ctx, client := MakePlaybooksServiceClientOrFail()
+		res, err := client.Get(ctx, &pb.GetPlaybookRequest{
+			Uuid: args[0],
+		})
+		if err != nil {
+			return err
+		}
+
+		ok, err := tools.PrintJsonDataQ(cmd, res)
+		if err != nil {
+			return err
+		}
+		if !ok {
+			fmt.Println(res)
+		}
+
 		return nil
 	},
-}
-
-func init() {
-	ansibleCmd.AddCommand(ansible.CreateCmd)
-	ansibleCmd.AddCommand(ansible.ExecCmd)
-	ansibleCmd.AddCommand(ansible.WatchCmd)
-
-	rootCmd.AddCommand(ansibleCmd)
 }
