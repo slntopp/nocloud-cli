@@ -183,6 +183,10 @@ github.com/slntopp/nocloud-proto v0.0.0-20221122194742-164f47db0a31 h1:SXWEq3A/5
 github.com/slntopp/nocloud-proto v0.0.0-20221122194742-164f47db0a31/go.mod h1:F22cB+K8C7ym1+Ldg+ji0azXm8GP4En1NUq8Nzvkgxw=
 github.com/slntopp/nocloud-proto v0.0.0-20221202060241-e0f2f3bfa8db h1:wP/k1SlrDkp/OdTM0lXQeP2WzCc/Td5XGXeK1hl1UQk=
 github.com/slntopp/nocloud-proto v0.0.0-20221202060241-e0f2f3bfa8db/go.mod h1:F22cB+K8C7ym1+Ldg+ji0azXm8GP4En1NUq8Nzvkgxw=
+github.com/slntopp/nocloud-proto v0.0.0-20221202193101-11c7c6e426bf h1:tKdR6ZopKx34vDhztFRC88i0AaKlRJG/tcm+BOd8MXo=
+github.com/slntopp/nocloud-proto v0.0.0-20221202193101-11c7c6e426bf/go.mod h1:F22cB+K8C7ym1+Ldg+ji0azXm8GP4En1NUq8Nzvkgxw=
+github.com/slntopp/nocloud-proto v0.0.0-20221206125049-76de581f63df h1:HFh4Ei+IGu+dQBKopCYrXLscj7x5pG5CR0iKYR8m3fE=
+github.com/slntopp/nocloud-proto v0.0.0-20221206125049-76de581f63df/go.mod h1:F22cB+K8C7ym1+Ldg+ji0azXm8GP4En1NUq8Nzvkgxw=
 github.com/spf13/afero v1.9.2 h1:j49Hj62F0n+DaZ1dDCvhABaPNSGNkt32oRFxI33IEMw=
 github.com/spf13/afero v1.9.2/go.mod h1:iUV7ddyEEZPO5gA3zD4fJt6iStLlL+Lg4m2cihcDf8Y=
 github.com/spf13/cast v1.5.0 h1:rj3WzYc11XZaIZMPKmwP96zkFEnnAmV8s6XbB2aY32w=

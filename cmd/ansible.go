@@ -33,6 +33,7 @@ func init() {
 	ansibleCmd.AddCommand(ansible.CreateCmd)
 	ansibleCmd.AddCommand(ansible.ExecCmd)
 	ansibleCmd.AddCommand(ansible.WatchCmd)
+	ansibleCmd.AddCommand(ansible.ListCmd)
 
 	rootCmd.AddCommand(ansibleCmd)
 }

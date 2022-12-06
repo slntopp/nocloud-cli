@@ -26,7 +26,7 @@ import (
 )
 
 var GetCmd = &cobra.Command{
-	Use:     "Get [uuid]",
+	Use:     "get [uuid]",
 	Aliases: []string{"get", "fetch"},
 	Short:   "Get Ansible Run",
 	Args:    cobra.ExactArgs(1),
