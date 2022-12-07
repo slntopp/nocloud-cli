@@ -53,6 +53,9 @@ var WatchCmd = &cobra.Command{
 				fmt.Println("All done")
 				return nil
 			}
+			if err != nil {
+				return err
+			}
 
 			ok, err := tools.PrintJsonDataQ(cmd, respObject)
 			if err != nil {

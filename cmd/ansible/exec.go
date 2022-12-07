@@ -16,13 +16,9 @@ limitations under the License.
 package ansible
 
 import (
-	"encoding/json"
 	"fmt"
-	"io"
 	"log"
-	"regexp"
 
-	"github.com/slntopp/nocloud-cli/pkg/tools"
 	pb "github.com/slntopp/nocloud-proto/ansible"
 	"github.com/spf13/cobra"
 )
@@ -43,42 +39,7 @@ var ExecCmd = &cobra.Command{
 			return err
 		}
 
-		jobs := map[string]bool{}
-		whitespace := regexp.MustCompile(`^[\s]*$`)
-		for {
-
-			respObject, err := resp.Recv()
-
-			if err == io.EOF {
-				fmt.Println("All done")
-				return nil
-			}
-
-			ok, err := tools.PrintJsonDataQ(cmd, respObject)
-			if err != nil {
-				return err
-			}
-
-			if !ok {
-				for key, job := range respObject.Jobs {
-					if _, ok := jobs[key]; !ok {
-						data := map[string]interface{}{}
-
-						if err := json.Unmarshal([]byte(job), &data); err != nil {
-							continue
-						}
-
-						if whitespace.MatchString(data["stdout"].(string)) {
-							continue
-						}
-
-						fmt.Println(data["stdout"])
-
-						jobs[key] = true
-					}
-				}
-			}
-
-		}
+		fmt.Println(resp)
+		return nil
 	},
 }
