@@ -1,0 +1,5 @@
+playbook_uuid: 702e8958-9c44-441d-8bf4-740a67e9690f
+instances:
+  - port: "52222"
+    pass: "Jago322=="
+    host: "185.66.68.18"

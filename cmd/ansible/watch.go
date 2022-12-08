@@ -42,9 +42,8 @@ var WatchCmd = &cobra.Command{
 			log.Fatal(err)
 			return err
 		}
-
-		jobs := map[string]bool{}
 		whitespace := regexp.MustCompile(`^[\s]*$`)
+
 		for {
 
 			respObject, err := resp.Recv()
@@ -63,23 +62,17 @@ var WatchCmd = &cobra.Command{
 			}
 
 			if !ok {
-				for key, job := range respObject.Jobs {
-					if _, ok := jobs[key]; !ok {
-						data := map[string]interface{}{}
+				data := map[string]interface{}{}
 
-						if err := json.Unmarshal([]byte(job), &data); err != nil {
-							continue
-						}
-
-						if whitespace.MatchString(data["stdout"].(string)) {
-							continue
-						}
-
-						fmt.Println(data["stdout"])
-
-						jobs[key] = true
-					}
+				if err := json.Unmarshal([]byte(respObject.Job), &data); err != nil {
+					continue
 				}
+
+				if whitespace.MatchString(data["stdout"].(string)) {
+					continue
+				}
+
+				fmt.Println(data["stdout"])
 			}
 
 		}
