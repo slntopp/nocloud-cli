@@ -1,0 +1,13 @@
+content: |
+  - hosts: all
+    remote_user: root
+    tasks:
+      - name: wait
+        shell: sleep 5
+      - name: shell task demo
+        shell: pwd
+        args:
+          chdir: /tmp`
+
+title: template
+decription: Blah blah
