@@ -29,6 +29,7 @@ var eventsCmd = &cobra.Command{
 func init() {
 	eventsCmd.AddCommand(events.PubCmd)
 	eventsCmd.AddCommand(events.SubCmd)
+	eventsCmd.AddCommand(events.ListCmd)
 
 	rootCmd.AddCommand(eventsCmd)
 }
