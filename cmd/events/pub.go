@@ -30,20 +30,20 @@ import (
 
 // GetCmd represents the list command
 var PubCmd = &cobra.Command{
-	Use:     "pub [topic] [template] [[flags]]",
+	Use:     "pub [template] [[flags]]",
 	Aliases: []string{"publish", "send"},
 	Short:   "Publishes Event",
-	Args:    cobra.ExactArgs(2),
+	Args:    cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, client := MakeEventsServiceClientOrFail()
 
 		var format string
 		{
-			pathSlice := strings.Split(args[1], ".")
+			pathSlice := strings.Split(args[0], ".")
 			format = pathSlice[len(pathSlice)-1]
 		}
 
-		template, err := os.ReadFile(args[1])
+		template, err := os.ReadFile(args[0])
 		if err != nil {
 			fmt.Println("Error reading template file")
 			return err
@@ -66,7 +66,19 @@ var PubCmd = &cobra.Command{
 			return err
 		}
 
-		event.Key = args[0]
+		t, err := cmd.Flags().GetString("type")
+		if err != nil {
+			return err
+		} else {
+			event.Type = t
+		}
+
+		uuid, err := cmd.Flags().GetString("uuid")
+		if err != nil {
+			return err
+		} else {
+			event.Uuid = uuid
+		}
 
 		response, err := client.Publish(ctx, event)
 		if err != nil {
@@ -83,4 +95,9 @@ var PubCmd = &cobra.Command{
 
 		return nil
 	},
+}
+
+func init() {
+	PubCmd.Flags().StringP("type", "t", "", "Type of event")
+	PubCmd.Flags().StringP("uuid", "u", "", "Uuid of recipient")
 }

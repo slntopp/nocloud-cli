@@ -25,16 +25,30 @@ import (
 
 // GetCmd represents the list command
 var SubCmd = &cobra.Command{
-	Use:     "sub [topic] [[flags]]",
+	Use:     "sub [[flags]]",
 	Aliases: []string{"subscribe", "consume"},
 	Short:   "Consume Events",
-	Args:    cobra.ExactArgs(1),
+	Args:    cobra.ExactArgs(0),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, client := MakeEventsServiceClientOrFail()
 
-		stream, err := client.Consume(ctx, &pb.ConsumeRequest{
-			Key: args[0],
-		})
+		req := &pb.ConsumeRequest{}
+
+		t, err := cmd.Flags().GetString("type")
+		if err != nil {
+			return err
+		} else {
+			req.Type = t
+		}
+
+		uuid, err := cmd.Flags().GetString("uuid")
+		if err != nil {
+			return err
+		} else {
+			req.Uuid = uuid
+		}
+
+		stream, err := client.Consume(ctx, req)
 		if err != nil {
 			return err
 		}
@@ -54,4 +68,9 @@ var SubCmd = &cobra.Command{
 			}
 		}
 	},
+}
+
+func init() {
+	SubCmd.Flags().StringP("type", "t", "", "Type of event")
+	SubCmd.Flags().StringP("uuid", "u", "", "Uuid of recipient")
 }
