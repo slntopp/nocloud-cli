@@ -30,6 +30,7 @@ func init() {
 	eventsCmd.AddCommand(events.PubCmd)
 	eventsCmd.AddCommand(events.SubCmd)
 	eventsCmd.AddCommand(events.ListCmd)
+	eventsCmd.AddCommand(events.CancelCmd)
 
 	rootCmd.AddCommand(eventsCmd)
 }
