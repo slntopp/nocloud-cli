@@ -6,7 +6,7 @@ require (
 	github.com/jedib0t/go-pretty/v6 v6.4.4
 	github.com/jroimartin/gocui v0.5.0
 	github.com/manifoldco/promptui v0.9.0
-	github.com/slntopp/nocloud-proto v0.0.0-20221208190908-32271bb13a7c
+	github.com/slntopp/nocloud-proto v0.0.0-20230110163109-ac50ce8dd5b7
 	github.com/spf13/cobra v1.6.1
 	github.com/spf13/viper v1.14.0
 	golang.org/x/text v0.6.0
