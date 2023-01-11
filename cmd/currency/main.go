@@ -21,7 +21,7 @@ import (
 	"fmt"
 	"os"
 
-	pb proto "github.com/slntopp/nocloud-proto/billing"
+	pb "github.com/slntopp/nocloud-proto/billing"
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
