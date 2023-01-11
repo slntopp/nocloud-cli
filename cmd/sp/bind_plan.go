@@ -41,7 +41,7 @@ var BindPlanCmd = &cobra.Command{
 
 // UnbindPlanCmd represents the unbind-plan Command
 var UnbindPlanCmd = &cobra.Command{
-	Use:   "unbind-plan [uuid] [plan_uuid] [[flags]]",
+	Use:   "unbind-plan [sp-uuid] [plan-uuid] [[flags]]",
 	Short: "Unbind Billing Plan",
 	Args:  cobra.ExactArgs(2),
 	RunE: func(cmd *cobra.Command, args []string) error {
