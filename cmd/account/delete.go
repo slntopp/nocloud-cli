@@ -25,7 +25,7 @@ import (
 
 // DeleteCmd represents the delete command
 var DeleteCmd = &cobra.Command{
-	Use:     "delete [UUID]",
+	Use:     "delete [uuid]",
 	Aliases: []string{"del", "d"},
 	Short:   "Delete NoCloud Account",
 	Args:    cobra.MinimumNArgs(1),

@@ -26,7 +26,7 @@ import (
 
 // UpdateCmd represents the update command
 var UpdateCmd = &cobra.Command{
-	Use:     "update [account UUID] [[flags]]",
+	Use:     "update [account-uuid] [[flags]]",
 	Aliases: []string{"upd"},
 	Short:   "Update NoCloud Account",
 	Long:    "In order to execute request you must change at least one field.",
