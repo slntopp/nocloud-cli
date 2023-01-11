@@ -24,7 +24,7 @@ import (
 
 // GetCmd represents the get command
 var BindPlanCmd = &cobra.Command{
-	Use:   "bind-plan [uuid] [plan_uuid] [[flags]]",
+	Use:   "bind-plan [sp-uuid] [plan-uuid] [[flags]]",
 	Short: "Bind Billing Plan to Services Providers",
 	Args:  cobra.ExactArgs(2),
 	RunE: func(cmd *cobra.Command, args []string) error {

@@ -22,7 +22,7 @@ import (
 
 // createCmd represents the create command
 var UpCmd = &cobra.Command{
-	Use:     "up [service_id] [flags]",
+	Use:     "up [service_id] [[flags]]",
 	Aliases: []string{},
 	Short:   "NoCloud Service Up",
 	Args:    cobra.ExactArgs(1),

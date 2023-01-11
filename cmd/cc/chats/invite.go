@@ -27,7 +27,7 @@ import (
 
 // InviteCmd represents the invite command
 var InviteCmd = &cobra.Command{
-	Use:   "invite [flags]",
+	Use:   "invite [[flags]]",
 	Short: "Invite to chat",
 	Args:  cobra.ExactArgs(0),
 	RunE: func(cmd *cobra.Command, _ []string) (err error) {

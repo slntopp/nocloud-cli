@@ -27,7 +27,7 @@ import (
 
 // ListCmd represents the list command
 var ListCmd = &cobra.Command{
-	Use:   "list [flags]",
+	Use:   "list [[flags]]",
 	Short: "List messages from chat",
 	Args:  cobra.ExactArgs(0),
 	RunE: func(cmd *cobra.Command, _ []string) (err error) {

@@ -27,7 +27,7 @@ import (
 
 // sendCmd represents the send message command
 var SendCmd = &cobra.Command{
-	Use:   "send [flags]",
+	Use:   "send [[flags]]",
 	Short: "Send message",
 	Args:  cobra.ExactArgs(0),
 	RunE: func(cmd *cobra.Command, _ []string) (err error) {

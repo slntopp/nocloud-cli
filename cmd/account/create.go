@@ -27,7 +27,7 @@ import (
 
 // CreateCmd represents the create command
 var CreateCmd = &cobra.Command{
-	Use:     "create [title] [namespace UUID] [flags]",
+	Use:     "create [title] [namespace UUID] [[flags]]",
 	Aliases: []string{"crt", "c"},
 	Short:   "Create NoCloud Account",
 	Long:    "Authorization data flags must be given('auth-type', 'auth-data')",

@@ -25,7 +25,7 @@ import (
 
 // createCmd represents the create command
 var StreamCmd = &cobra.Command{
-	Use:     "stream [service_id] [flags]",
+	Use:     "stream [service_id] [[flags]]",
 	Aliases: []string{},
 	Short:   "NoCloud Service Stream",
 	Args:    cobra.ExactArgs(1),

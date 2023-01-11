@@ -42,7 +42,7 @@ func (b *Buffer) Push(msg *proto.ChatMessage) {
 
 // StreamCmd represents the create stream command
 var StreamCmd = &cobra.Command{
-	Use:   "stream [flags]",
+	Use:   "stream [[flags]]",
 	Short: "Create chat stream for fetching messages",
 	Args:  cobra.ExactArgs(0),
 	RunE: func(cmd *cobra.Command, _ []string) (err error) {
