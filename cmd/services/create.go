@@ -71,7 +71,7 @@ func SelectSPInteractive(service *pb.Service) (map[int32]string, error) {
 
 // createCmd represents the create command
 var CreateCmd = &cobra.Command{
-	Use:     "create [path to template] [flags]",
+	Use:     "create [path to template] [[flags]]",
 	Aliases: []string{"crt", "c"},
 	Short:   "Create Service Config",
 	Args:    cobra.ExactArgs(1),

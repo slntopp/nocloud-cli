@@ -27,7 +27,7 @@ import (
 
 // updateCmd represents the update command
 var UpdateCmd = &cobra.Command{
-	Use:   "update [flags]",
+	Use:   "update [[flags]]",
 	Short: "Update message",
 	Args:  cobra.ExactArgs(0),
 	RunE: func(cmd *cobra.Command, _ []string) (err error) {

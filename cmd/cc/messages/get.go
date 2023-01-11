@@ -27,7 +27,7 @@ import (
 
 // GetCmd represents the get command
 var GetCmd = &cobra.Command{
-	Use:   "get [flags]",
+	Use:   "get [[flags]]",
 	Short: "get message",
 	Args:  cobra.ExactArgs(0),
 	RunE: func(cmd *cobra.Command, _ []string) (err error) {

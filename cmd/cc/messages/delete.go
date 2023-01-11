@@ -27,7 +27,7 @@ import (
 
 // deleteCmd represents the delete command
 var DeleteCmd = &cobra.Command{
-	Use:   "delete [flags]",
+	Use:   "delete [[flags]]",
 	Short: "Delete message",
 	Args:  cobra.ExactArgs(0),
 	RunE: func(cmd *cobra.Command, _ []string) (err error) {

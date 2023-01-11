@@ -25,7 +25,7 @@ import (
 
 // SuspendCmd represents the suspend command
 var SuspendCmd = &cobra.Command{
-	Use:     "suspend [service_id] [flags]",
+	Use:     "suspend [service_id] [[flags]]",
 	Aliases: []string{"sus", "susp"},
 	Short:   "NoCloud Service Suspend",
 	Args:    cobra.ExactArgs(1),

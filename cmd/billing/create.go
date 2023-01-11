@@ -30,7 +30,7 @@ import (
 )
 
 var CreateCmd = &cobra.Command{
-	Use:     "create [path to template] [flags]",
+	Use:     "create [path to template] [[flags]]",
 	Aliases: []string{"crt", "c"},
 	Short:   "Create Billing Plan",
 	Args:    cobra.ExactArgs(1),

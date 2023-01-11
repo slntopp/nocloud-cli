@@ -31,7 +31,7 @@ import (
 )
 
 var PrepCmd = &cobra.Command{
-	Use:   "prep [path to template] [flags]",
+	Use:   "prep [path to template] [[flags]]",
 	Short: "Prepare SP template by gathering data",
 	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
@@ -90,7 +90,7 @@ var PrepCmd = &cobra.Command{
 }
 
 var PrepIONeCmd = &cobra.Command{
-	Use:   "ione [endpoint] [username] [password|token] [flags]",
+	Use:   "ione [endpoint] [username] [password|token] [[flags]]",
 	Short: "Gather data required for importing OpenNebula as SP",
 	Args:  cobra.ExactArgs(3),
 	RunE: func(cmd *cobra.Command, args []string) error {

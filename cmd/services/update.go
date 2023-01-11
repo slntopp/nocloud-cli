@@ -30,7 +30,7 @@ import (
 
 // createCmd represents the create command
 var UpdateCmd = &cobra.Command{
-	Use:     "update [path to template] [flags]",
+	Use:     "update [path to template] [[flags]]",
 	Aliases: []string{"upd", "u"},
 	Short:   "Update Service Config",
 	Args:    cobra.ExactArgs(1),

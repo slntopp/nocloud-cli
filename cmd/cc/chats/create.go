@@ -27,7 +27,7 @@ import (
 
 // createCmd represents the create command
 var CreateCmd = &cobra.Command{
-	Use:   "create [flags]",
+	Use:   "create [[flags]]",
 	Short: "Create chat",
 	Args:  cobra.ExactArgs(0),
 	RunE: func(cmd *cobra.Command, _ []string) (err error) {

@@ -35,7 +35,7 @@ var (
 
 // createCmd represents the create command
 var TestCmd = &cobra.Command{
-	Use:   "test [path to template] [flags]",
+	Use:   "test [path to template] [[flags]]",
 	Short: "Test Service Config",
 	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) (err error) {

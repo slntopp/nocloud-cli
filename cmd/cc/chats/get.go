@@ -27,7 +27,7 @@ import (
 
 // deleteCmd represents the delete command
 var GetCmd = &cobra.Command{
-	Use:   "get [flags]",
+	Use:   "get [[flags]]",
 	Short: "Get chat",
 	Args:  cobra.ExactArgs(0),
 	RunE: func(cmd *cobra.Command, _ []string) (err error) {
