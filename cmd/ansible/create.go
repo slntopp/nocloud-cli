@@ -59,6 +59,10 @@ var CreateCmd = &cobra.Command{
 		default:
 			return errors.New("Unsupported template format " + format)
 		}
+		if err != nil {
+			fmt.Println("Error while parsing template1")
+			return err
+		}
 
 		run := &pb.Run{}
 		err = json.Unmarshal(template, &run)
