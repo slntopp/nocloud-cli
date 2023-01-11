@@ -19,7 +19,7 @@ import (
 	"fmt"
 
 	"github.com/slntopp/nocloud-cli/pkg/tools"
-	"github.com/slntopp/nocloud/pkg/billing/proto"
+	proto "github.com/slntopp/nocloud-proto/billing"
 	"github.com/spf13/cobra"
 )
 
