@@ -72,7 +72,7 @@ func PrintAccount(acc *pb.Account) {
 func PrintAccountsPool(pool []*pb.Account) {
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
-	t.AppendHeader(table.Row{"UUID", "Title", "Balance NCU"})
+	t.AppendHeader(table.Row{"UUID", "Title", "Balance NCU", "Access", "Role", "Namespace"})
 
 	rows := make([]table.Row, len(pool))
 	for i, acc := range pool {
@@ -80,7 +80,18 @@ func PrintAccountsPool(pool []*pb.Account) {
 		if acc.Balance != nil {
 			balance = fmt.Sprintf("%.2f", *acc.Balance)
 		}
-		rows[i] = table.Row{acc.Uuid, acc.Title, balance}
+		a, r, n := "READ", "-", "-"
+		if acc.Access != nil {
+			a = acc.Access.Level.Enum().String()
+			r = acc.Access.Role
+			if r == "" {
+				r = "-"
+			}
+			if acc.Access.Namespace != nil {
+				n = *acc.Access.Namespace
+			}
+		}
+		rows[i] = table.Row{acc.Uuid, acc.Title, balance, a, r, n}
 	}
 	t.AppendRows(rows)
 
