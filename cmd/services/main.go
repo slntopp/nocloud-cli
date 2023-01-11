@@ -99,11 +99,19 @@ func PrintService(s *pb.Service) error {
 func PrintServicesPool(pool []*pb.Service) {
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
-	t.AppendHeader(table.Row{"UUID", "Title", "Status"})
+	t.AppendHeader(table.Row{"UUID", "Title", "Status", "Access", "Role", "Namespace"})
 
 	rows := make([]table.Row, len(pool))
 	for i, s := range pool {
-		rows[i] = table.Row{s.GetUuid(), s.GetTitle(), s.GetStatus()}
+		a, r, n := "READ", "-", "-"
+		if s.Access != nil {
+			a = s.Access.Level.Enum().String()
+			r = s.Access.Role
+			if s.Access.Namespace != nil {
+				n = *s.Access.Namespace
+			}
+		}
+		rows[i] = table.Row{s.GetUuid(), s.GetTitle(), s.GetStatus(), a, r, n}
 	}
 	t.AppendRows(rows)
 
