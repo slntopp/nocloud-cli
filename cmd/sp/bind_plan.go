@@ -22,7 +22,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// GetCmd represents the get command
+// BindPlanCmd represents the bind-plan Command
 var BindPlanCmd = &cobra.Command{
 	Use:   "bind-plan [sp-uuid] [plan-uuid] [[flags]]",
 	Short: "Bind Billing Plan to Services Providers",
@@ -35,6 +35,23 @@ var BindPlanCmd = &cobra.Command{
 			return err
 		}
 		fmt.Println("Binding Completed")
+		return nil
+	},
+}
+
+// UnbindPlanCmd represents the unbind-plan Command
+var UnbindPlanCmd = &cobra.Command{
+	Use:   "unbind-plan [uuid] [plan_uuid] [[flags]]",
+	Short: "Unbind Billing Plan",
+	Args:  cobra.ExactArgs(2),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		ctx, client := MakeServicesProviderServiceClientOrFail()
+		request := pb.UnbindPlanRequest{Uuid: args[0], PlanUuid: args[1]}
+		_, err := client.UnbindPlan(ctx, &request)
+		if err != nil {
+			return err
+		}
+		fmt.Println("Unbinding Completed")
 		return nil
 	},
 }
