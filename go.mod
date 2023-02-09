@@ -9,7 +9,7 @@ require (
 	github.com/slntopp/nocloud-proto v0.0.0-20230110163109-ac50ce8dd5b7
 	github.com/spf13/cobra v1.6.1
 	github.com/spf13/viper v1.15.0
-	golang.org/x/text v0.6.0
+	golang.org/x/text v0.7.0
 	google.golang.org/grpc v1.53.0
 	google.golang.org/protobuf v1.28.1
 	gopkg.in/yaml.v2 v2.4.0
