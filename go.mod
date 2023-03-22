@@ -11,7 +11,7 @@ require (
 	github.com/spf13/viper v1.15.0
 	golang.org/x/text v0.8.0
 	google.golang.org/grpc v1.54.0
-	google.golang.org/protobuf v1.29.1
+	google.golang.org/protobuf v1.30.0
 	gopkg.in/yaml.v2 v2.4.0
 	sigs.k8s.io/yaml v1.3.0
 )
