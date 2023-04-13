@@ -36,7 +36,7 @@ var ApplyCmd = &cobra.Command{
 key: setting_key
 value: some value
 description: Just a setting Key
-public: setting visibility for non-root accounts
+level: 0-4 setting visibility
 `,
 	Args: cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {

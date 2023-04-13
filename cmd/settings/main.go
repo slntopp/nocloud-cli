@@ -20,6 +20,7 @@ import (
 	"crypto/tls"
 	"fmt"
 	"os"
+	"sort"
 
 	"github.com/jedib0t/go-pretty/v6/table"
 	pb "github.com/slntopp/nocloud-proto/settings"
@@ -63,13 +64,20 @@ func MakeSettingsServiceClientOrFail() (context.Context, pb.SettingsServiceClien
 func PrintKeys(res *pb.KeysResponse) {
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
-	t.AppendHeader(table.Row{"Key", "Description", "Public?"})
+	t.AppendHeader(table.Row{"Key", "Description", "Level"})
 
-	rows := make([]table.Row, len(res.GetPool()))
-	for i, key := range res.GetPool() {
-		rows[i] = table.Row{key.Key, key.Description, key.Public}
+	sort.Slice(res.Pool, func(i, j int) bool {
+		return res.Pool[i].Level < res.Pool[j].Level || res.Pool[j].Description == "Unresolved"
+	})
+
+	for i, key := range res.Pool {
+		if i > 0 && res.Pool[i-1].Level != res.Pool[i].Level {
+			t.AppendSeparator()
+		}
+
+		t.AppendRow(table.Row{key.Key, key.Description, key.Level.String()})
 	}
-	t.AppendRows(rows)
-	t.AppendFooter(table.Row{"Total Found", len(rows)})
+
+	t.AppendFooter(table.Row{"Total Found", len(res.Pool)})
 	t.Render()
 }
